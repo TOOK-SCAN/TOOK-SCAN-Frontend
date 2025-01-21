@@ -1,0 +1,62 @@
+[
+  {
+    "name": "type : ⛑️ Build",
+    "color": "#E99695",
+    "description": "빌드 관련 파일 수정"
+  },
+  {
+    "name": "type : 🧭 Chore",
+    "color": "#F9D0C4",
+    "description": "개발 세팅"
+  },
+  {
+    "name": "type : 🎨 Design",
+    "color": "#FEF2C0",
+    "description": "퍼블리싱 및 디자인 수정"
+  },
+  {
+    "name": "type : 📑 Docs",
+    "color": "#C2E0C6",
+    "description": "문서 관련"
+  },
+  {
+    "name": "type : 🚀 Feat",
+    "color": "#BFDADC",
+    "description": "기능 구현 및 수정"
+  },
+  {
+    "name": "type : 🏷 Fix",
+    "color": "#C5DEF5",
+    "description": "버그 수정"
+  },
+  {
+    "name": "type : 🧹 Refactor",
+    "color": "#BFD4F2",
+    "description": "코드 리팩토링"
+  },
+  {
+    "name": "type : ✨ Style",
+    "color": "#D4C5F9",
+    "description": "코드 포매팅, 코드 오타, 함수명 수정 등 스타일 수정"
+  },
+  {
+    "name": "type : 📁 Test",
+    "color": "#D1D5D8",
+    "description": "테스트 관련 코드"
+  },
+  {
+    "name": "scope : 🙍🏻 user",
+    "color": "#F4CCCC",
+    "description": "사용자(User) 관련 수정"
+  },
+  {
+    "name": "scope : 🧑🏻‍💻 admin",
+    "color": "#C9DAF8",
+    "description": "관리자(Admin) 관련 수정"
+  },
+  {
+    "name": "scope : 📦 package",
+    "color": "#D9EAD3",
+    "description": "패키지 설정 및 관련 코드 수정"
+  }
+]
