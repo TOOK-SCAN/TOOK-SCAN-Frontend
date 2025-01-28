@@ -8,8 +8,10 @@ import clsx from 'clsx'
 import { BookInCart } from '@/app/(nonRoot)/apply/_components/index'
 import useModal from '@tookscan/hooks/useModal'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const 주문번호 = '20204121721330' // TODO: 주문번호 API 연결
+const 신청함수 = async () => {}
 
 const Purchase = () => {
   const {
@@ -21,6 +23,7 @@ const Purchase = () => {
     shippingInfo,
   } = useApplyContext()
   const { openModal, closeModal } = useModal()
+  const router = useRouter()
 
   return (
     <div
@@ -99,22 +102,25 @@ const Purchase = () => {
                   >
                     취소
                   </Button>
-                  <Link
-                    href={`/apply/success?order=${주문번호}`}
-                    className="flex-1"
+
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    className="w-full flex-1"
+                    onClick={() => {
+                      신청함수()
+                        .then(() => {
+                          router.push(`/apply/success?order=${주문번호}`)
+                          closeModal()
+                          ignoreBeforeUnload.current = true
+                        })
+                        .catch(() => {
+                          closeModal()
+                        })
+                    }}
                   >
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      className="w-full"
-                      onClick={() => {
-                        closeModal()
-                        ignoreBeforeUnload.current = true
-                      }}
-                    >
-                      신청
-                    </Button>
-                  </Link>
+                    신청
+                  </Button>
                 </div>
               </div>
             )
