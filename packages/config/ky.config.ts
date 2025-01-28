@@ -3,56 +3,56 @@ import { devConsole } from '../utils/devConsole'
 
 const createApiClient = (headers: Record<string, string>) => {
   return ky.create({
-    prefixUrl: `${process.env.PREFIX_URL}/api/v1`,
+    prefixUrl: `${process.env.NEXT_PUBLIC_PREFIX_URL}/v1`,
     timeout: 3000,
     headers,
     hooks: {
       beforeRequest: [
-        (request) => {
+        (req) => {
           devConsole.log('[Request Config]:', {
-            url: request.url,
-            method: request.method,
-            headers: request.headers,
-            body: request.body,
+            url: req.url,
+            method: req.method,
+            headers: req.headers,
+            body: req.body,
           })
         },
       ],
       afterResponse: [
-        async (request, options, response) => {
-          const responseData = await response
+        async (_req, _options, res) => {
+          const responseData = await res
             .clone()
             .json()
             .catch(() => null)
+
+          if (!res.ok) {
+            devConsole.error('[Response Error]:', {
+              status: res.status,
+              statusText: res.statusText,
+              body: responseData,
+            })
+            return {
+              success: false,
+              data: responseData,
+              error: {
+                code: res.status,
+                message: res.statusText,
+              },
+            }
+          }
+
           devConsole.log('[Response Data]:', responseData)
-        },
-      ],
-      onError: [
-        async (error) => {
-          const errorInfo = {
-            status: error.response?.status,
-            message: (await error.response?.text()) || error.message,
-          }
-
-          devConsole.error(
-            `[API Error - ${error.request?.url}]:`,
-            error.message
-          )
-          devConsole.log('[Custom Error]:', errorInfo)
-          if (errorInfo.status === 500) {
-            console.warn('[Server Error]: 잠시 후 다시 시도해주세요.')
-          }
-
-          throw errorInfo
+          return responseData
         },
       ],
     },
+    throwHttpErrors: false,
   })
 }
 
-const apiClient = createApiClient({ 'Content-Type': 'application/json' })
+const httpInstance = createApiClient({ 'Content-Type': 'application/json' })
 
-const formDataClient = createApiClient({
+const uploadInstance = createApiClient({
   'Content-Type': 'multipart/form-data',
 })
 
-export { apiClient, formDataClient }
+export { httpInstance, uploadInstance }
