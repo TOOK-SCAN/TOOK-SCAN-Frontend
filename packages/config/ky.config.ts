@@ -3,7 +3,7 @@ import { devConsole } from '../utils/devConsole'
 
 const createApiClient = (headers: Record<string, string>) => {
   return ky.create({
-    prefixUrl: `${process.env.NEXT_PUBLIC_PREFIX_URL}/v1`,
+    prefixUrl: `${process.env.NEXT_PUBLIC_PREFIX_URL}/api/v1`,
     timeout: 3000,
     headers,
     hooks: {
