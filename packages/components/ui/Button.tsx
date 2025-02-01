@@ -1,8 +1,8 @@
 'use client'
 
-import * as React from 'react'
-import Icon from './Icon/Icon'
+import { Icon } from '@/components'
 import clsx from 'clsx'
+import * as React from 'react'
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {

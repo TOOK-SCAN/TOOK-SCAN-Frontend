@@ -1,8 +1,8 @@
 'use client'
 
-import Banner from '@tookscan/components/ui/Banner/Banner'
+import { Banner } from '@tookscan/components'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutProps } from '../../../types/common'
+import type { LayoutProps } from '../../../types/common'
 
 const PrivacyLayout = ({ children }: LayoutProps) => {
   const pathname = usePathname() // 현재 경로를 가져옵니다.

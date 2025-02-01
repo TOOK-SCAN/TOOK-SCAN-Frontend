@@ -51,11 +51,11 @@ export default async function searchAddress(
       .json<KakaoAddressResponse>()
     console.log('Kakao API Request Success:', response)
     return response
-  } catch (error: any) {
+  } catch (error) {
     console.error('Kakao API Request Failed:', error)
     throw new Error(
       `Kakao search address API request error: ${
-        error.response?.statusText || error.message || 'unknown error'
+        error instanceof Error ? error.message : 'unknown error'
       }`
     )
   }

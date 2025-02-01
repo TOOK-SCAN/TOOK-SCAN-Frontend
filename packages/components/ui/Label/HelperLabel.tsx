@@ -6,7 +6,7 @@ interface HelperLabelProps {
   children?: React.ReactNode
 }
 
-const HelperLabel = ({ size, type, children }: HelperLabelProps) => {
+export const HelperLabel = ({ size, type, children }: HelperLabelProps) => {
   return (
     <div
       className={clsx(
@@ -23,5 +23,3 @@ const HelperLabel = ({ size, type, children }: HelperLabelProps) => {
     </div>
   )
 }
-
-export default HelperLabel

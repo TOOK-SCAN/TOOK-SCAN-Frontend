@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import { useModal } from '@/hooks'
 import clsx from 'clsx'
-import { useModal } from '../../../hooks/useModal'
+import React, { useEffect } from 'react'
 
 interface ModalProps {
   type: string

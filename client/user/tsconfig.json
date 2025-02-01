@@ -14,7 +14,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "moduleResolution": "node"
   },
   "include": ["src/**/*", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
