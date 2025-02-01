@@ -9,12 +9,13 @@ import Footer from '@tookscan/components/ui/Footer'
 import Head from 'next/head'
 import { ModalProvider } from '@tookscan/components/app/ModalProvider'
 import { ToastProvider } from '@tookscan/components/ui/Modal/Toast'
-import { GoogleTagManager } from '@/components'
+import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components'
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="ko">
       <Head>
+        <GoogleTagManager />
         <link rel="icon" type="image/png" href="/images/Logo.png" />
         <meta property="og:image" content="/images/Logo.png" />
         <meta property="og:url" content="https://tookscan.com" />
@@ -23,7 +24,7 @@ export default function RootLayout({ children }: LayoutProps) {
       <body>
         {SpriteSheet}
         {CommonSpriteSheet}
-        <GoogleTagManager />
+        <GoogleTagManagerNoScript />
         <QueryProvider>
           <ToastProvider>
             <ModalProvider>
