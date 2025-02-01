@@ -1,8 +1,8 @@
 'use client'
 
+import { Icon } from '@/components'
 import clsx from 'clsx'
 import Link from 'next/link'
-import { Icon } from '../ui/Icon/Icon'
 
 interface HeaderProps {
   type: 'default' | 'logged-in' // 헤더 타입

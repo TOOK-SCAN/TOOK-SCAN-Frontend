@@ -1,11 +1,11 @@
 'use client'
 
+import { Icon } from '@/components'
+import { searchAddress } from '@/utils'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { debounce } from 'lodash'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import searchAddress from '../../../utils/kakao'
-import { Icon } from '../Icon/Icon'
 
 interface SearchAddressProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void

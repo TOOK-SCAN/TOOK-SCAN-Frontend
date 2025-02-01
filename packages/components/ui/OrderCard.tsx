@@ -1,7 +1,7 @@
 'use client'
 
+import { DetailBox } from '@/components'
 import { useState } from 'react'
-import { DetailBox } from './OrderDetailBox'
 
 export interface OrderInfo {
   userName: string

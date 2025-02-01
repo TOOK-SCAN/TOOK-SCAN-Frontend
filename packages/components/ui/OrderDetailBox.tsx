@@ -1,8 +1,8 @@
 'use client'
 
+import { Button } from '@/components'
 import html2canvas from 'html2canvas'
 import React from 'react'
-import { Button } from './Button'
 
 interface DetailBoxProps {
   currentStatus?: string

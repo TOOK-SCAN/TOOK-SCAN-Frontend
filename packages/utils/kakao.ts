@@ -22,7 +22,7 @@ export interface KakaoAddressResponse {
   }[]
 }
 
-export default async function searchAddress(
+export async function searchAddress(
   keyword: string,
   lat: number,
   lng: number,
