@@ -1,6 +1,7 @@
 'use client'
 
-import { FirstPage, FourthPage, SecondPage, ThirdPage } from '@/app/_components'
+import React from 'react'
+import { FirstPage, SecondPage, ThirdPage, FourthPage } from '@/app/_components'
 
 const FullScrollPage = () => {
   // const sectionsRef = useRef<HTMLDivElement>(null)

@@ -1,8 +1,6 @@
 'use client' // Next.js 13+ (App Router)에서 클라이언트 컴포넌트일 경우 선언
-
-import type { OrderInfo } from '@tookscan/components'
-import { OrderCard } from '@tookscan/components'
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { OrderInfo, OrderCard } from '@tookscan/components'
 
 const OrderHistory = () => {
   // 주문 리스트 (예시)
