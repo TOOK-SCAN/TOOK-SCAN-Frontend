@@ -1,6 +1,6 @@
 import React from 'react'
 import Banner from '@tookscan/components/ui/Banner/Banner'
-import { LayoutProps } from '@/types/common'
+import type { LayoutProps } from '@/types/common'
 
 export default function Layout({ children }: LayoutProps) {
   return (

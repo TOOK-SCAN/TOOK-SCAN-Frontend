@@ -1,4 +1,4 @@
-import { LayoutProps } from '@/types/common'
+import type { LayoutProps } from '@/types/common'
 import clsx from 'clsx'
 
 const Layout = ({ children }: LayoutProps) => {

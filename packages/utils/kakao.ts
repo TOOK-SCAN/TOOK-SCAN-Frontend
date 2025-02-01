@@ -22,7 +22,7 @@ export interface KakaoAddressResponse {
   }[]
 }
 
-export default async function searchAddress(
+export async function searchAddress(
   keyword: string,
   lat: number,
   lng: number,
@@ -51,7 +51,7 @@ export default async function searchAddress(
       .json<KakaoAddressResponse>()
     console.log('Kakao API Request Success:', response)
     return response
-  } catch (error: any) {
+  } catch (error) {
     console.error('Kakao API Request Failed:', error)
     throw new Error(
       `Kakao search address API request error: ${
