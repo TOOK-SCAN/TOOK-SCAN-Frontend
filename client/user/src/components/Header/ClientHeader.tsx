@@ -1,7 +1,8 @@
 'use client'
 
-import { Icon } from '@tookscan/components'
-import { useAuth } from '@tookscan/hooks'
+import React from 'react'
+import Link from 'next/link'
+import Icon from '../ui/Icon/Icon'
 import clsx from 'clsx'
 import Link from 'next/link'
 
@@ -14,7 +15,21 @@ export const ClientHeader = () => {
   const { username, isLogin } = useAuth()
 
   return (
-    <div className="flex">
+    <head className="flex">
+      {/* Google Tag Manager */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
+        `,
+        }}
+      />
+      {/* End Google Tag Manager */}
+
       <title>Took Scan</title>
       <meta
         name="description"
@@ -88,6 +103,6 @@ export const ClientHeader = () => {
           )}
         </div>
       </div>
-    </div>
+    </head>
   )
 }
