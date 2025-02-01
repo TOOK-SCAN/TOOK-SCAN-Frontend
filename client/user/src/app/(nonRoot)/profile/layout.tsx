@@ -1,4 +1,5 @@
 'use client'
+
 import type { LayoutProps } from '@/types/common'
 import { Banner } from '@tookscan/components'
 import Link from 'next/link'
