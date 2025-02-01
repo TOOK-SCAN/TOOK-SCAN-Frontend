@@ -1,17 +1,12 @@
 'use client'
 
-import React, { useRef, useEffect, useState } from 'react'
-import FirstPage from './_components/ScrollPages/1stPage'
-import SecondPage from './_components/ScrollPages/2stPage'
-import ThirdPage from './_components/ScrollPages/3stPage'
-import FourthPage from './_components/ScrollPages/4stPage'
-import FifthPage from './_components/ScrollPages/5stPage'
-import Head from 'next/head'
+import React from 'react'
+import { FirstPage, SecondPage, ThirdPage, FourthPage } from '@/app/_components'
 
 const FullScrollPage = () => {
   // const sectionsRef = useRef<HTMLDivElement>(null)
-  const [currentSection, setCurrentSection] = useState(0)
-  const [isScrolling, setIsScrolling] = useState(false)
+  // const [currentSection, setCurrentSection] = useState(0)
+  // const [isScrolling, setIsScrolling] = useState(false)
 
   // const handleScroll = (event: WheelEvent) => {
   //   event.preventDefault()
@@ -57,7 +52,7 @@ const FullScrollPage = () => {
   // }, [currentSection])
 
   return (
-    <div className="f">
+    <div>
       {/* <Head>
         <title>툭스캔, 가장 합리적인 비대면 스캔</title>
         <meta

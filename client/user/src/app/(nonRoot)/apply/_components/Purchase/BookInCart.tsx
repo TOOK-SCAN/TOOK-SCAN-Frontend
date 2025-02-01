@@ -1,7 +1,6 @@
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
 import { Books } from '@/types/book'
-import Icon from '@tookscan/components/ui/Icon/Icon'
-import Tag from '@tookscan/components/ui/Tag/Tag'
+import { Tag, Icon } from '@tookscan/components'
 import clsx from 'clsx'
 import React from 'react'
 import { calculatePrice } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'

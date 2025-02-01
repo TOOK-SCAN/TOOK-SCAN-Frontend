@@ -1,14 +1,17 @@
 import '@tookscan/styles/globals.css'
 import '@tookscan/styles/reset.css'
-import QueryProvider from '@tookscan/components/app/QueryProvider'
-import SpriteSheet from '@tookscan/components/ui/Icon/SpriteSheet'
-import CommonSpriteSheet from '@tookscan/components/ui/Icon/CommonSpriteSheet'
 import { LayoutProps } from '@/types/common'
-import Header from '@tookscan/components/ui/Header'
-import Footer from '@tookscan/components/ui/Footer'
 import Head from 'next/head'
-import { ModalProvider } from '@tookscan/components/app/ModalProvider'
-import { ToastProvider } from '@tookscan/components/ui/Modal/Toast'
+import {
+  Header,
+  Footer,
+  SpriteSheet,
+  CommonSpriteSheet,
+  ModalProvider,
+  ToastProvider,
+  QueryProvider,
+} from '@tookscan/components'
+
 import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components'
 
 export default function RootLayout({ children }: LayoutProps) {

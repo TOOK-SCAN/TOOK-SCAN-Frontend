@@ -2,10 +2,10 @@
 
 import React from 'react'
 import SmallCard from '../SmallCard'
-import { Button } from '@tookscan/components/ui/Button'
+import { Button } from '@tookscan/components'
 import { useRouter } from 'next/navigation'
 
-const ThirdPage = () => {
+export const ThirdPage = () => {
   const router = useRouter()
   return (
     <div className="flex flex-col items-center justify-center bg-white">
@@ -110,5 +110,3 @@ const ThirdPage = () => {
     </div>
   )
 }
-
-export default ThirdPage

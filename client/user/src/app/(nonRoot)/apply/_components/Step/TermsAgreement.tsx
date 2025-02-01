@@ -1,6 +1,5 @@
-import TitleLabel from '@tookscan/components/ui/Label/TitleLabel'
+import { TitleLabel, Accordion } from '@tookscan/components'
 import React from 'react'
-import Accordion from '@tookscan/components/ui/Accordion'
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
 
 const TermsAgreement = () => {

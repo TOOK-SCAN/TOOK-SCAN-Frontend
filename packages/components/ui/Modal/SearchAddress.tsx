@@ -1,16 +1,18 @@
+'use client'
+
 import React, { useEffect, useState, ChangeEvent, useRef } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import searchAddress from '@/api/kakao'
 import { debounce } from 'lodash'
 import clsx from 'clsx'
-import Icon from '../Icon/Icon'
+import { Icon } from '../Icon/Icon'
 
 interface SearchAddressProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   closeModal: () => void
 }
 
-const SearchAddress = ({ onChange, closeModal }: SearchAddressProps) => {
+export const SearchAddress = ({ onChange, closeModal }: SearchAddressProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const loadMoreRef = useRef<HTMLDivElement>(null)
 
@@ -152,5 +154,3 @@ const SearchAddress = ({ onChange, closeModal }: SearchAddressProps) => {
     </div>
   )
 }
-
-export default SearchAddress

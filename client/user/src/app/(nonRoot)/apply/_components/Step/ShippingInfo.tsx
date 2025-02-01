@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Section } from '@/app/(nonRoot)/apply/_components/index'
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
-import TitleLabel from '@tookscan/components/ui/Label/TitleLabel'
-import InputField from '@tookscan/components/ui/InputField'
-import ConsentLabel from '@tookscan/components/ui/Label/ConsentLabel'
-import { Button } from '@tookscan/components/ui/Button'
-import { useToast } from '@tookscan/components/ui/Modal/Toast'
-import SearchAddress from '@tookscan/components/ui/Modal/SearchAddress'
-import useModal from '@tookscan/hooks/useModal'
+import {
+  InputField,
+  TitleLabel,
+  SearchAddress,
+  Button,
+  useToast,
+  ConsentLabel,
+} from '@tookscan/components'
+import { useModal } from '@tookscan/hooks'
 import { hasNonDropBooks } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
 
 const DummyUserData = {

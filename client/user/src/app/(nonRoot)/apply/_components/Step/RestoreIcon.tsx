@@ -19,7 +19,7 @@ const gray = {
 
 const blue = '#91A0EB'
 
-const RestoreIcon = ({ type, isClicked }: RestoreIconProps) => {
+export const RestoreIcon = ({ type, isClicked }: RestoreIconProps) => {
   const iconMap = {
     drop: <DropIcon isClicked={isClicked} />,
     loose: <LooseIcon isClicked={isClicked} />,
@@ -31,8 +31,6 @@ const RestoreIcon = ({ type, isClicked }: RestoreIconProps) => {
     </div>
   )
 }
-
-export default RestoreIcon
 
 const DropIcon = ({ isClicked }: ClickedProps) => {
   return (

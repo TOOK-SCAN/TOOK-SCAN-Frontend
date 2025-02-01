@@ -2,13 +2,16 @@
 
 import { useEffect } from 'react'
 import clsx from 'clsx'
-import Banner from '@tookscan/components/ui/Banner/Banner'
-import { StepSheet, PageInfo, Purchase } from './_components/index'
+import { Banner, Icon } from '@tookscan/components'
+import {
+  StepSheet,
+  PageInfo,
+  Purchase,
+} from '@/app/(nonRoot)/apply/_components'
 import {
   ApplyProvider,
   useApplyContext,
 } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
-import Icon from '@tookscan/components/ui/Icon/Icon'
 
 const ApplyContent = () => {
   const { books, ignoreBeforeUnload } = useApplyContext()
