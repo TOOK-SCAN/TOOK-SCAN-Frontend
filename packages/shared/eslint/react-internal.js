@@ -13,10 +13,16 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'prettier',
     'turbo',
   ],
-  plugins: ['@typescript-eslint'],
+  plugins: [
+    '@typescript-eslint',
+    'react/recommended',
+    'react-hooks/recommended',
+  ],
   globals: {
     React: true,
     JSX: true,
@@ -28,7 +34,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       typescript: {
-        project,
+        projectPath,
       },
     },
   },

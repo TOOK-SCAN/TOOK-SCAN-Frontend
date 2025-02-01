@@ -1,7 +1,7 @@
 import { Linter } from 'eslint'
 
 declare const config: {
-  rules: Linter.RulesRecor
+  rules: Linter.RulesRecord
 }
 
 export default config
