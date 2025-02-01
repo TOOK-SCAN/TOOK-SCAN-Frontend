@@ -1,9 +1,8 @@
 'use client'
 import { useState } from 'react'
-import Banner from '@tookscan/components/ui/Banner/Banner'
+import { Banner } from '@tookscan/components'
 import { LayoutProps } from '@/types/common'
 import Link from 'next/link'
-import { link } from 'fs'
 
 const ProfileLayout = ({ children }: LayoutProps) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)

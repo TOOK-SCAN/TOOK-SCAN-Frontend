@@ -2,9 +2,8 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { Button } from '@tookscan/components/ui/Button'
+import { Button, DetailBox as OrderDetailBox } from '@tookscan/components'
 import html2canvas from 'html2canvas'
-import OrderDetailBox from '@tookscan/components/ui/OrderDetailBox'
 
 const OrderDetails = () => {
   const [showDetails, setShowDetails] = useState(false) // 자세히 버튼 상태

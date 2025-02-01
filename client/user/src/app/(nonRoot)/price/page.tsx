@@ -1,5 +1,4 @@
-import Banner from '@tookscan/components/ui/Banner/Banner'
-import Icon from '@tookscan/components/ui/Icon/Icon'
+import { Icon, Banner } from '@tookscan/components'
 import Head from 'next/head'
 
 const Price = () => {

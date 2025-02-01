@@ -1,8 +1,7 @@
 'use client'
 
 import React from 'react'
-import InputField from '@tookscan/components/ui/InputField'
-import { Button } from '@tookscan/components/ui/Button'
+import { Button, InputField } from '@tookscan/components'
 import { useRouter } from 'next/navigation'
 
 const GuestOrderInquiry = () => {

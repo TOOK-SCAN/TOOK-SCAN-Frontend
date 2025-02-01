@@ -1,5 +1,5 @@
 'use client'
-import AutoRedirect from '@tookscan/components/app/AutoRedirect'
+import { AutoRedirect } from '@tookscan/components'
 
 import React from 'react'
 

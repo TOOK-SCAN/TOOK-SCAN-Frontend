@@ -1,13 +1,12 @@
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
-import { Button } from '@tookscan/components/ui/Button'
+import { Button } from '@tookscan/components'
 import {
   calculateTotalPrice,
   hasNonDropBooks,
 } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
 import clsx from 'clsx'
 import { BookInCart } from '@/app/(nonRoot)/apply/_components/index'
-import useModal from '@tookscan/hooks/useModal'
-import Link from 'next/link'
+import { useModal } from '@tookscan/hooks'
 import { useRouter } from 'next/navigation'
 
 const 주문번호 = '20204121721330' // TODO: 주문번호 API 연결

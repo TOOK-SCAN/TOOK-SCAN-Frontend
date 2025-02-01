@@ -16,7 +16,7 @@ interface DetailBoxProps {
   onCloseModal?: () => void
 }
 
-const DetailBox = ({
+export const DetailBox = ({
   currentStatus,
   orderDate,
   customer,
@@ -140,5 +140,3 @@ const DetailBox = ({
     content
   )
 }
-
-export default DetailBox

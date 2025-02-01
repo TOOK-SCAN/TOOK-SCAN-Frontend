@@ -48,7 +48,7 @@ const Type = {
   ),
 }
 
-const Tag = ({ type, size, variant, children }: TagProps) => {
+export const Tag = ({ type, size, variant, children }: TagProps) => {
   const TagComponent = Type[type as keyof typeof Type]
 
   return (
@@ -57,5 +57,3 @@ const Tag = ({ type, size, variant, children }: TagProps) => {
     </TagComponent>
   )
 }
-
-export default Tag

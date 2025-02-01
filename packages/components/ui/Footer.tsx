@@ -1,10 +1,10 @@
 'use client'
 
 import React from 'react'
-import Icon from '../ui/Icon/Icon'
+import { Icon } from '../ui/Icon/Icon'
 import Link from 'next/link'
 
-const Footer = () => {
+export const Footer = () => {
   return (
     <footer className="w-full bg-white px-6 py-8 lg:px-[96px] lg:py-[32px]">
       {/* 로고와 슬로건 */}
@@ -78,5 +78,3 @@ const Footer = () => {
     </footer>
   )
 }
-
-export default Footer

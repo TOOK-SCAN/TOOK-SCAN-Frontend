@@ -2,12 +2,9 @@
 
 import React from 'react'
 import { useSearchParams } from 'next/navigation'
-import Icon from '@tookscan/components/ui/Icon/Icon'
+import { Icon, Tag, Button, useToast } from '@tookscan/components'
 import Link from 'next/link'
-import { Button } from '@tookscan/components/ui/Button'
 import { useRouter } from 'next/navigation'
-import Tag from '@tookscan/components/ui/Tag/Tag'
-import { useToast } from '@tookscan/components/ui/Modal/Toast'
 
 const Success = () => {
   const searchParams = useSearchParams() || ''

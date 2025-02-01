@@ -2,8 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { Button } from '@tookscan/components/ui/Button'
-import Logo from '@tookscan/components/ui/Icon/Icon'
+import { Icon, Button } from '@tookscan/components'
 
 const SuccessPage = () => {
   return (
@@ -17,7 +16,7 @@ const SuccessPage = () => {
 
       {/* 로고 */}
       <div className="mb-6">
-        <Logo id="logo" className="text-blue-primary" width={80} height={36} />
+        <Icon id="logo" className="text-blue-primary" width={80} height={36} />
       </div>
 
       {/* 타이틀 */}

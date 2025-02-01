@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import Icon from '@tookscan/components/ui/Icon/Icon'
+import { Icon } from '@tookscan/components'
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
 
 const stepDetails: Record<number, { title: string; description: string }> = {

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 
-const FourthPage = () => {
+export const FourthPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const images = [
@@ -152,5 +152,3 @@ const FourthPage = () => {
     </div>
   )
 }
-
-export default FourthPage

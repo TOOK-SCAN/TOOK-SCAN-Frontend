@@ -8,7 +8,7 @@ interface AutoRedirectProps {
   to: string
 }
 
-export default function AutoRedirect({ to }: AutoRedirectProps) {
+export function AutoRedirect({ to }: AutoRedirectProps) {
   const router = useRouter()
 
   useEffect(() => {

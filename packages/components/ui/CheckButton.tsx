@@ -1,5 +1,5 @@
 import React from 'react'
-import Icon from './Icon/Icon'
+import { Icon } from './Icon/Icon'
 
 interface CheckButtonProps {
   isChecked?: boolean
@@ -7,7 +7,7 @@ interface CheckButtonProps {
   size: 'sm' | 'lg'
 }
 
-const CheckButton = ({ isChecked, onClick, size }: CheckButtonProps) => {
+export const CheckButton = ({ isChecked, onClick, size }: CheckButtonProps) => {
   const buttonSize = size === 'lg' ? 'h-[24px] w-[24px]' : 'h-[16px] w-[16px]'
   const iconSize =
     size === 'lg' ? { width: 16, height: 16 } : { width: 10, height: 10 }
@@ -27,5 +27,3 @@ const CheckButton = ({ isChecked, onClick, size }: CheckButtonProps) => {
     </div>
   )
 }
-
-export default CheckButton

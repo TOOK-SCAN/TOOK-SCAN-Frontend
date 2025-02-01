@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import Icon from '../ui/Icon/Icon'
+import { Icon } from '../ui/Icon/Icon'
 import clsx from 'clsx'
 
 interface HeaderProps {
@@ -10,7 +10,7 @@ interface HeaderProps {
   userName?: string // 로그인한 사용자 이름
 }
 
-const Header = ({ type, userName }: HeaderProps) => {
+export const Header = ({ type, userName }: HeaderProps) => {
   const isMobile = false
   const textSize = isMobile ? 'text-[12px]' : 'text-[14px]'
   const heightSize = isMobile ? 'h-4' : 'h-[5.625rem]'
@@ -94,5 +94,3 @@ const Header = ({ type, userName }: HeaderProps) => {
     </div>
   )
 }
-
-export default Header
