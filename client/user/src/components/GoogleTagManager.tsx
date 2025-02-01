@@ -1,5 +1,4 @@
 import Script from 'next/script'
-import React from 'react'
 
 export const GoogleTagManagerNoScript = () => {
   const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID

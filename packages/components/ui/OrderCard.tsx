@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { DetailBox } from './OrderDetailBox'
 
 export interface OrderInfo {

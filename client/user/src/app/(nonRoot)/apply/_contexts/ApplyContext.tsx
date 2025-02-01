@@ -1,9 +1,11 @@
-import { createContext, useContext, useRef, ReactNode, useState } from 'react'
-import {
+import type { ReactNode} from 'react';
+import { createContext, useContext, useRef, useState } from 'react'
+import type {
   Books,
   ShippingInfo,
+  Terms} from '@/types/book';
+import {
   initialShippingInfo,
-  Terms,
   initialTerms,
 } from '@/types/book'
 

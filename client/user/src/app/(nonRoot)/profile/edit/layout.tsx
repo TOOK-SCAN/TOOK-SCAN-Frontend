@@ -1,5 +1,5 @@
 'use client'
-import { LayoutProps } from '@/types/common'
+import type { LayoutProps } from '@/types/common'
 
 const UserInfoLayout = ({ children }: LayoutProps) => {
   return (

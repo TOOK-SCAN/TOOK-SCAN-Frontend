@@ -1,4 +1,4 @@
-import { Books } from '@/types/book'
+import type { Books } from '@/types/book'
 const PRICE_PER_PAGE = 10
 
 interface CalculateTotalPriceProps {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
-import { Books } from '@/types/book'
+import type { Books } from '@/types/book'
 import { Button, Icon, TitleLabel, InputField } from '@tookscan/components'
 import { Restore, Section } from '@/app/(nonRoot)/apply/_components/index'
 import clsx from 'clsx'
