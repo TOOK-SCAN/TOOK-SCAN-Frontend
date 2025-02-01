@@ -1,9 +1,8 @@
 'use client'
 
-import React from 'react'
-import Link from 'next/link'
-import { Icon } from '../ui/Icon/Icon'
+import { Icon } from '@/components'
 import clsx from 'clsx'
+import Link from 'next/link'
 
 export const ClientHeader = () => {
   const isMobile = false

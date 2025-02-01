@@ -1,10 +1,9 @@
 'use client'
 
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import { HelperLabel, Icon } from '@/components'
 import clsx from 'clsx'
-import { Icon } from './Icon/Icon'
-import HelperLabel from './Label/HelperLabel'
+import React, { useState } from 'react'
 import { InputType } from 'zlib'
 import { HelperLabel, Icon } from '../../components'
 
