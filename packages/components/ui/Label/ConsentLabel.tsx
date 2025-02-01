@@ -1,5 +1,6 @@
 import clsx from 'clsx'
-import { CheckButton, Icon } from '../../../components'
+import { CheckButton } from '../CheckButton'
+import { Icon } from '../Icon/Icon'
 
 interface ConsentLabelProps {
   content: string

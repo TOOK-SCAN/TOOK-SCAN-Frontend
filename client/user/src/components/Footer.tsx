@@ -1,7 +1,7 @@
 'use client'
 
-import { Icon } from '@tookscan/components'
 import Link from 'next/link'
+import { Icon } from '../ui/Icon/Icon'
 
 export const Footer = () => {
   return (

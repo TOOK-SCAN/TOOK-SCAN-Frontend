@@ -14,6 +14,9 @@ const profileItems: MenuItem[] = [
   { label: '주문 내역 조회', link: '/profile/order' },
 ]
 
+
+
+
 const ProfileLayout = ({ children }: LayoutProps) => {
   const pathname = usePathname()
   const router = useRouter()

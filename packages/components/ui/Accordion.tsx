@@ -1,8 +1,8 @@
 'use client'
-
 import clsx from 'clsx'
 import { useState } from 'react'
-import { CheckButton, Icon } from '../../components'
+import { CheckButton } from './CheckButton'
+import { Icon } from './Icon/Icon'
 
 interface AccordionProps {
   title: string

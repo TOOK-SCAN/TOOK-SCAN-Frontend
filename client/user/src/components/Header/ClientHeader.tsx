@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import Icon from '../ui/Icon/Icon'
+import { Icon } from '../ui/Icon/Icon'
 import clsx from 'clsx'
 
 export const ClientHeader = () => {

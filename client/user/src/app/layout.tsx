@@ -9,9 +9,18 @@ import {
 } from '@tookscan/components'
 import '@tookscan/styles/globals.css'
 import '@tookscan/styles/reset.css'
+import { LayoutProps } from '@/types/common'
 import Head from 'next/head'
-import { ModalProvider } from '@tookscan/components/app/ModalProvider'
-import { ToastProvider } from '@tookscan/components/ui/Modal/Toast'
+import {
+  Header,
+  Footer,
+  SpriteSheet,
+  CommonSpriteSheet,
+  ModalProvider,
+  ToastProvider,
+  QueryProvider,
+} from '@tookscan/components'
+
 import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components'
 
 export default function RootLayout({ children }: LayoutProps) {
