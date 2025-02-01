@@ -10,8 +10,9 @@ import {
 import '@tookscan/styles/globals.css'
 import '@tookscan/styles/reset.css'
 import Head from 'next/head'
-
-import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components'
+import { ModalProvider } from '@tookscan/components/app/ModalProvider'
+import { ToastProvider } from '@tookscan/components/ui/Modal/Toast'
+import { GoogleTagManager } from '@/components'
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
@@ -26,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps) {
       <body>
         {SpriteSheet}
         {CommonSpriteSheet}
-        <GoogleTagManagerNoScript />
+        <GoogleTagManager />
         <QueryProvider>
           <ToastProvider>
             <ModalProvider>
