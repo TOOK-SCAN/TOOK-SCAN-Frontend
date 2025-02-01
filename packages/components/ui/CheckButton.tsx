@@ -1,9 +1,8 @@
-import React from 'react'
-import { Icon } from './Icon/Icon'
+import { Icon } from '@/components'
 
 interface CheckButtonProps {
   isChecked?: boolean
-  onClick: any
+  onClick: () => void
   size: 'sm' | 'lg'
 }
 

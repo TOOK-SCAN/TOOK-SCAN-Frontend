@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const CommonSpriteSheet = (
   <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
     <symbol id="active-call" viewBox="0 0 26 26">
