@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import Link from 'next/link' // Next.js의 Link 컴포넌트 불러오기
+import Link from 'next/link'
 import Icon from '../ui/Icon/Icon'
 import clsx from 'clsx'
 
@@ -16,7 +16,21 @@ const Header = ({ type, userName }: HeaderProps) => {
   const heightSize = isMobile ? 'h-4' : 'h-[5.625rem]'
 
   return (
-    <div className="flex">
+    <head className="flex">
+      {/* Google Tag Manager */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
+        `,
+        }}
+      />
+      {/* End Google Tag Manager */}
+
       <title>Took Scan</title>
       <meta
         name="description"
@@ -41,7 +55,7 @@ const Header = ({ type, userName }: HeaderProps) => {
       <link rel="canonical" href="https://tookscan.com" />
       <link rel="icon" href="./favicon.png" />
       <div className={clsx('flex w-full', heightSize)} />
-      <header
+      <div
         className={clsx(
           'fixed flex w-full items-center justify-between bg-white px-6 lg:px-12',
           heightSize
@@ -90,8 +104,8 @@ const Header = ({ type, userName }: HeaderProps) => {
             </>
           )}
         </div>
-      </header>
-    </div>
+      </div>
+    </head>
   )
 }
 
