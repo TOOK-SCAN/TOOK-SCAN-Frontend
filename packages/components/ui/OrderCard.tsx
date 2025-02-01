@@ -1,33 +1,35 @@
-import React, { useState } from "react";
-import DetailBox from "./OrderDetailBox";
+'use client'
+
+import React, { useState } from 'react'
+import { DetailBox } from './OrderDetailBox'
 
 export interface OrderInfo {
-  userName: string;
-  dateTime: string;
-  productName: string;
-  orderNumber: string;
-  address: string;
-  payment: string;
-  price: number;
-  currentStatus: string; // 현재 작업 단계를 표시하기 위해 추가했습니다
+  userName: string
+  dateTime: string
+  productName: string
+  orderNumber: string
+  address: string
+  payment: string
+  price: number
+  currentStatus: string // 현재 작업 단계를 표시하기 위해 추가했습니다
 }
 
 interface OrderCardProps {
-  data: OrderInfo;
+  data: OrderInfo
 }
 
-const OrderCard = ({ data }: OrderCardProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export const OrderCard = ({ data }: OrderCardProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  const handleOpenModal = () => setIsModalOpen(true)
+  const handleCloseModal = () => setIsModalOpen(false)
 
   return (
     <>
       <div className="mt-[12px] h-[349px] w-[600px] max-w-2xl rounded-md bg-white p-[32px] shadow">
         {/* 상단 경로(진행단계) */}
         <nav className="mb-4 text-sm text-gray-500">
-          발송완료 &gt; 업체도착 &gt; 스캔진행 &gt;{" "}
+          발송완료 &gt; 업체도착 &gt; 스캔진행 &gt;{' '}
           <span className="text-blue-500">작업완료</span>
         </nav>
 
@@ -95,7 +97,5 @@ const OrderCard = ({ data }: OrderCardProps) => {
         />
       )}
     </>
-  );
-};
-
-export default OrderCard;
+  )
+}

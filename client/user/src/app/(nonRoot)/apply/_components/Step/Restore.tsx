@@ -1,4 +1,4 @@
-import RestoreIcon from '@/app/(nonRoot)/apply/_components/Step/RestoreIcon'
+import { RestoreIcon } from '@/app/(nonRoot)/apply/_components/Step/RestoreIcon'
 import clsx from 'clsx'
 import React from 'react'
 

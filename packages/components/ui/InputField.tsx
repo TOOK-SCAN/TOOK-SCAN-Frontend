@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import clsx from 'clsx'
-import Icon from './Icon/Icon'
+import { Icon } from './Icon/Icon'
 import HelperLabel from './Label/HelperLabel'
 import { InputType } from 'zlib'
 
@@ -20,7 +20,7 @@ interface InputFieldProps {
   isSuccess?: boolean
 }
 
-const InputField = ({
+export const InputField = ({
   type,
   value,
   inputRef,
@@ -116,5 +116,3 @@ const InputField = ({
     </div>
   )
 }
-
-export default InputField

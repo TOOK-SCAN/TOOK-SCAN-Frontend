@@ -1,5 +1,6 @@
 {
   "name": "@tookscan/hooks",
   "version": "1.0.0",
-  "type": "module"
+  "type": "module",
+  "main": "./index.ts"
 }

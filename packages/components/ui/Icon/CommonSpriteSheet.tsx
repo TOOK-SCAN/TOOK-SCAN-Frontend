@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CommonSpriteSheet = (
+export const CommonSpriteSheet = (
   <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
     <symbol id="active-call" viewBox="0 0 26 26">
       <path
@@ -1887,5 +1887,3 @@ const CommonSpriteSheet = (
     </symbol>
   </svg>
 )
-
-export default CommonSpriteSheet

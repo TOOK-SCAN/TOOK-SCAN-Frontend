@@ -1,6 +1,6 @@
 import clsx from 'clsx'
-import Icon from '../Icon/Icon'
-import CheckButton from '../CheckButton'
+import { Icon } from '../Icon/Icon'
+import { CheckButton } from '../CheckButton'
 import React from 'react'
 
 interface ConsentLabelProps {
@@ -12,7 +12,7 @@ interface ConsentLabelProps {
   onMoreClick?: () => void
 }
 
-const ConsentLabel = ({
+export const ConsentLabel = ({
   content,
   consentStatus,
   size,
@@ -47,5 +47,3 @@ const ConsentLabel = ({
     </div>
   )
 }
-
-export default ConsentLabel

@@ -1,6 +1,6 @@
 'use client' // Next.js 13+ (App Router)에서 클라이언트 컴포넌트일 경우 선언
 import React, { useState } from 'react'
-import OrderCard, { OrderInfo } from '@tookscan/components/ui/OrderCard'
+import { OrderInfo, OrderCard } from '@tookscan/components'
 
 const OrderHistory = () => {
   // 주문 리스트 (예시)
@@ -13,7 +13,7 @@ const OrderHistory = () => {
       address: '경기도 시흥시 산기대학로 237 TIP, 1203호',
       payment: '간편결제/토스페이',
       price: 47600,
-      currentStatus: '업체도착'
+      currentStatus: '업체도착',
     },
     {
       userName: '민경훈',
@@ -21,9 +21,9 @@ const OrderHistory = () => {
       productName: '노인과 바다 외 2건',
       orderNumber: '20241215010203',
       address: '경기도 시흥시 산기대학로 237 TIP, 1203호',
-      payment: '무통장입금', 
+      payment: '무통장입금',
       price: 47600,
-      currentStatus: '작업완료'
+      currentStatus: '작업완료',
     },
     {
       userName: '민경훈',
@@ -33,7 +33,7 @@ const OrderHistory = () => {
       address: '경기도 시흥시 산기대학로 237 TIP, 1203호',
       payment: '카드결제',
       price: 47600,
-      currentStatus: '업체도착'
+      currentStatus: '업체도착',
     },
     {
       userName: '민경훈',
@@ -43,7 +43,7 @@ const OrderHistory = () => {
       address: '경기도 시흥시 산기대학로 237 TIP, 1203호',
       payment: 'TOSS/무통장 입금',
       price: 47600,
-      currentStatus: '업체도착'
+      currentStatus: '업체도착',
     },
   ])
 

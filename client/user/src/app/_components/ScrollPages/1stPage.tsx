@@ -2,12 +2,11 @@
 
 import React from 'react'
 import Image from 'next/image'
-import Icon from '@tookscan/components/ui/Icon/Icon'
 import MainCard from '@/assets/images/landing/MainCard.svg'
-import { Button } from '@tookscan/components/ui/Button'
+import { Button, Icon } from '@tookscan/components'
 import { useRouter } from 'next/navigation'
 
-const FirstPage = () => {
+export const FirstPage = () => {
   const router = useRouter()
   return (
     <div className="flex items-center justify-center bg-blue-primary">
@@ -84,5 +83,3 @@ const FirstPage = () => {
     </div>
   )
 }
-
-export default FirstPage

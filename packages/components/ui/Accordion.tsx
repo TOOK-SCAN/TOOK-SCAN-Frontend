@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
-import Icon from './Icon/Icon'
-import CheckButton from './CheckButton'
+import { Icon } from './Icon/Icon'
+import { CheckButton } from './CheckButton'
 import clsx from 'clsx'
 
 interface AccordionProps {
@@ -10,7 +10,12 @@ interface AccordionProps {
   isCheck: boolean
   onClick: () => void
 }
-const Accordion = ({ title, contents, isCheck, onClick }: AccordionProps) => {
+export const Accordion = ({
+  title,
+  contents,
+  isCheck,
+  onClick,
+}: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -47,5 +52,3 @@ const Accordion = ({ title, contents, isCheck, onClick }: AccordionProps) => {
     </div>
   )
 }
-
-export default Accordion

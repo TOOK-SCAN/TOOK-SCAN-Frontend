@@ -5,7 +5,7 @@ interface IconProps {
   className?: string
 }
 
-const Icon = ({ id, width, height, className }: IconProps) => {
+export const Icon = ({ id, width, height, className }: IconProps) => {
   return (
     <svg
       {...(width ? { width: `${width}px` } : {})}
@@ -17,5 +17,3 @@ const Icon = ({ id, width, height, className }: IconProps) => {
     </svg>
   )
 }
-
-export default Icon

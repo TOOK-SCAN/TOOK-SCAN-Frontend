@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SpriteSheet = (
+export const SpriteSheet = (
   <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
     <symbol
       id="search"
@@ -694,5 +694,3 @@ const SpriteSheet = (
     </symbol>
   </svg>
 )
-
-export default SpriteSheet

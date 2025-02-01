@@ -5,7 +5,7 @@ import GradientCard from '../GradientCard'
 import Book from '@/assets/images/landing/Book.svg'
 import Hammer from '@/assets/images/landing/Hammer.svg'
 
-const SecondPage = () => {
+export const SecondPage = () => {
   return (
     <div className="flex flex-col items-center justify-center bg-white">
       {/* 서비스 소개 */}
@@ -56,5 +56,3 @@ const SecondPage = () => {
     </div>
   )
 }
-
-export default SecondPage
