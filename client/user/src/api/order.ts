@@ -17,11 +17,6 @@ export const postOrder = async (
   // 회원 주문일 경우 Bearer Token 추가
   if (isMember) {
     headers.Authorization = `Bearer ${getAccessToken()}`
-    delete orderData.delivery_info.authentication_code
-  } else {
-    // 비회원 주문의 경우 authentication_code 추가
-    // authentication_code는 수정 필요
-    orderData.delivery_info.authentication_code = orderData.delivery_info.email
   }
 
   const response = await httpInstance.post(endpoint.replace(/^\/+/, ''), {

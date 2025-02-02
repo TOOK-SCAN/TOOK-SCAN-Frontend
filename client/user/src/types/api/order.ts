@@ -9,7 +9,6 @@ export interface OrderRequest {
     receiver_name: string
     phone_number: string
     email: string
-    authentication_code?: string
     request: string
     address: {
       address_name: string
