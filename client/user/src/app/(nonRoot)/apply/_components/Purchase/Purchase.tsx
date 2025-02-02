@@ -9,9 +9,9 @@ import { BookInCart } from '@/app/(nonRoot)/apply/_components/index'
 import useModal from '@tookscan/hooks/useModal'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useUserApply, useGuestApply } from '@/api/orderHook'
 
 const 주문번호 = '20204121721330' // TODO: 주문번호 API 연결
-const 신청함수 = async () => {}
 
 const Purchase = () => {
   const {
@@ -24,6 +24,69 @@ const Purchase = () => {
   } = useApplyContext()
   const { openModal, closeModal } = useModal()
   const router = useRouter()
+
+  const isMember = !!localStorage.getItem('access_token') // 로그인 여부 확인
+
+  // API 호출 훅
+  const {
+    mutateAsync: applyUserOrder,
+    isPending: isUserLoading,
+    isError: isUserError,
+  } = useUserApply()
+  const {
+    mutateAsync: applyGuestOrder,
+    isPending: isGuestPending,
+    isError: isGuestError,
+  } = useGuestApply()
+
+  const apply = async () => {
+    try {
+      const orderData = {
+        documents: books.map((book) => ({
+          name: book.name,
+          request: '',
+          page_prediction: book.pages ?? 0,
+          recovery_option: book.restoreOption.toUpperCase() as
+            | 'DISCARD'
+            | 'RAW'
+            | 'SPRING',
+        })),
+        delivery_info: {
+          receiver_name: shippingInfo.recipient,
+          phone_number: shippingInfo.phone,
+          email: shippingInfo.email,
+          request: shippingInfo.request,
+          address: {
+            address_name: shippingInfo.address,
+            region_1depth_name: '',
+            region_2depth_name: '',
+            region_3depth_name: '',
+            region_4depth_name: '',
+            address_detail: shippingInfo.addressDetail,
+            longitude: 0,
+            latitude: 0,
+          },
+        },
+      }
+
+      // 회원 여부에 따라 API 호출
+      const response = isMember
+        ? await applyUserOrder(orderData) // 회원 주문 API 호출
+        : await applyGuestOrder(orderData) // 비회원 주문 API 호출
+
+      // 주문번호 반환
+      if (response?.success && response.data?.order_number) {
+        ignoreBeforeUnload.current = true
+        router.push(`/apply/success?order=${response.data.order_number}`)
+      } else {
+        throw new Error('올바른 응답이 아닙니다.')
+      }
+    } catch (error) {
+      console.error('신청 실패:', error)
+      closeModal()
+      return null
+    }
+  }
 
   return (
     <div
@@ -107,16 +170,13 @@ const Purchase = () => {
                     variant="primary"
                     size="lg"
                     className="w-full flex-1"
-                    onClick={() => {
-                      신청함수()
-                        .then(() => {
-                          router.push(`/apply/success?order=${주문번호}`)
-                          closeModal()
-                          ignoreBeforeUnload.current = true
-                        })
-                        .catch(() => {
-                          closeModal()
-                        })
+                    onClick={async () => {
+                      const orderNumber = await apply()
+                      if (orderNumber) {
+                        router.push(`/apply/success?order=${orderNumber}`)
+                        closeModal()
+                        ignoreBeforeUnload.current = true
+                      }
                     }}
                   >
                     신청

@@ -9,54 +9,35 @@ import { useToast } from '@tookscan/components/ui/Modal/Toast'
 import SearchAddress from '@tookscan/components/ui/Modal/SearchAddress'
 import useModal from '@tookscan/hooks/useModal'
 import { hasNonDropBooks } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
-
-const DummyUserData = {
-  recipient: '이종석',
-  phone: '010-8765-4321',
-  email: 'official@tookscan.com',
-  address: '서울특별시 강남구 테헤란로 427',
-  addressDetail: '테헤란로 427, 3층',
-}
+import { useUserSummaries } from '@/api/getUserSummariesHook'
 
 const ShippingInfo = React.memo(() => {
   const { books, shippingInfo, setShippingInfo } = useApplyContext()
   const showToast = useToast()
   const { openModal, closeModal } = useModal()
   const [isSameAsDefault, setIsSameAsDefault] = useState(false)
-  const data = DummyUserData
+
+  const { data: userData, refetch, isFetching } = useUserSummaries()
 
   useEffect(() => {
-    Object.entries(shippingInfo).forEach(([key, value]) => {
-      const inputElement = document.querySelector<HTMLInputElement>(
-        `input[name="${key}"]`
-      )
-      if (inputElement) {
-        inputElement.value = value || ''
-      }
-    })
-  }, [])
-
-  const checkIfFieldsMatch = () => {
-    const isMatching = Object.entries(data).every(([key, value]) => {
-      return shippingInfo[key as keyof typeof shippingInfo] === value
-    })
-    setIsSameAsDefault(isMatching)
-  }
+    if (userData?.success && userData.data) {
+      const fetchedData = userData.data
+      setShippingInfo({
+        recipient: fetchedData.name,
+        phone: fetchedData.phone_number,
+        email: fetchedData.email || '',
+        address: fetchedData.address?.address_name || '',
+        addressDetail: fetchedData.address?.address_detail || '',
+        request: '',
+      })
+      setIsSameAsDefault(true)
+    }
+  }, [userData, setShippingInfo])
 
   const handleInputChange = (key: keyof typeof shippingInfo, value: string) => {
-    setShippingInfo((prev) => ({
-      ...prev,
-      [key]: value,
-    }))
-    checkIfFieldsMatch()
+    setShippingInfo((prev) => ({ ...prev, [key]: value }))
+    setIsSameAsDefault(false)
   }
-
-  useEffect(() => {
-    const isSame = Object.entries(data).every(
-      ([key, value]) => shippingInfo[key as keyof typeof data] === value
-    )
-    setIsSameAsDefault(isSame)
-  }, [shippingInfo])
 
   return (
     <div className="flex flex-col justify-start gap-4">
@@ -72,51 +53,49 @@ const ShippingInfo = React.memo(() => {
         content="회원정보와 동일"
         consentStatus={isSameAsDefault}
         size="lg"
-        onClick={() => {
+        onClick={async () => {
           if (isSameAsDefault) {
-            setShippingInfo((prev) => {
-              const updatedInfo = { ...prev }
-              Object.keys(updatedInfo).forEach((key) => {
-                if (key !== 'request') {
-                  updatedInfo[key as keyof typeof updatedInfo] = ''
-                  const inputElement = document.querySelector<HTMLInputElement>(
-                    `input[name="${key}"]`
-                  )
-                  if (inputElement) {
-                    inputElement.value = ''
-                  }
-                }
-              })
-              return updatedInfo
+            setShippingInfo({
+              recipient: '',
+              phone: '',
+              email: '',
+              address: '',
+              addressDetail: '',
+              request: '',
             })
             setIsSameAsDefault(false)
           } else {
-            setShippingInfo((prev) => {
-              const updatedInfo = { ...prev }
-              Object.entries(data).forEach(([key, value]) => {
-                if (key in updatedInfo) {
-                  updatedInfo[key as keyof typeof updatedInfo] = value || ''
-                  const inputElement = document.querySelector<HTMLInputElement>(
-                    `input[name="${key}"]`
-                  )
-                  if (inputElement) {
-                    inputElement.value = value || ''
-                  }
-                }
-              })
-              return updatedInfo
-            })
-            setIsSameAsDefault(true)
+            try {
+              const { data } = await refetch()
+              if (data?.success && data.data) {
+                setShippingInfo({
+                  recipient: data.data.name,
+                  phone: data.data.phone_number,
+                  email: data.data.email || '',
+                  address: data.data.address?.address_name || '',
+                  addressDetail: data.data.address?.address_detail || '',
+                  request: '',
+                })
+                setIsSameAsDefault(true)
+              }
+            } catch (error) {
+              console.error('회원 정보를 불러오는 중 오류 발생:', error)
+            }
           }
         }}
       />
+      {isFetching && (
+        <p className="text-sm text-gray-300">회원 정보를 불러오는 중...</p>
+      )}
 
       <Section>
         <TitleLabel size="lg" type="required" title="받는 이" />
         <InputField
           type="simple"
           value={shippingInfo.recipient}
-          onChange={(e) => handleInputChange('recipient', e.target.value)}
+          onChange={(e) =>
+            setShippingInfo((prev) => ({ ...prev, recipient: e.target.value }))
+          }
           placeholder="이지은"
         />
       </Section>
@@ -163,7 +142,7 @@ const ShippingInfo = React.memo(() => {
             size="md"
             className="whitespace-nowrap px-6 py-3"
             onClick={() => {
-              showToast('테스트 메일을 전송 했습니다.', 'success', 'mail-heart') // TODO: 테스트 메일 발송 후 성공 및 실패 로직 추가
+              showToast('테스트 메일을 전송 했습니다.', 'success', 'mail-heart')
             }}
           >
             테스트 메일 발송
