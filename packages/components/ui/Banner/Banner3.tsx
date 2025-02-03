@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import Icon from "../Icon/Icon";
+import clsx from 'clsx'
+import { Icon } from '../Icon/Icon'
 
 const Banner3 = () => {
   return (
@@ -16,11 +16,11 @@ const Banner3 = () => {
           id="logo"
           width={150}
           height={66}
-          className={clsx("opacity-60")}
+          className={clsx('opacity-60')}
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Banner3;
+export default Banner3
