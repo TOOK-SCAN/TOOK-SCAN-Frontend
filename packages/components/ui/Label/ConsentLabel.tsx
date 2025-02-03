@@ -1,5 +1,5 @@
-import { CheckButton, Icon } from '@/components'
 import clsx from 'clsx'
+import { CheckButton, Icon } from '../../../components'
 
 interface ConsentLabelProps {
   content: string
