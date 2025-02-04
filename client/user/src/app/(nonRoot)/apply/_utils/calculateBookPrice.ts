@@ -6,7 +6,7 @@ interface CalculateTotalPriceProps {
 }
 
 export const hasNonDropBooks = (books: Books[]) => {
-  return !books.every((book) => book.restoreOption === 'drop')
+  return !books.every((book) => book.restoreOption === 'DISCARD')
 }
 
 export const calculateTotalPrice = ({ books }: CalculateTotalPriceProps) => {
@@ -14,7 +14,7 @@ export const calculateTotalPrice = ({ books }: CalculateTotalPriceProps) => {
 
   const totalBookCost = books.reduce((total, book) => {
     const pageCost = (book.pages || 0) * PRICE_PER_PAGE
-    const restoreCost = book.restoreOption === 'spiral' ? 4000 : 0
+    const restoreCost = book.restoreOption === 'SPRING' ? 4000 : 0
 
     return total + pageCost + restoreCost
   }, 0)
@@ -24,7 +24,7 @@ export const calculateTotalPrice = ({ books }: CalculateTotalPriceProps) => {
 
 export const calculatePrice = (book: Books) => {
   const pageCost = (book.pages || 0) * PRICE_PER_PAGE
-  const restoreCost = book.restoreOption === 'spiral' ? 4000 : 0
+  const restoreCost = book.restoreOption === 'RAW' ? 4000 : 0
 
   return pageCost + restoreCost
 }

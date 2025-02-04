@@ -2,7 +2,7 @@ export interface Books {
   id?: string
   name: string
   pages: number | undefined
-  restoreOption: 'loose' | 'spiral' | 'drop' | ''
+  restoreOption: 'RAW' | 'SPRING' | 'DISCARD' | ''
 }
 
 export interface ShippingInfo {

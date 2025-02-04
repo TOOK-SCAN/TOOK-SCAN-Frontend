@@ -5,7 +5,7 @@ import React from 'react'
 interface RestoreProps {
   title: string
   price: number
-  type: 'drop' | 'loose' | 'spiral'
+  type: 'DISCARD' | 'RAW' | 'SPRING'
   isClicked: boolean
   onClick: () => void
 }
