@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { getUserSummaries } from '@/api/getUserSummaries'
+import { getUserSummaries } from '@/api/apply/getUserSummaries'
 
 export const useUserSummaries = () => {
   return useQuery({

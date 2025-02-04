@@ -1,8 +1,8 @@
 'use client'
 
 import { useMutation } from '@tanstack/react-query'
-import { postOrder } from '@/api/order'
-import { OrderRequest, OrderResponse } from '../types/api/order'
+import { postOrder } from '@/api/apply/order'
+import { OrderRequest, OrderResponse } from '@/types/api/apply/order'
 
 // 회원 주문 훅
 export const useUserApply = () => {

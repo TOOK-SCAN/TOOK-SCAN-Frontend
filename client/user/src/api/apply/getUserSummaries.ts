@@ -1,5 +1,5 @@
 import { httpInstance } from '@tookscan/config'
-import { UserSummariesResponse } from '../types/api/order'
+import { UserSummariesResponse } from '@/types/api/apply/order'
 
 const getAccessToken = () => localStorage.getItem('access_token') || ''
 

@@ -9,7 +9,7 @@ import { BookInCart } from '@/app/(nonRoot)/apply/_components/index'
 import useModal from '@tookscan/hooks/useModal'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useUserApply, useGuestApply } from '@/api/orderHook'
+import { useUserApply, useGuestApply } from '@/api/apply/orderHook'
 
 const 주문번호 = '20204121721330' // TODO: 주문번호 API 연결
 

@@ -1,5 +1,5 @@
 import { httpInstance } from '@tookscan/config'
-import { OrderRequest, OrderResponse } from '../types/api/order'
+import { OrderRequest, OrderResponse } from '@/types/api/apply/order'
 
 // 로컬 스토리지에서 토큰 가져오기
 const getAccessToken = () => localStorage.getItem('access_token') || ''

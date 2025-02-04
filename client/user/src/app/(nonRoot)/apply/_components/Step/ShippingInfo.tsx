@@ -9,18 +9,28 @@ import { useToast } from '@tookscan/components/ui/Modal/Toast'
 import SearchAddress from '@tookscan/components/ui/Modal/SearchAddress'
 import useModal from '@tookscan/hooks/useModal'
 import { hasNonDropBooks } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
-import { useUserSummaries } from '@/api/getUserSummariesHook'
+import { useUserSummaries } from '@/api/apply/getUserSummariesHook'
+import { phoneAuth } from '@/api/auth/phoneAuthHook'
+import { phoneVerify } from '@/api/auth/phoneVerifyHook'
+import { set } from 'lodash'
 
 const ShippingInfo = React.memo(() => {
   const { books, shippingInfo, setShippingInfo } = useApplyContext()
   const showToast = useToast()
   const { openModal, closeModal } = useModal()
   const [isSameAsDefault, setIsSameAsDefault] = useState(false)
-
+  const [isVerified, setIsVerified] = useState(false) // 인증여부
+  const [verificationCode, setVerificationCode] = useState('')
   const { data: userData, refetch, isFetching } = useUserSummaries()
+  const { mutateAsync: sendAuthCode, isPending: isSendingAuth } = phoneAuth()
+  const { mutateAsync: verifyAuthCode, isPending: isVerifyingAuth } =
+    phoneVerify()
+  const [showVerificationInput, setShowVerificationInput] = useState(false)
+
+  const isMember = !!localStorage.getItem('access_token')
 
   useEffect(() => {
-    if (userData?.success && userData.data) {
+    if (userData?.success && userData.data && isMember) {
       const fetchedData = userData.data
       setShippingInfo({
         recipient: fetchedData.name,
@@ -31,12 +41,19 @@ const ShippingInfo = React.memo(() => {
         request: '',
       })
       setIsSameAsDefault(true)
+      setIsVerified(true)
+    } else if (!isVerified) {
+      setIsVerified(false)
     }
-  }, [userData, setShippingInfo])
+  }, [userData, setShippingInfo, isMember])
 
   const handleInputChange = (key: keyof typeof shippingInfo, value: string) => {
     setShippingInfo((prev) => ({ ...prev, [key]: value }))
     setIsSameAsDefault(false)
+
+    if (key === 'phone') {
+      setIsVerified(false) // 인증 초기화
+    }
   }
 
   return (
@@ -49,41 +66,53 @@ const ShippingInfo = React.memo(() => {
         <h2 className="text-2xl text-blue-primary">{books.length}권</h2>
       </div>
       <hr className="border-[1px]" />
-      <ConsentLabel
-        content="회원정보와 동일"
-        consentStatus={isSameAsDefault}
-        size="lg"
-        onClick={async () => {
-          if (isSameAsDefault) {
-            setShippingInfo({
-              recipient: '',
-              phone: '',
-              email: '',
-              address: '',
-              addressDetail: '',
-              request: '',
-            })
-            setIsSameAsDefault(false)
-          } else {
-            try {
-              const { data } = await refetch()
-              if (data?.success && data.data) {
-                setShippingInfo({
-                  recipient: data.data.name,
-                  phone: data.data.phone_number,
-                  email: data.data.email || '',
-                  address: data.data.address?.address_name || '',
-                  addressDetail: data.data.address?.address_detail || '',
-                  request: '',
-                })
-                setIsSameAsDefault(true)
+      <div
+        className={
+          !isMember
+            ? 'pointer-events-none cursor-not-allowed text-gray-400'
+            : ''
+        }
+      >
+        <ConsentLabel
+          content="회원정보와 동일"
+          consentStatus={isSameAsDefault}
+          size="lg"
+          onClick={async () => {
+            if (!isMember) return // 비회원일 때 클릭 방지
+
+            if (isSameAsDefault) {
+              setShippingInfo({
+                recipient: '',
+                phone: '',
+                email: '',
+                address: '',
+                addressDetail: '',
+                request: '',
+              })
+              setIsSameAsDefault(false)
+            } else {
+              try {
+                const { data } = await refetch()
+                if (data?.success && data.data) {
+                  setShippingInfo({
+                    recipient: data.data.name,
+                    phone: data.data.phone_number,
+                    email: data.data.email || '',
+                    address: data.data.address?.address_name || '',
+                    addressDetail: data.data.address?.address_detail || '',
+                    request: '',
+                  })
+                  setIsSameAsDefault(true)
+                  setIsVerified(true) // 인증완료
+                }
+              } catch (error) {
+                console.error('회원 정보를 불러오는 중 오류 발생:', error)
               }
-            } catch (error) {
-              console.error('회원 정보를 불러오는 중 오류 발생:', error)
             }
-          }
-        }}
-      />
+          }}
+        />
+      </div>
+
       {isFetching && (
         <p className="text-sm text-gray-300">회원 정보를 불러오는 중...</p>
       )}
@@ -99,31 +128,92 @@ const ShippingInfo = React.memo(() => {
           placeholder="이지은"
         />
       </Section>
+      {/*전화번호 입력 및 인증*/}
       <Section>
         <TitleLabel size="lg" type="required" title="전화번호" />
-        <InputField
-          type="simple"
-          value={shippingInfo.phone}
-          onChange={(e) => {
-            const input = e.target as HTMLInputElement
-            const rawValue = input.value.replace(/\D/g, '')
+        <div className="flex gap-2">
+          <InputField
+            type="simple"
+            value={shippingInfo.phone}
+            onChange={(e) => {
+              const input = e.target as HTMLInputElement
+              const rawValue = input.value.replace(/\D/g, '')
 
-            if (rawValue.length > 11) {
-              input.value = rawValue.slice(0, 11)
-            }
+              if (rawValue.length > 11) {
+                input.value = rawValue.slice(0, 11)
+              }
 
-            const formattedValue = rawValue
-              .slice(0, 11)
-              .replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/, (_, p1, p2, p3) =>
-                [p1, p2, p3].filter(Boolean).join('-')
-              )
-            input.value = formattedValue
-            handleInputChange('phone', rawValue.slice(0, 11))
-          }}
-          placeholder="010-1234-5678"
-        />
+              const formattedValue = rawValue
+                .slice(0, 11)
+                .replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/, (_, p1, p2, p3) =>
+                  [p1, p2, p3].filter(Boolean).join('-')
+                )
+              input.value = formattedValue
+              handleInputChange('phone', rawValue.slice(0, 11))
+            }}
+            placeholder="010-1234-5678"
+          />
+          {!isMember && (
+            <Button
+              size="md"
+              onClick={async () => {
+                try {
+                  await sendAuthCode({
+                    name: shippingInfo.recipient,
+                    phone_number: shippingInfo.phone,
+                  })
+                  showToast(
+                    '인증번호가 전송되었습니다',
+                    'success',
+                    'message-circle'
+                  )
+                  setShowVerificationInput(true)
+                } catch (error) {
+                  showToast('인증번호 전송 실패', 'error', 'alert-triangle')
+                }
+              }}
+              disabled={isSendingAuth}
+              className="px-6 py-3"
+            >
+              인증받기
+            </Button>
+          )}
+        </div>
       </Section>
 
+      {/*비회원일 때 인증번호 입력 필드 표시*/}
+      {showVerificationInput && (
+        <Section>
+          <TitleLabel size="lg" type="required" title="인증번호" />
+          <div className="flex gap-2">
+            <InputField
+              type="simple"
+              value={verificationCode}
+              onChange={(e) => setVerificationCode(e.target.value)}
+              placeholder="인증번호"
+            />
+            <Button
+              size="md"
+              onClick={async () => {
+                try {
+                  await verifyAuthCode({
+                    phone_number: shippingInfo.phone,
+                    authentication_code: verificationCode,
+                  })
+                  showToast('인증되었습니다.', 'success', 'check')
+                  setIsVerified(true) // 인증완료
+                } catch (error) {
+                  showToast('인증 실패', 'error', 'alert-triangle')
+                }
+              }}
+              disabled={isVerifyingAuth}
+              className="px-6 py-3"
+            >
+              인증하기
+            </Button>
+          </div>
+        </Section>
+      )}
       <Section>
         <TitleLabel
           size="lg"
