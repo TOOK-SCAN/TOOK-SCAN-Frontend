@@ -12,7 +12,7 @@ import {
 import { useModal } from '@tookscan/hooks'
 import { hasNonDropBooks } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
 import { useUserSummaries } from '@/api/apply/getUserSummariesHook'
-import { phoneAuth } from '@/api/auth/phoneAuthHook'
+import usePhoneAuth from '@/api/auth/phoneAuthHook'
 import { phoneVerify } from '@/api/auth/phoneVerifyHook'
 import { set } from 'lodash'
 
@@ -24,7 +24,7 @@ const ShippingInfo = React.memo(() => {
   const [isVerified, setIsVerified] = useState(false) // 인증여부
   const [verificationCode, setVerificationCode] = useState('')
   const { data: userData, refetch, isFetching } = useUserSummaries()
-  const { mutateAsync: sendAuthCode, isPending: isSendingAuth } = phoneAuth()
+  const { mutateAsync: sendAuthCode, isPending: isSendingAuth } = usePhoneAuth()
   const { mutateAsync: verifyAuthCode, isPending: isVerifyingAuth } =
     phoneVerify()
   const [showVerificationInput, setShowVerificationInput] = useState(false)
