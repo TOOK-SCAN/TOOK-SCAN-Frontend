@@ -32,7 +32,10 @@ export interface OrderResponse {
     email: string
     address: string
   }
-  error?: string
+  error?: {
+    code: number
+    message: string
+  } | null
 }
 
 export interface UserSummariesResponse {
@@ -52,5 +55,8 @@ export interface UserSummariesResponse {
       latitude: number
     }
   }
-  error?: string | null
+  error?: {
+    code: number
+    message: string
+  } | null
 }
