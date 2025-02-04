@@ -7,9 +7,9 @@ import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 const restoreOptions = [
-  { type: 'drop', title: '버려줘요', price: 0 },
-  { type: 'loose', title: '낱장으로 받을게요', price: 0 },
-  { type: 'spiral', title: '스프링으로 묶어주세요', price: 4000 },
+  { type: 'DISCARD', title: '버려줘요', price: 0 },
+  { type: 'RAW', title: '낱장으로 받을게요', price: 0 },
+  { type: 'SPRING', title: '스프링으로 묶어주세요', price: 4000 },
 ]
 
 const ScanInfo = () => {
@@ -76,7 +76,7 @@ const ScanInfo = () => {
           {restoreOptions.map(({ type, title, price }, index) => (
             <div className="flex flex-col" key={index}>
               <Restore
-                type={type as 'loose' | 'spiral' | 'drop'}
+                type={type as 'RAW' | 'SPRING' | 'DISCARD'}
                 title={title}
                 price={price}
                 isClicked={currentBook.restoreOption === type}

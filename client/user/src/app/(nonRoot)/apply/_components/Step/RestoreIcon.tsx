@@ -5,7 +5,7 @@ interface ClickedProps {
 }
 
 interface RestoreIconProps {
-  type: 'drop' | 'loose' | 'spiral'
+  type: 'DISCARD' | 'RAW' | 'SPRING'
   isClicked: boolean
 }
 
@@ -21,9 +21,9 @@ const blue = '#91A0EB'
 
 export const RestoreIcon = ({ type, isClicked }: RestoreIconProps) => {
   const iconMap = {
-    drop: <DropIcon isClicked={isClicked} />,
-    loose: <LooseIcon isClicked={isClicked} />,
-    spiral: <SpiralIcon isClicked={isClicked} />,
+    DISCARD: <DropIcon isClicked={isClicked} />,
+    RAW: <LooseIcon isClicked={isClicked} />,
+    SPRING: <SpiralIcon isClicked={isClicked} />,
   }
   return (
     <div className="flex flex-col gap-4">

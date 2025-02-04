@@ -34,9 +34,9 @@ const BookInCart = (book: Books) => {
         </Tag>
         <Tag type="default" size="sm" variant="secondary">
           {{
-            drop: '버려줘요',
-            loose: '낱장으로 받을게요',
-            spiral: '스프링으로 묶어주세요',
+            DISCARD: '버려줘요',
+            RAW: '낱장으로 받을게요',
+            SPRING: '스프링으로 묶어주세요',
             '': '알 수 없음',
           }[book.restoreOption] || '알 수 없음'}
         </Tag>
