@@ -30,14 +30,7 @@ const createApiClient = (headers?: Record<string, string>) => {
               statusText: res.statusText,
               body: responseData,
             })
-            return {
-              success: false,
-              data: responseData,
-              error: {
-                code: res.status,
-                message: res.statusText,
-              },
-            }
+            throw responseData
           }
 
           devConsole.log('[Response Data]:', responseData)
