@@ -1,6 +1,6 @@
 'use client'
 
-import AutoRedirect from '@tookscan/components/app/AutoRedirect'
+import { AutoRedirect } from '@tookscan/components/app/AutoRedirect'
 
 const PrivacyPage = () => {
   return (
