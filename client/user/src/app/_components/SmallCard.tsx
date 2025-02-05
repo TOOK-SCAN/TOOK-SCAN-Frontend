@@ -1,7 +1,6 @@
 'use client'
 
-import React from 'react'
-import Icon from '@tookscan/components/ui/Icon/Icon'
+import { Icon } from '@tookscan/components'
 
 interface SmallCardProps {
   iconId: string

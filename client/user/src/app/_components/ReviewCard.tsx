@@ -1,8 +1,7 @@
 'use client'
 
-import React from 'react'
+import { Icon } from '@tookscan/components'
 import Image from 'next/image'
-import Icon from '@tookscan/components/ui/Icon/Icon'
 
 interface ReviewCardProps {
   review: string
