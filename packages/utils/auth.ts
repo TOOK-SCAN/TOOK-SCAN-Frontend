@@ -1,15 +1,19 @@
-// TODO : 사용하지 마세요, useAuth를 대신 사용하세요.
-// 그리고 useAuth 사용때문에 server 컴포넌트를 client컴포넌트로 사용해야한다면 TODO로 남겨놓으세요.
+/**
+ * @deprecated 이 함수는 더 이상 사용되지 않습니다. 대신 useAuth 훅을 사용해주세요.
+ *
+ * 참고: useAuth를 사용하여 서버 컴포넌트를 클라이언트 컴포넌트로 변경해야 하는 경우,
+ * TODO 주석으로 표시해 주세요.
+ */
 
 import { userInfo } from '../api'
 
 export const auth = async () => {
   const data = await userInfo()
-  const isLogin: boolean = data?.success && !data.error
+  const isLogin: boolean = Boolean(data && data.success && !data.error)
 
   return {
     isLogin,
-    username: data?.data.name || '',
-    accountType: data?.data.account_type || 'USER',
+    username: data && data.data ? data.data.name : '',
+    accountType: data && data.data ? data.data.account_type : 'USER',
   }
 }

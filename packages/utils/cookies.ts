@@ -27,7 +27,12 @@ export const getCookie = (name: string): string | null => {
   for (const cookie of cookies) {
     const trimmedCookie = cookie.trim()
     if (trimmedCookie.indexOf(encodedName) === 0) {
-      return decodeURIComponent(trimmedCookie.substring(encodedName.length))
+      try {
+        return decodeURIComponent(trimmedCookie.substring(encodedName.length))
+      } catch (e) {
+        console.error('Invalid cookie value:', e)
+        return null
+      }
     }
   }
   return null
