@@ -34,12 +34,19 @@ const ShippingInfo = React.memo(() => {
   useEffect(() => {
     if (userData?.success && userData.data && isMember) {
       const fetchedData = userData.data
+      const fetchedAddress = fetchedData.address || {}
       setShippingInfo({
         recipient: fetchedData.name,
         phone: fetchedData.phone_number,
         email: fetchedData.email || '',
         address: fetchedData.address?.address_name || '',
         addressDetail: fetchedData.address?.address_detail || '',
+        region_1depth_name: fetchedData.address?.region_1depth_name || '',
+        region_2depth_name: fetchedData.address?.region_2depth_name || '',
+        region_3depth_name: fetchedData.address?.region_3depth_name || '',
+        region_4depth_name: fetchedData.address?.region_4depth_name || '',
+        longitude: fetchedData.address?.longitude || 0,
+        latitude: fetchedData.address?.latitude || 0,
         request: '',
       })
       setIsSameAsDefault(true)
@@ -49,7 +56,10 @@ const ShippingInfo = React.memo(() => {
     }
   }, [userData, setShippingInfo, isMember])
 
-  const handleInputChange = (key: keyof typeof shippingInfo, value: string) => {
+  const handleInputChange = (
+    key: keyof typeof shippingInfo,
+    value: string | number
+  ) => {
     setShippingInfo((prev) => ({ ...prev, [key]: value }))
     setIsSameAsDefault(false)
 
@@ -89,6 +99,12 @@ const ShippingInfo = React.memo(() => {
                 email: '',
                 address: '',
                 addressDetail: '',
+                region_1depth_name: '',
+                region_2depth_name: '',
+                region_3depth_name: '',
+                region_4depth_name: '',
+                longitude: 0,
+                latitude: 0,
                 request: '',
               })
               setIsSameAsDefault(false)
@@ -102,6 +118,16 @@ const ShippingInfo = React.memo(() => {
                     email: data.data.email || '',
                     address: data.data.address?.address_name || '',
                     addressDetail: data.data.address?.address_detail || '',
+                    region_1depth_name:
+                      data.data.address?.region_1depth_name || '',
+                    region_2depth_name:
+                      data.data.address?.region_2depth_name || '',
+                    region_3depth_name:
+                      data.data.address?.region_3depth_name || '',
+                    region_4depth_name:
+                      data.data.address?.region_4depth_name || '',
+                    longitude: data.data.address?.longitude || 0,
+                    latitude: data.data.address?.latitude || 0,
                     request: '',
                   })
                   setIsSameAsDefault(true)
