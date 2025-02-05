@@ -16,6 +16,7 @@ interface ApplyContextType {
   setBooks: React.Dispatch<React.SetStateAction<Books[]>>
   shippingInfo: ShippingInfo
   setShippingInfo: React.Dispatch<React.SetStateAction<ShippingInfo>>
+  updateShippingAddress: (addressData: Partial<ShippingInfo>) => void
   terms: Terms
   setTerms: (terms: Terms) => void
   ignoreBeforeUnload: React.MutableRefObject<boolean>
@@ -31,6 +32,10 @@ export const ApplyProvider = ({ children }: { children: ReactNode }) => {
   const [terms, setTerms] = useState<Terms>(initialTerms)
   const ignoreBeforeUnload = useRef<boolean>(false)
 
+  const updateShippingAddress = (addressData: Partial<ShippingInfo>) => {
+    setShippingInfo((prev) => ({ ...prev, ...addressData }))
+  }
+
   return (
     <ApplyContext.Provider
       value={{
@@ -40,6 +45,7 @@ export const ApplyProvider = ({ children }: { children: ReactNode }) => {
         setBooks,
         shippingInfo,
         setShippingInfo,
+        updateShippingAddress,
         terms,
         setTerms,
         ignoreBeforeUnload,
