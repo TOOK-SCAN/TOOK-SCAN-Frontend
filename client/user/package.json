@@ -21,6 +21,7 @@
     "@tookscan/hooks": "workspace:*",
     "@tookscan/styles": "workspace:*",
     "@tookscan/utils": "workspace:*",
+    "@tookscan/types": "workspace:*",
     "html2canvas": "^1.4.1",
     "lodash": "^4.17.21",
     "react-fullpage": "^0.1.19",

@@ -1,4 +1,4 @@
-import type { Common } from '@/types/api'
+import type { Common } from '@tookscan/types'
 
 export type LoginRes = Common<{
   access_token: string
