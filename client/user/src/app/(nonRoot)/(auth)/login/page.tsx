@@ -1,6 +1,12 @@
 'use server'
 
-import { LoginForm } from './_components/LoginForm'
+import { Button, ConsentLabel, InputField } from '@tookscan/components'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useState } from 'react'
+
+import GoogleIcon from '@/assets/images/signup/Google.svg'
+import KakaoIcon from '@/assets/images/signup/Kakao.svg'
 
 const LoginPage = () => {
   return (
