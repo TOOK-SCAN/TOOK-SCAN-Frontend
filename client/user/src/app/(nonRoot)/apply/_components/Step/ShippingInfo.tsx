@@ -150,8 +150,9 @@ const ShippingInfo = React.memo(() => {
                 .replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/, (_, p1, p2, p3) =>
                   [p1, p2, p3].filter(Boolean).join('-')
                 )
-              input.value = formattedValue
-              handleInputChange('phone', rawValue.slice(0, 11))
+              // input.value = formattedValue
+              // handleInputChange('phone', rawValue.slice(0, 11))
+              setShippingInfo((prev) => ({ ...prev, phone: formattedValue }))
             }}
             placeholder="010-1234-5678"
           />
@@ -162,7 +163,7 @@ const ShippingInfo = React.memo(() => {
                 try {
                   await sendAuthCode({
                     name: shippingInfo.recipient,
-                    phone_number: shippingInfo.phone,
+                    phone_number: shippingInfo.phone.replace(/-/g, ''),
                   })
                   showToast(
                     '인증번호가 전송되었습니다',
@@ -199,7 +200,7 @@ const ShippingInfo = React.memo(() => {
               onClick={async () => {
                 try {
                   await verifyAuthCode({
-                    phone_number: shippingInfo.phone,
+                    phone_number: shippingInfo.phone.replace(/-/g, ''),
                     authentication_code: verificationCode,
                   })
                   showToast('인증되었습니다.', 'success', 'check')
