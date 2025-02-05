@@ -126,6 +126,9 @@ importers:
       '@shared/typescript':
         specifier: workspace:*
         version: link:../../packages/shared/typescript
+      '@tookscan/api':
+        specifier: workspace:*
+        version: link:../../packages/api
       '@tookscan/components':
         specifier: workspace:*
         version: link:../../packages/components
@@ -187,6 +190,8 @@ importers:
       globals:
         specifier: ^15.13.0
         version: 15.14.0
+
+  packages/api: {}
 
   packages/components:
     dependencies:

@@ -1,5 +1,5 @@
 {
-  "name": "@tookscan/utils",
+  "name": "@tookscan/api",
   "version": "1.0.0",
   "type": "module",
   "main": "./index.ts"
