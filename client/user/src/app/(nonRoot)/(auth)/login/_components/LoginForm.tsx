@@ -1,14 +1,44 @@
 'use client'
 
+import { login } from '@/api'
+import type { LoginRes } from '@/types/api'
+import { useMutation } from '@tanstack/react-query'
 import { Button, ConsentLabel, InputField } from '@tookscan/components'
+import { ENV } from '@tookscan/config'
+import type { ErrorRes } from '@tookscan/types'
+import { devConsole, setCookie } from '@tookscan/utils'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import SocialLogin from './SocialLogin'
 
 export const LoginForm = () => {
+  const router = useRouter()
   const [authPreference, setAuthPreference] = useState({
     saveId: false,
     autoLogin: false,
+  })
+
+  const [credentials, setCredentials] = useState({
+    id: '',
+    password: '',
+  })
+
+  const { mutate: loginMutate, error } = useMutation<LoginRes, ErrorRes>({
+    mutationFn: () => login(credentials.id, credentials.password),
+    onSuccess: (data: LoginRes) => {
+      if (data.success && !data.error) {
+        devConsole.log('로그인 성공:', data)
+        if (ENV.IS_DEV) {
+          setCookie('access_token', data.data.access_token, 1)
+          setCookie('refresh_token', data.data.refresh_token, 1)
+        }
+        router.push('/apply')
+      }
+    },
+    onError: (err) => {
+      devConsole.log('로그인 실패:', err)
+    },
   })
 
   return (
@@ -56,13 +86,24 @@ export const LoginForm = () => {
           <InputField
             type="simple"
             placeholder="아이디"
-            onChange={(e) => console.log(e.target.value)}
+            value={credentials.id}
+            onChange={(e) =>
+              setCredentials((prev) => ({ ...prev, id: e.target.value }))
+            }
           />
           <InputField
             type="password"
             placeholder="비밀번호"
-            onChange={(e) => console.log(e.target.value)}
+            value={credentials.password}
+            onChange={(e) =>
+              setCredentials((prev) => ({ ...prev, password: e.target.value }))
+            }
           />
+          {error?.error && (
+            <p className="absolute text-xs text-red-500">
+              {error?.error?.message || '로그인에 실패했습니다.'}
+            </p>
+          )}
         </div>
 
         {/* 아이디/비밀번호 찾기 링크 */}
@@ -76,16 +117,17 @@ export const LoginForm = () => {
         className="w-full"
         variant="primary"
         size="md"
-        onClick={() => console.log('로그인 버튼 클릭')}
+        disabled={!credentials.id || !credentials.password}
+        onClick={() => loginMutate()}
       >
         로그인
       </Button>
 
       {/* SNS 로그인 구분선 */}
       <div className="flex items-center space-x-4">
-        <div className="h-px flex-grow bg-gray-300"></div>
+        <hr className="h-px flex-grow bg-gray-300" />
         <span className="text-sm text-gray-500">SNS 로그인</span>
-        <div className="h-px flex-grow bg-gray-300"></div>
+        <hr className="h-px flex-grow bg-gray-300" />
       </div>
 
       {/* SNS 로그인 버튼 컴포넌트 */}
