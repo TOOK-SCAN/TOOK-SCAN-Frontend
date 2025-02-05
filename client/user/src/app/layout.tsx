@@ -31,7 +31,7 @@ export default function RootLayout({ children }: LayoutProps) {
           <ToastProvider>
             <ModalProvider>
               <div className="flex min-h-screen flex-col">
-                <Header type="default" />
+                <Header />
                 <main className="flex-1 overflow-hidden">{children}</main>
                 <div className="mt-auto">
                   <Footer />

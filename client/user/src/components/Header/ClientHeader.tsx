@@ -1,18 +1,17 @@
 'use client'
 
 import { Icon } from '@tookscan/components'
+import { useAuth } from '@tookscan/hooks'
 import clsx from 'clsx'
 import Link from 'next/link'
 
-interface HeaderProps {
-  type: 'default' | 'logged-in' // 헤더 타입
-  userName?: string // 로그인한 사용자 이름
-}
-
-export const Header = ({ type, userName }: HeaderProps) => {
+export const ClientHeader = () => {
   const isMobile = false
   const textSize = isMobile ? 'text-[12px]' : 'text-[14px]'
   const heightSize = isMobile ? 'h-4' : 'h-[5.625rem]'
+
+  // 초기 서버에서 받은 auth 정보를 상태로 관리 (필요 시 업데이트할 수 있도록)
+  const { username, isLogin } = useAuth()
 
   return (
     <div className="flex">
@@ -58,7 +57,7 @@ export const Header = ({ type, userName }: HeaderProps) => {
 
         {/* 텍스트 */}
         <div className={`flex items-center gap-4 ${textSize}`}>
-          {type === 'default' && (
+          {!isLogin ? (
             <>
               <Link href="/login" className="text-blue-primary hover:underline">
                 로그인
@@ -74,11 +73,10 @@ export const Header = ({ type, userName }: HeaderProps) => {
                 회원가입
               </Link>
             </>
-          )}
-          {type === 'logged-in' && (
+          ) : (
             <>
               {/* 사용자 이름 출력 */}
-              <span className="text-blue-primary">{userName}</span>
+              <span className="text-blue-primary">{username}</span>
               <span className="text-black">|</span>
               <Link href="/profile" className="text-black hover:underline">
                 마이페이지
