@@ -1,4 +1,6 @@
 import ky from 'ky'
+import { ENV } from '../config'
+import { getCookie } from '../utils'
 import { devConsole } from '../utils/devConsole'
 
 const createApiClient = (headers?: Record<string, string>) => {
@@ -9,6 +11,12 @@ const createApiClient = (headers?: Record<string, string>) => {
     hooks: {
       beforeRequest: [
         (req) => {
+          if (ENV.IS_DEV) {
+            const accessToken = getCookie('access_token')
+            if (accessToken) {
+              req.headers.set('Authorization', `Bearer ${accessToken}`)
+            }
+          }
           devConsole.log('[Request Config]:', {
             url: req.url,
             method: req.method,
