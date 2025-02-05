@@ -1,8 +1,7 @@
+import { Footer, Header } from '@/components'
 import type { LayoutProps } from '@/types/common'
 import {
   CommonSpriteSheet,
-  Footer,
-  Header,
   ModalProvider,
   QueryProvider,
   SpriteSheet,
