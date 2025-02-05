@@ -116,7 +116,7 @@ export const LoginForm = () => {
         className="w-full"
         variant="primary"
         size="md"
-        disabled={!credentials.id || !credentials.password}
+        disabled={!credentials.id || !credentials.password} // TODO: 입력값 유효성 검사를 위해 React Hook Form, Zod, Formik, Yup 등을 사용하여 리팩토링
         onClick={() => loginMutate()}
       >
         로그인
