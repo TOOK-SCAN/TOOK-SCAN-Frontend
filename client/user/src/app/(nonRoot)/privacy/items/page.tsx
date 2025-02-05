@@ -123,7 +123,7 @@ const data: TableRow[] = [
 
 const AgreementTable = () => {
   return (
-    <div className="mx-auto flex flex-col justify-center gap-12">
+    <div className="flex flex-col justify-start gap-6">
       <div className="flex w-[22rem] items-center justify-start">
         <div>
           <h2 className="mb-4 text-[1.25rem] font-bold text-black">

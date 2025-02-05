@@ -31,16 +31,16 @@ const PrivacyLayout = ({ children }: LayoutProps) => {
           <div className="my-[3.5rem]">
             <div className="">
               <h1 className="text-blue-primary">이용약관 | 개인정보처리방침</h1>
-              <h1 className="mt-[0.8rem] text-[2rem] font-semibold text-black">
+              <h1 className="text-title2 mt-[0.8rem] font-semibold text-black">
                 약관을 확인해주세요
               </h1>
             </div>
             <div className="flex flex-col items-start justify-center">
-              <div className="my-[1.5rem] flex w-full justify-center gap-[0.5rem]">
+              <div className="my-[1.5rem] flex w-[65rem] gap-[0.5rem]">
                 {menuItems.map((item, index) => (
                   <button
                     key={index}
-                    className={`h-8 flex-1 items-center justify-center truncate rounded-full border px-5 py-[0.3rem] text-sm transition-all duration-300 ${
+                    className={`text-btn2 h-8 flex-1 items-center justify-center truncate rounded-full border px-5 py-[0.3rem] transition-all duration-300 ${
                       pathname === item.link
                         ? 'bg-blue-primary text-white'
                         : 'bg border-gray-300 bg-white text-gray-300'
@@ -54,7 +54,7 @@ const PrivacyLayout = ({ children }: LayoutProps) => {
               </div>
             </div>
           </div>
-          <div className="w-full max-w-[72rem] rounded-md bg-white p-12 shadow-md">
+          <div className="w-[65rem] rounded-md bg-white p-12 shadow-md">
             {children}
           </div>
         </div>

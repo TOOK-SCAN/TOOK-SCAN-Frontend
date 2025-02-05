@@ -1,95 +1,176 @@
 'use client'
-import React from 'react'
+import { Section } from '@/app/(nonRoot)/apply/_components'
+import {
+  Button,
+  InputField,
+  SearchAddress,
+  TitleLabel,
+  useToast,
+} from '@tookscan/components'
+import { useModal } from '@tookscan/hooks'
+import { useEffect, useState } from 'react'
 
 const EditInfoPage = () => {
+  const [formInfo, setFormInfo] = useState({
+    recipient: '',
+    id: '',
+    phone: '',
+    email: '',
+    address: '',
+    addressDetail: '',
+    request: '',
+  })
+
+  const showToast = useToast()
+  const { openModal, closeModal } = useModal()
+
+  // 입력 값 변경 핸들러 (key에 따라 formInfo 업데이트)
+  const handleInputChange = (
+    key: keyof typeof formInfo,
+    value: string
+  ): void => {
+    setFormInfo((prev) => ({ ...prev, [key]: value }))
+  }
+
+  // 컴포넌트 마운트 또는 formInfo 변경 시, input 태그의 초기 값을 동기화
+  useEffect(() => {
+    Object.entries(formInfo).forEach(([key, value]) => {
+      const inputElement = document.querySelector<HTMLInputElement>(
+        `input[name="${key}"]`
+      )
+      if (inputElement) {
+        inputElement.value = value || ''
+      }
+    })
+  }, [formInfo])
+
   return (
-    <div>
-      <div className="pb-[12px]">
-        <label className="mb-2 flex flex-row text-sm font-medium">
-          성함 <div className="ml-1 text-blue-primary">*</div>
-        </label>
-        <input
-          type="text"
-          id="name"
-          className="h-[50px] w-[380px] rounded-md bg-blue-secondary px-[18px] py-[12px]"
+    <div className="flex flex-col justify-start gap-4">
+      {/* 이름 */}
+      <Section>
+        <TitleLabel size="lg" type="required" title="이름" />
+        <InputField
+          type="simple"
+          name="recipient"
+          value={formInfo.recipient}
+          onChange={(e) => handleInputChange('recipient', e.target.value)}
           placeholder="이지은"
         />
-      </div>
-
-      <div className="pb-[12px]">
-        <label className="mb-2 flex flex-row text-sm font-medium">
-          아이디 <div className="ml-1 text-blue-primary">*</div>
-        </label>
-        <input
-          type="text"
-          id="id"
-          className="h-[50px] w-[380px] rounded-md bg-blue-secondary px-[18px] py-[12px]"
-          placeholder="아이디"
+      </Section>
+      {/* 아이디 */}
+      <Section>
+        <TitleLabel size="lg" type="required" title="아이디" />
+        <InputField
+          type="simple"
+          name="id"
+          value={formInfo.id}
+          onChange={(e) => handleInputChange('id', e.target.value)}
+          placeholder="아이디값"
         />
-      </div>
-
-      <div className="pb-[12px]">
-        <label className="mb-2 flex flex-row text-sm font-medium">
-          전화번호 <div className="ml-1 text-blue-primary">*</div>
-        </label>
-        <div className="flex gap-4">
-          <input
-            type="text"
-            id="phone"
-            className="h-[50px] w-[264px] rounded-md bg-blue-secondary px-[18px] py-[12px]"
-            placeholder="010-1234-5678"
+      </Section>
+      {/* 전화번호 */}
+      <Section>
+        <TitleLabel size="lg" type="required" title="전화번호" />
+        <InputField
+          type="simple"
+          name="phone"
+          value={formInfo.phone}
+          onChange={(e) => {
+            const input = e.target as HTMLInputElement
+            const rawValue = input.value.replace(/\D/g, '')
+            if (rawValue.length > 11) {
+              input.value = rawValue.slice(0, 11)
+            }
+            const formattedValue = rawValue
+              .slice(0, 11)
+              .replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/, (_, p1, p2, p3) =>
+                [p1, p2, p3].filter(Boolean).join('-')
+              )
+            input.value = formattedValue
+            handleInputChange('phone', rawValue.slice(0, 11))
+          }}
+          placeholder="010-1234-5678"
+        />
+      </Section>
+      {/* 이메일 */}
+      <Section>
+        <TitleLabel
+          size="lg"
+          type="required"
+          title="이메일"
+          description="PDF 파일을 전달받을 이메일 주소를 입력해 주세요"
+        />
+        <div className="flex flex-row gap-2">
+          <InputField
+            type="simple"
+            name="email"
+            value={formInfo.email}
+            onChange={(e) => handleInputChange('email', e.target.value)}
+            placeholder="support@tookscan.com"
           />
-          <button
-            type="button"
-            className="rounded-md bg-blue-500 px-6 py-3 text-white"
+          <Button
+            size="md"
+            className="whitespace-nowrap px-6 py-3"
+            onClick={() =>
+              showToast('테스트 메일을 전송 했습니다.', 'success', 'mail-heart')
+            }
           >
-            인증받기
-          </button>
+            테스트 메일 발송
+          </Button>
         </div>
-      </div>
-
-      <div className="pb-[12px]">
-        <label className="mb-2 flex flex-row text-sm font-medium">
-          이메일 <div className="ml-1 text-blue-primary">*</div>
-        </label>
-        <input
-          type="email"
-          id="email"
-          className="h-[50px] w-[380px] rounded-md bg-blue-secondary px-[18px] py-[12px]"
-          placeholder="@gmail.com"
-        />
-      </div>
-
-      <div>
-        <label className="mb-2 flex flex-row text-sm font-medium">
-          주소 <div className="ml-1 text-blue-primary">*</div>
-        </label>
-        <div className="flex gap-4">
-          <input
-            type="text"
-            id="address"
-            className="h-[50px] w-[267px] rounded-md bg-blue-secondary px-[18px] py-[12px]"
-            placeholder="주소입력"
+      </Section>
+      <div className="flex flex-col gap-2">
+        <Section>
+          <TitleLabel
+            size="lg"
+            type="required"
+            title="주소"
+            description="스캔 완료 후, 책을 돌려받을 주소를 정확하게 입력해 주세요."
           />
-          <button
-            type="button"
-            className="rounded-md border border-blue-primary bg-white px-6 py-3 text-blue-primary"
-          >
-            주소검색
-          </button>
-        </div>
-        <input
-          type="text"
-          className="mb-[100px] mt-4 h-[50px] w-[380px] rounded-md bg-blue-secondary px-[18px] py-[12px]"
-          placeholder="상세주소를 입력해주세요."
-        />
+          <div className="flex flex-row gap-2">
+            <input
+              name="address"
+              className="h-12 w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md bg-blue-secondary px-4 focus:outline-none"
+              onChange={(e) => handleInputChange('address', e.target.value)}
+              placeholder="주소입력"
+              readOnly={true}
+              value={formInfo.address}
+            />
+            <Button
+              size="md"
+              className="whitespace-nowrap px-6 py-3"
+              onClick={() =>
+                openModal(
+                  <SearchAddress
+                    closeModal={closeModal}
+                    onChange={(e) => {
+                      const addressInput =
+                        document.querySelector<HTMLInputElement>(
+                          'input[name="address"]'
+                        )
+                      if (addressInput) {
+                        addressInput.value = e.target.value
+                      }
+                      handleInputChange('address', e.target.value)
+                    }}
+                  />
+                )
+              }
+            >
+              주소 검색
+            </Button>
+          </div>
+        </Section>
+        <Section>
+          <InputField
+            type="simple"
+            name="addressDetail"
+            value={formInfo.addressDetail}
+            onChange={(e) => handleInputChange('addressDetail', e.target.value)}
+            placeholder="상세주소를 입력해주세요."
+          />
+        </Section>
       </div>
-      <button
-        type="button"
-        className="mt-4 h-[60px] w-[500px] rounded-md bg-blue-500 px-[28px] py-[18px] text-white"
-      >
-        변경
-      </button>
     </div>
   )
 }

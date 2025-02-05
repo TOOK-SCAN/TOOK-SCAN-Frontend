@@ -1,8 +1,8 @@
 const Agreement1 = () => {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col justify-start gap-6">
       {/* 첫 번째 글 상자 */}
-      <div className="flex w-[22rem] items-center justify-start">
+      <div className="flex items-center justify-start">
         <div>
           <h2 className="mb-4 text-[1.25rem] font-bold text-black">
             개인정보 수집목적 및 이용목적
