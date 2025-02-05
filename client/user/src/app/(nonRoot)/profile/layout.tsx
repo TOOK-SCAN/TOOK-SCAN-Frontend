@@ -46,13 +46,13 @@ const ProfileLayout = ({ children }: LayoutProps) => {
                 />
               ))}
             </div>
-            {/* 📌 선택된 라벨을 버튼 바로 앞에 배치 */}
+            {/*  선택된 라벨 */}
             {currentLabel && (
               <h2 className="text-title2 mt-0 self-start">{currentLabel}</h2>
             )}
           </div>
 
-          {/* 📌 1024px 이상에서는 기존 사이드바 유지 */}
+          {/* 1024px 이상에서는 기존 사이드바 유지 */}
           <aside className="hidden flex-col items-start justify-start rounded-lg lg:flex">
             <h2 className="mb-[1.5rem] mr-[1.5rem] w-[15.625rem] text-[2rem] font-bold">
               마이페이지
@@ -74,7 +74,7 @@ const ProfileLayout = ({ children }: LayoutProps) => {
             </ul>
           </aside>
 
-          {/* 📌 콘텐츠 영역 */}
+          {/*  콘텐츠 영역 */}
           <div className="mt-[4rem] w-full">{children}</div>
         </div>
       </main>
