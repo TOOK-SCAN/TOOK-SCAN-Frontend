@@ -1,9 +1,9 @@
 'use client'
 
-import { HelperLabel, Icon } from '@/components'
 import clsx from 'clsx'
 import React, { useState } from 'react'
 import { InputType } from 'zlib'
+import { HelperLabel, Icon } from '../../components'
 
 interface InputFieldProps {
   type: 'simple' | 'number' | 'search' | 'password'

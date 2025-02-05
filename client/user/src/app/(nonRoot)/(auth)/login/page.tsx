@@ -1,14 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
-import Link from 'next/link'
+import { Button, ConsentLabel, InputField } from '@tookscan/components'
 import Image from 'next/image'
-import InputField from '@tookscan/components/ui/InputField'
-import { Button } from '@tookscan/components/ui/Button'
+import Link from 'next/link'
+import { useState } from 'react'
 
-import KakaoIcon from '@/assets/images/signup/Kakao.svg'
 import GoogleIcon from '@/assets/images/signup/Google.svg'
-import ConsentLabel from '@tookscan/components/ui/Label/ConsentLabel'
+import KakaoIcon from '@/assets/images/signup/Kakao.svg'
 
 const LoginPage = () => {
   const [authPreference, setAuthPreference] = useState({
