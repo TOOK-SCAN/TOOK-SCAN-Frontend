@@ -10,8 +10,6 @@ import { useModal } from '@tookscan/hooks'
 import { useRouter } from 'next/navigation'
 import { useUserApply, useGuestApply } from '@/api/apply/orderHook'
 
-const 주문번호 = '20204121721330' // TODO: 주문번호 API 연결
-
 const Purchase = () => {
   const {
     books,
@@ -40,7 +38,7 @@ const Purchase = () => {
 
   const apply = async () => {
     try {
-      const orderData = {
+      const orderRequest = {
         documents: books.map((book) => ({
           name: book.name,
           request: '',
@@ -66,12 +64,19 @@ const Purchase = () => {
             latitude: 0,
           },
         },
+        orderDate: new Date().toISOString(),
       }
+
+      console.log('orderRequest:', orderRequest)
+
+      localStorage.setItem('lastOrder', JSON.stringify(orderRequest))
+
+      // localStorage.setItem('lastOrder', JSON.stringify(orderWithDate))
 
       // 회원 여부에 따라 API 호출
       const response = isMember
-        ? await applyUserOrder(orderData) // 회원 주문 API 호출
-        : await applyGuestOrder(orderData) // 비회원 주문 API 호출
+        ? await applyUserOrder(orderRequest) // 회원 주문 API 호출
+        : await applyGuestOrder(orderRequest) // 비회원 주문 API 호출
 
       // 주문번호 반환
       if (response?.success && response.data?.order_number) {
@@ -170,11 +175,11 @@ const Purchase = () => {
                     size="lg"
                     className="w-full flex-1"
                     onClick={async () => {
+                      closeModal()
                       const orderNumber = await apply()
                       if (orderNumber) {
-                        router.push(`/apply/success?order=${orderNumber}`)
-                        closeModal()
                         ignoreBeforeUnload.current = true
+                        router.push(`/apply/success?order=${orderNumber}`)
                       }
                     }}
                   >
