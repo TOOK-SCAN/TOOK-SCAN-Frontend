@@ -1,5 +1,5 @@
 import type { LoginRes } from '@/types/api'
-import { uploadInstance } from '@tookscan/config'
+import { httpInstance } from '@tookscan/config'
 
 export const login = async (
   id: string,
@@ -9,6 +9,7 @@ export const login = async (
   formData.append('serial_id', id)
   formData.append('password', password)
 
-  const response = await uploadInstance.post('/auth/login', { body: formData })
+  const response = await httpInstance.post('auth/login', { body: formData })
+
   return response.json()
 }

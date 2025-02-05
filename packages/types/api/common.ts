@@ -8,7 +8,7 @@ export interface Common<T> {
 }
 
 export interface ErrorRes {
-  success: boolean
+  success: false
   data: null
   error: {
     message: string
