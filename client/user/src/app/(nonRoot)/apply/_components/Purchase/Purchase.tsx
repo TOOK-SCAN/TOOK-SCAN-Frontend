@@ -22,7 +22,7 @@ const Purchase = () => {
   const { openModal, closeModal } = useModal()
   const router = useRouter()
 
-  const isMember = !!localStorage.getItem('access_token') // 로그인 여부 확인
+  const isLogin = false
 
   // API 호출 훅
   const {
@@ -74,7 +74,7 @@ const Purchase = () => {
       // localStorage.setItem('lastOrder', JSON.stringify(orderWithDate))
 
       // 회원 여부에 따라 API 호출
-      const response = isMember
+      const response = isLogin
         ? await applyUserOrder(orderRequest) // 회원 주문 API 호출
         : await applyGuestOrder(orderRequest) // 비회원 주문 API 호출
 
