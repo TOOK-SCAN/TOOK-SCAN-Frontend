@@ -1,11 +1,10 @@
 'use client'
 
-import { login } from '@/api'
-import type { LoginRes } from '@/types/api'
 import { useMutation } from '@tanstack/react-query'
+import { login } from '@tookscan/api'
 import { Button, ConsentLabel, InputField } from '@tookscan/components'
 import { ENV } from '@tookscan/config'
-import type { ErrorRes } from '@tookscan/types'
+import type { ErrorRes, LoginRes } from '@tookscan/types'
 import { devConsole, setCookie } from '@tookscan/utils'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'

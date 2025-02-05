@@ -1,5 +1,11 @@
-import type { LoginRes } from '@/types/api'
-import { httpInstance } from '@tookscan/config'
+import { httpInstance } from '../config'
+import type { LoginRes, UserInfoRes } from '../types/api'
+
+export const userInfo = async (): Promise<UserInfoRes> => {
+  const response = await httpInstance.get('auth/briefs') // TODO : API 만들어지면 수정
+
+  return response.json()
+}
 
 export const login = async (
   id: string,
