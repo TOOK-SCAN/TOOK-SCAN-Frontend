@@ -3,19 +3,18 @@
 import { Banner } from '@tookscan/components'
 import { usePathname, useRouter } from 'next/navigation'
 import type { LayoutProps } from '../../../types/common'
+import type { MenuItem } from '../../_components/RoutingButton'
+import RoutingButton from '../../_components/RoutingButton'
 
 const PrivacyLayout = ({ children }: LayoutProps) => {
   const pathname = usePathname() // 현재 경로를 가져옵니다.
   const router = useRouter() // 클라이언트 네비게이션을 위해 사용합니다.
 
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { label: '개인정보 수집목적 및 이용목적', link: '/privacy/purpose' },
     { label: '수집하는 개인정보 항목', link: '/privacy/items' },
     { label: '서비스 부정이용자 처리방안', link: '/privacy/misuse' },
-    {
-      label: '서비스 이용과정에서 수집되는 정보',
-      link: '/privacy/usage',
-    },
+    { label: '서비스 이용과정에서 수집되는 정보', link: '/privacy/usage' },
     { label: '개인정보의 수집 방법', link: '/privacy/methods' },
   ]
 
@@ -38,18 +37,12 @@ const PrivacyLayout = ({ children }: LayoutProps) => {
             <div className="flex flex-col items-start justify-center">
               <div className="my-[1.5rem] flex w-[65rem] gap-[0.5rem]">
                 {menuItems.map((item, index) => (
-                  <button
+                  <RoutingButton
                     key={index}
-                    className={`text-btn2 h-8 flex-1 items-center justify-center truncate rounded-full border px-5 py-[0.3rem] transition-all duration-300 ${
-                      pathname === item.link
-                        ? 'bg-blue-primary text-white'
-                        : 'bg border-gray-300 bg-white text-gray-300'
-                    }`}
-                    onClick={() => handleButtonClick(item.link)} // router.push로 이동
-                    title={item.label} // 말줄임표를 볼 수 있는 툴팁
-                  >
-                    {item.label}
-                  </button>
+                    item={item}
+                    pathname={pathname}
+                    handleButtonClick={handleButtonClick}
+                  />
                 ))}
               </div>
             </div>
