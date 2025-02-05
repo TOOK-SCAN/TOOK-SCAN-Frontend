@@ -1,7 +1,7 @@
 import ky from 'ky'
 import { devConsole } from '../utils/devConsole'
 
-const createApiClient = (headers: Record<string, string>) => {
+const createApiClient = (headers?: Record<string, string>) => {
   return ky.create({
     prefixUrl: `${process.env.NEXT_PUBLIC_PREFIX_URL}/api/v1`,
     timeout: 3000,
@@ -49,7 +49,7 @@ const createApiClient = (headers: Record<string, string>) => {
   })
 }
 
-const httpInstance = createApiClient({ 'Content-Type': 'application/json' })
+const httpInstance = createApiClient({})
 
 const uploadInstance = createApiClient({
   'Content-Type': 'multipart/form-data',
