@@ -32,16 +32,16 @@ export interface KakaoAddressResponse {
 
 export async function searchAddress(
   keyword: string,
-  page: number = 1,
-  size: number = 10
+  page: string | number = 1,
+  size: string | number = 10
 ) {
   if (!keyword) return { keywordResults: [], addressResults: [] }
 
   try {
-    const validPage = !isNaN(page) && page > 0 ? page : 1
-    const validSize = !isNaN(size) && size > 0 ? size : 10
+    const validPage = Number(page) > 0 ? Number(page) : 1
+    const validSize = Number(size) > 0 ? Number(size) : 10
 
-    // 📌 키워드 검색 (학교명, 건물명 포함)
+    // 키워드 검색 (학교명, 건물명 포함)
     const keywordResponse = await ky
       .get('https://dapi.kakao.com/v2/local/search/keyword.json', {
         headers: {
@@ -59,7 +59,7 @@ export async function searchAddress(
       return { keywordResults: [], addressResults: [] }
     }
 
-    // 📌 첫 번째 검색 결과를 이용하여 주소 검색
+    // 첫 번째 검색 결과를 이용하여 주소 검색
     const firstResult = keywordResponse.documents[0]
     const addressQuery =
       firstResult.road_address_name || firstResult.address_name

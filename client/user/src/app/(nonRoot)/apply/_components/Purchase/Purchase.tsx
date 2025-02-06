@@ -5,6 +5,8 @@ import {
   calculateTotalPrice,
   hasNonDropBooks,
 } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
+import type { OrderRequest, OrderResponse } from '@/types/api/apply/order'
+import { useMutation } from '@tanstack/react-query'
 import { Button } from '@tookscan/components'
 import { useAuth, useModal } from '@tookscan/hooks'
 import clsx from 'clsx'
@@ -23,67 +25,34 @@ const Purchase = () => {
   const router = useRouter()
   const { isLogin } = useAuth()
 
-  const apply = async () => {
-    try {
-      const orderRequest = {
-        documents: books.map((book) => ({
-          name: book.name,
-          request: '',
-          page_prediction: book.pages ?? 0,
-          recovery_option: book.restoreOption.toUpperCase() as
-            | 'DISCARD'
-            | 'RAW'
-            | 'SPRING',
-        })),
-        delivery_info: {
-          receiver_name: shippingInfo.recipient,
-          phone_number: shippingInfo.phone.replace(/-/g, ''),
-          email: shippingInfo.email,
-          request: shippingInfo.request,
-          address: {
-            address_name: shippingInfo.address,
-            region_1depth_name: shippingInfo.region_1depth_name,
-            region_2depth_name: shippingInfo.region_2depth_name,
-            region_3depth_name: shippingInfo.region_3depth_name,
-            region_4depth_name: shippingInfo.region_4depth_name,
-            address_detail: shippingInfo.addressDetail,
-            longitude: shippingInfo.longitude,
-            latitude: shippingInfo.latitude,
-          },
-        },
-        orderDate: new Date().toISOString(),
-      }
-
-      console.log('orderRequest:', orderRequest)
-
-      localStorage.setItem('lastOrder', JSON.stringify(orderRequest))
-
-      const response = await postOrder(orderRequest, isLogin)
-      // 주문번호 반환
+  const orderMutation = useMutation<OrderResponse, unknown, OrderRequest>({
+    mutationFn: (orderRequest) => postOrder(orderRequest, isLogin),
+    onSuccess: (response) => {
       if (response?.success && response.data?.order_number) {
         ignoreBeforeUnload.current = true
         router.push(`/apply/success?order=${response.data.order_number}`)
       } else {
         throw new Error('올바른 응답이 아닙니다.')
       }
-    } catch (error) {
+    },
+    onError: (error) => {
       console.error('신청 실패:', error)
       closeModal()
-      let errorMessage = '알 수 없는 오류가 발생했습니다.'
 
-      if (
-        error &&
+      let errorMessage = '알 수 없는 오류가 발생했습니다.'
+      if (error instanceof Error) {
+        errorMessage = error.message
+      } else if (
         typeof error === 'object' &&
-        'error' in error &&
-        error.error &&
-        typeof error.error === 'object' &&
-        'fields' in error.error &&
-        error.error.fields
+        error !== null &&
+        'message' in error &&
+        typeof error.message === 'string'
       ) {
-        errorMessage = Object.values(error.error.fields).join('\n')
-      } else if (error && typeof error === 'object' && 'message' in error) {
-        errorMessage = String(error.message)
+        errorMessage = error.message
+      } else {
+        errorMessage = JSON.stringify(error)
       }
+
       openModal(
         <div className="flex w-full flex-col">
           <div className="pt-6 text-center text-lg font-bold text-black">
@@ -105,10 +74,42 @@ const Purchase = () => {
           </div>
         </div>
       )
-      return null
-    }
-  }
+    },
+  })
 
+  const apply = async () => {
+    const orderRequest = {
+      documents: books.map((book) => ({
+        name: book.name,
+        request: '',
+        page_prediction: book.pages ?? 0,
+        recovery_option: book.restoreOption.toUpperCase() as
+          | 'DISCARD'
+          | 'RAW'
+          | 'SPRING',
+      })),
+      delivery_info: {
+        receiver_name: shippingInfo.recipient,
+        phone_number: shippingInfo.phone.replace(/-/g, ''),
+        email: shippingInfo.email,
+        request: shippingInfo.request,
+        address: {
+          address_name: shippingInfo.address,
+          region_1depth_name: shippingInfo.region_1depth_name,
+          region_2depth_name: shippingInfo.region_2depth_name,
+          region_3depth_name: shippingInfo.region_3depth_name,
+          region_4depth_name: shippingInfo.region_4depth_name,
+          address_detail: shippingInfo.addressDetail,
+          longitude: shippingInfo.longitude,
+          latitude: shippingInfo.latitude,
+        },
+      },
+      orderDate: new Date().toISOString(),
+    }
+
+    localStorage.setItem('lastOrder', JSON.stringify(orderRequest))
+    orderMutation.mutate(orderRequest)
+  }
   return (
     <div
       className={clsx(
@@ -193,11 +194,7 @@ const Purchase = () => {
                     className="w-full flex-1"
                     onClick={async () => {
                       closeModal()
-                      const orderNumber = await apply()
-                      if (orderNumber) {
-                        ignoreBeforeUnload.current = true
-                        router.push(`/apply/success?order=${orderNumber}`)
-                      }
+                      apply()
                     }}
                   >
                     신청
@@ -213,5 +210,4 @@ const Purchase = () => {
     </div>
   )
 }
-
 export default Purchase

@@ -24,7 +24,7 @@ export const calculateTotalPrice = ({ books }: CalculateTotalPriceProps) => {
 
 export const calculatePrice = (book: Books) => {
   const pageCost = (book.pages || 0) * PRICE_PER_PAGE
-  const restoreCost = book.restoreOption === 'RAW' ? 4000 : 0
+  const restoreCost = book.restoreOption === 'SPRING' ? 4000 : 0
 
   return pageCost + restoreCost
 }

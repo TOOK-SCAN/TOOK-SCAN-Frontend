@@ -1,3 +1,4 @@
+import { getUserSummaries } from '@/api'
 import { Section } from '@/app/(nonRoot)/apply/_components/index'
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
 import { hasNonDropBooks } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
@@ -26,44 +27,30 @@ const ShippingInfo = React.memo(() => {
   const [isVerifyingAuth, setIsVerifyingAuth] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
 
-  const fetchUserData = async () => {
-    setIsFetching(true)
-    try {
-      const response = await httpInstance.get('users/summaries')
-      if (!response.ok) throw new Error('회원 정보를 불러오는 중 오류 발생')
-
-      const result: {
-        success: boolean
-        data?: {
-          name: string
-          phone_number: string
-          email: string
-          address: {
-            address_name: string
-            address_detail: string
-            region_1depth_name: string
-            region_2depth_name: string
-            region_3depth_name: string
-            region_4depth_name: string
-            longitude: number
-            latitude: number
-          }
-        }
-      } = await response.json()
-
-      if (!result.success || !result.data) return
-
-      return result.data
-    } catch (error) {
-      console.error('회원 정보를 불러오는 중 오류 발생:', error)
-    } finally {
-      setIsFetching(false)
-    }
-  }
-
   useEffect(() => {
     if (isLogin) {
-      fetchUserData()
+      setIsFetching(true)
+      getUserSummaries()
+        .then((data) => {
+          if (!data) return
+          setShippingInfo({
+            recipient: data.name || '',
+            phone: data.phone_number || '',
+            email: data.email || '',
+            address: data.address?.address_name || '',
+            addressDetail: data.address?.address_detail || '',
+            region_1depth_name: data.address?.region_1depth_name || '',
+            region_2depth_name: data.address?.region_2depth_name || '',
+            region_3depth_name: data.address?.region_3depth_name || '',
+            region_4depth_name: data.address?.region_4depth_name || '',
+            longitude: data.address?.longitude || 0,
+            latitude: data.address?.latitude || 0,
+            request: '',
+          })
+          setIsSameAsDefault(true)
+          setIsVerified(true)
+        })
+        .finally(() => setIsFetching(false))
     }
   }, [isLogin])
 
@@ -157,7 +144,7 @@ const ShippingInfo = React.memo(() => {
               setIsSameAsDefault(false)
             } else {
               try {
-                const data = await fetchUserData()
+                const data = await getUserSummaries()
                 if (data !== null) {
                   setShippingInfo({
                     recipient: data?.name || '',
@@ -174,7 +161,7 @@ const ShippingInfo = React.memo(() => {
                     request: '',
                   })
                   setIsSameAsDefault(true)
-                  setIsVerified(true)
+                  setIsVerified(true) // 인증완료
                 }
               } catch (error) {
                 console.error('회원 정보를 불러오는 중 오류 발생:', error)

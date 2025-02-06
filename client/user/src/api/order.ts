@@ -6,12 +6,17 @@ export const postOrder = async (
   orderData: OrderRequest,
   isLogin: boolean
 ): Promise<OrderResponse> => {
-  const response = await httpInstance.post(
-    `${isLogin ? 'users' : 'guests'}/orders`,
-    {
-      json: orderData,
-    }
-  )
+  try {
+    const response = await httpInstance.post(
+      `${isLogin ? 'users' : 'guests'}/orders`,
+      {
+        json: orderData,
+      }
+    )
 
-  return response.json()
+    return response.json()
+  } catch (error) {
+    console.error('주문 요청 실패', error)
+    throw error
+  }
 }
