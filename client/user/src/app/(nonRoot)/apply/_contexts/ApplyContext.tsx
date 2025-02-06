@@ -1,13 +1,7 @@
-import type { ReactNode} from 'react';
+import type { Books, ShippingInfo, Terms } from '@/types/book'
+import { initialShippingInfo, initialTerms } from '@/types/book'
+import type { ReactNode } from 'react'
 import { createContext, useContext, useRef, useState } from 'react'
-import type {
-  Books,
-  ShippingInfo,
-  Terms} from '@/types/book';
-import {
-  initialShippingInfo,
-  initialTerms,
-} from '@/types/book'
 
 interface ApplyContextType {
   pageIndex: number
@@ -32,8 +26,8 @@ export const ApplyProvider = ({ children }: { children: ReactNode }) => {
   const [terms, setTerms] = useState<Terms>(initialTerms)
   const ignoreBeforeUnload = useRef<boolean>(false)
 
-  const updateShippingAddress = (addressData: Partial<ShippingInfo>) => {
-    setShippingInfo((prev) => ({ ...prev, ...addressData }))
+  const updateShippingAddress = (data: Partial<ShippingInfo>) => {
+    setShippingInfo((prev) => ({ ...prev, ...data }))
   }
 
   return (
