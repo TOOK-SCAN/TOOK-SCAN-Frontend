@@ -4,7 +4,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { debounce } from 'lodash'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { searchAddress } from '../../../utils'
+import { searchAddress } from '../../../api'
 
 interface SearchAddressProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void

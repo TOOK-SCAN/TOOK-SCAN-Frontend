@@ -1,14 +1,14 @@
+import { postOrder } from '@/api/order'
+import { BookInCart } from '@/app/(nonRoot)/apply/_components/index'
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
-import { Button } from '@tookscan/components'
 import {
   calculateTotalPrice,
   hasNonDropBooks,
 } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
+import { Button } from '@tookscan/components'
+import { useAuth, useModal } from '@tookscan/hooks'
 import clsx from 'clsx'
-import { BookInCart } from '@/app/(nonRoot)/apply/_components/index'
-import { useModal } from '@tookscan/hooks'
 import { useRouter } from 'next/navigation'
-import { useUserApply, useGuestApply } from '@/api/apply/orderHook'
 
 const Purchase = () => {
   const {
@@ -21,20 +21,7 @@ const Purchase = () => {
   } = useApplyContext()
   const { openModal, closeModal } = useModal()
   const router = useRouter()
-
-  const isLogin = false
-
-  // API 호출 훅
-  const {
-    mutateAsync: applyUserOrder,
-    isPending: isUserLoading,
-    isError: isUserError,
-  } = useUserApply()
-  const {
-    mutateAsync: applyGuestOrder,
-    isPending: isGuestPending,
-    isError: isGuestError,
-  } = useGuestApply()
+  const { isLogin } = useAuth()
 
   const apply = async () => {
     try {
@@ -71,13 +58,7 @@ const Purchase = () => {
 
       localStorage.setItem('lastOrder', JSON.stringify(orderRequest))
 
-      // localStorage.setItem('lastOrder', JSON.stringify(orderWithDate))
-
-      // 회원 여부에 따라 API 호출
-      const response = isLogin
-        ? await applyUserOrder(orderRequest) // 회원 주문 API 호출
-        : await applyGuestOrder(orderRequest) // 비회원 주문 API 호출
-
+      const response = await postOrder(orderRequest, isLogin)
       // 주문번호 반환
       if (response?.success && response.data?.order_number) {
         ignoreBeforeUnload.current = true
@@ -88,6 +69,42 @@ const Purchase = () => {
     } catch (error) {
       console.error('신청 실패:', error)
       closeModal()
+      let errorMessage = '알 수 없는 오류가 발생했습니다.'
+
+      if (
+        error &&
+        typeof error === 'object' &&
+        'error' in error &&
+        error.error &&
+        typeof error.error === 'object' &&
+        'fields' in error.error &&
+        error.error.fields
+      ) {
+        errorMessage = Object.values(error.error.fields).join('\n')
+      } else if (error && typeof error === 'object' && 'message' in error) {
+        errorMessage = String(error.message)
+      }
+      openModal(
+        <div className="flex w-full flex-col">
+          <div className="pt-6 text-center text-lg font-bold text-black">
+            오류 발생
+          </div>
+          <div className="mt-4 h-[1px] w-full bg-gray-300" />
+          <p className="whitespace-pre-line px-6 py-8 text-center text-red-500">
+            {errorMessage}
+          </p>
+          <div className="flex gap-2 px-6 pb-6">
+            <Button
+              variant="primary"
+              size="lg"
+              className="w-full flex-1"
+              onClick={closeModal}
+            >
+              닫기
+            </Button>
+          </div>
+        </div>
+      )
       return null
     }
   }

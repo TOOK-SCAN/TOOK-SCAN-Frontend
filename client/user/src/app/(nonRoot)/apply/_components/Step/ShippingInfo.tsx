@@ -1,60 +1,109 @@
-import React, { useEffect, useState } from 'react'
 import { Section } from '@/app/(nonRoot)/apply/_components/index'
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
-import {
-  InputField,
-  TitleLabel,
-  SearchAddress,
-  Button,
-  useToast,
-  ConsentLabel,
-} from '@tookscan/components'
-import { useModal } from '@tookscan/hooks'
 import { hasNonDropBooks } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
-import { useUserSummaries } from '@/api/apply/getUserSummariesHook'
-import usePhoneAuth from '@/api/auth/phoneAuthHook'
-import { phoneVerify } from '@/api/auth/phoneVerifyHook'
-import { set } from 'lodash'
+import {
+  Button,
+  ConsentLabel,
+  InputField,
+  SearchAddress,
+  TitleLabel,
+  useToast,
+} from '@tookscan/components'
+import { httpInstance } from '@tookscan/config'
+import { useAuth, useModal } from '@tookscan/hooks'
+import React, { useEffect, useState } from 'react'
 
 const ShippingInfo = React.memo(() => {
   const { books, shippingInfo, setShippingInfo } = useApplyContext()
   const showToast = useToast()
   const { openModal, closeModal } = useModal()
+  const { isLogin } = useAuth()
   const [isSameAsDefault, setIsSameAsDefault] = useState(false)
   const [isVerified, setIsVerified] = useState(false) // 인증여부
   const [verificationCode, setVerificationCode] = useState('')
-  const { data: userData, refetch, isFetching } = useUserSummaries()
-  const { mutateAsync: sendAuthCode, isPending: isSendingAuth } = usePhoneAuth()
-  const { mutateAsync: verifyAuthCode, isPending: isVerifyingAuth } =
-    phoneVerify()
   const [showVerificationInput, setShowVerificationInput] = useState(false)
+  const [isSendingAuthCode, setIsSendingAuthCode] = useState(false)
+  const [isVerifyingAuth, setIsVerifyingAuth] = useState(false)
+  const [isFetching, setIsFetching] = useState(false)
 
-  const isMember = !!localStorage.getItem('access_token')
+  const fetchUserData = async () => {
+    setIsFetching(true)
+    try {
+      const response = await httpInstance.get('users/summaries')
+      if (!response.ok) throw new Error('회원 정보를 불러오는 중 오류 발생')
+
+      const result: {
+        success: boolean
+        data?: {
+          name: string
+          phone_number: string
+          email: string
+          address: {
+            address_name: string
+            address_detail: string
+            region_1depth_name: string
+            region_2depth_name: string
+            region_3depth_name: string
+            region_4depth_name: string
+            longitude: number
+            latitude: number
+          }
+        }
+      } = await response.json()
+
+      if (!result.success || !result.data) return
+
+      return result.data
+    } catch (error) {
+      console.error('회원 정보를 불러오는 중 오류 발생:', error)
+    } finally {
+      setIsFetching(false)
+    }
+  }
 
   useEffect(() => {
-    if (userData?.success && userData.data && isMember) {
-      const fetchedData = userData.data
-      const fetchedAddress = fetchedData.address || {}
-      setShippingInfo({
-        recipient: fetchedData.name,
-        phone: fetchedData.phone_number,
-        email: fetchedData.email || '',
-        address: fetchedData.address?.address_name || '',
-        addressDetail: fetchedData.address?.address_detail || '',
-        region_1depth_name: fetchedData.address?.region_1depth_name || '',
-        region_2depth_name: fetchedData.address?.region_2depth_name || '',
-        region_3depth_name: fetchedData.address?.region_3depth_name || '',
-        region_4depth_name: fetchedData.address?.region_4depth_name || '',
-        longitude: fetchedData.address?.longitude || 0,
-        latitude: fetchedData.address?.latitude || 0,
-        request: '',
-      })
-      setIsSameAsDefault(true)
-      setIsVerified(true)
-    } else if (!isVerified) {
-      setIsVerified(false)
+    if (isLogin) {
+      fetchUserData()
     }
-  }, [userData, setShippingInfo, isMember])
+  }, [isLogin])
+
+  // 전화번호 인증 요청
+  const sendAuthCode = async () => {
+    setIsSendingAuthCode(true)
+    try {
+      await httpInstance.post('auth/authentication-code', {
+        json: {
+          name: shippingInfo.recipient,
+          phone_number: shippingInfo.phone.replace(/-/g, ''),
+        },
+      })
+      showToast('인증번호가 전송되었습니다', 'success', 'message-circle')
+      setShowVerificationInput(true)
+    } catch (error) {
+      showToast('인증번호 전송 실패', 'error', 'alert-triangle')
+    } finally {
+      setIsSendingAuthCode(false)
+    }
+  }
+
+  // 인증번호 확인 요청
+  const verifyAuthCode = async () => {
+    setIsVerifyingAuth(true)
+    try {
+      await httpInstance.patch('auth/authentication-code', {
+        json: {
+          phone_number: shippingInfo.phone.replace(/-/g, ''),
+          authentication_code: verificationCode,
+        },
+      })
+      showToast('인증되었습니다.', 'success', 'check')
+      setIsVerified(true)
+    } catch (error) {
+      showToast('인증 실패', 'error', 'alert-triangle')
+    } finally {
+      setIsVerifyingAuth(false)
+    }
+  }
 
   const handleInputChange = (
     key: keyof typeof shippingInfo,
@@ -63,7 +112,7 @@ const ShippingInfo = React.memo(() => {
     setShippingInfo((prev) => ({ ...prev, [key]: value }))
     setIsSameAsDefault(false)
 
-    if (key === 'phone') {
+    if (key === 'phone' && isVerified) {
       setIsVerified(false) // 인증 초기화
     }
   }
@@ -80,9 +129,7 @@ const ShippingInfo = React.memo(() => {
       <hr className="border-[1px]" />
       <div
         className={
-          !isMember
-            ? 'pointer-events-none cursor-not-allowed text-gray-400'
-            : ''
+          !isLogin ? 'pointer-events-none cursor-not-allowed text-gray-400' : ''
         }
       >
         <ConsentLabel
@@ -90,7 +137,7 @@ const ShippingInfo = React.memo(() => {
           consentStatus={isSameAsDefault}
           size="lg"
           onClick={async () => {
-            if (!isMember) return // 비회원일 때 클릭 방지
+            if (!isLogin) return // 비회원일 때 클릭 방지
 
             if (isSameAsDefault) {
               setShippingInfo({
@@ -110,28 +157,24 @@ const ShippingInfo = React.memo(() => {
               setIsSameAsDefault(false)
             } else {
               try {
-                const { data } = await refetch()
-                if (data?.success && data.data) {
+                const data = await fetchUserData()
+                if (data !== null) {
                   setShippingInfo({
-                    recipient: data.data.name,
-                    phone: data.data.phone_number,
-                    email: data.data.email || '',
-                    address: data.data.address?.address_name || '',
-                    addressDetail: data.data.address?.address_detail || '',
-                    region_1depth_name:
-                      data.data.address?.region_1depth_name || '',
-                    region_2depth_name:
-                      data.data.address?.region_2depth_name || '',
-                    region_3depth_name:
-                      data.data.address?.region_3depth_name || '',
-                    region_4depth_name:
-                      data.data.address?.region_4depth_name || '',
-                    longitude: data.data.address?.longitude || 0,
-                    latitude: data.data.address?.latitude || 0,
+                    recipient: data?.name || '',
+                    phone: data?.phone_number || '',
+                    email: data?.email || '',
+                    address: data?.address?.address_name || '',
+                    addressDetail: data?.address?.address_detail || '',
+                    region_1depth_name: data?.address?.region_1depth_name || '',
+                    region_2depth_name: data?.address?.region_2depth_name || '',
+                    region_3depth_name: data?.address?.region_3depth_name || '',
+                    region_4depth_name: data?.address?.region_4depth_name || '',
+                    longitude: data?.address?.longitude || 0,
+                    latitude: data?.address?.latitude || 0,
                     request: '',
                   })
                   setIsSameAsDefault(true)
-                  setIsVerified(true) // 인증완료
+                  setIsVerified(true)
                 }
               } catch (error) {
                 console.error('회원 정보를 불러오는 중 오류 발생:', error)
@@ -176,32 +219,15 @@ const ShippingInfo = React.memo(() => {
                 .replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/, (_, p1, p2, p3) =>
                   [p1, p2, p3].filter(Boolean).join('-')
                 )
-              // input.value = formattedValue
-              // handleInputChange('phone', rawValue.slice(0, 11))
               setShippingInfo((prev) => ({ ...prev, phone: formattedValue }))
             }}
             placeholder="010-1234-5678"
           />
-          {!isMember && (
+          {!isLogin && (
             <Button
               size="md"
-              onClick={async () => {
-                try {
-                  await sendAuthCode({
-                    name: shippingInfo.recipient,
-                    phone_number: shippingInfo.phone.replace(/-/g, ''),
-                  })
-                  showToast(
-                    '인증번호가 전송되었습니다',
-                    'success',
-                    'message-circle'
-                  )
-                  setShowVerificationInput(true)
-                } catch (error) {
-                  showToast('인증번호 전송 실패', 'error', 'alert-triangle')
-                }
-              }}
-              disabled={isSendingAuth}
+              onClick={sendAuthCode}
+              disabled={isSendingAuthCode}
               className="px-6 py-3"
             >
               인증받기
@@ -223,18 +249,7 @@ const ShippingInfo = React.memo(() => {
             />
             <Button
               size="md"
-              onClick={async () => {
-                try {
-                  await verifyAuthCode({
-                    phone_number: shippingInfo.phone.replace(/-/g, ''),
-                    authentication_code: verificationCode,
-                  })
-                  showToast('인증되었습니다.', 'success', 'check')
-                  setIsVerified(true) // 인증완료
-                } catch (error) {
-                  showToast('인증 실패', 'error', 'alert-triangle')
-                }
-              }}
+              onClick={verifyAuthCode}
               disabled={isVerifyingAuth}
               className="px-6 py-3"
             >
