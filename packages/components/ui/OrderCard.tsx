@@ -26,7 +26,7 @@ export const OrderCard = ({ data }: OrderCardProps) => {
 
   return (
     <>
-      <div className="mt-[12px] h-[349px] w-[600px] max-w-2xl rounded-md bg-white p-[32px] shadow">
+      <div className="mx-auto mt-[12px] h-[349px] w-full rounded-[2rem] bg-white p-[32px] shadow">
         {/* 상단 경로(진행단계) */}
         <nav className="mb-4 text-sm text-gray-500">
           발송완료 &gt; 업체도착 &gt; 스캔진행 &gt;{' '}
@@ -64,16 +64,20 @@ export const OrderCard = ({ data }: OrderCardProps) => {
         </div>
 
         {/* 가격 & 버튼 영역 */}
-        <div className="flex flex-col items-end justify-between">
-          <div className="text-lg font-bold text-red-500">
-            {data.price.toLocaleString()}원
+        <div className="flex flex-col justify-between">
+          <div className="flex flex-col items-end">
+            <div className="text-lg font-bold text-red-500">
+              {data.price.toLocaleString()}원
+            </div>
           </div>
-          <div className="space-x-2">
-            <button className="border-1 h-[38px] w-[262px] rounded border border-blue-500 px-4 py-2 text-blue-500 transition hover:bg-blue-50">
+          <div />
+
+          <div className="flex flex-row justify-center space-x-2">
+            <button className="border-1 mx-auto h-[38px] w-full min-w-[8rem] rounded border border-blue-500 px-4 py-2 text-blue-500 transition hover:bg-blue-50">
               배송조회
             </button>
             <button
-              className="border-1 h-[38px] w-[262px] rounded border border-blue-500 px-4 py-2 text-blue-500 transition hover:bg-blue-50"
+              className="border-1 mx-auto h-[38px] w-full min-w-[8rem] rounded border border-blue-500 px-4 py-2 text-blue-500 transition hover:bg-blue-50"
               onClick={handleOpenModal} // 주문 상세 클릭 시 모달 열기
             >
               주문 상세

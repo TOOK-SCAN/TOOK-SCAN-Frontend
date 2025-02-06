@@ -24,7 +24,7 @@ const OrderHistory: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="mx-auto flex w-full flex-col gap-4">
       <Section>
         <TitleLabel size="lg" type="required" title="비밀번호" />
 
@@ -67,7 +67,7 @@ const OrderHistory: React.FC = () => {
       <Button
         type="button"
         size="md"
-        className="mt-[100px] h-[60px] w-[500px] rounded-md bg-blue-500 px-[28px] py-[18px] text-white"
+        className="mt-[100px] h-[60px] w-full rounded-md bg-blue-500 px-[28px] py-[18px] text-white"
         onClick={handleSubmit}
       >
         수정완료

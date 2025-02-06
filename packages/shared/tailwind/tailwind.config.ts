@@ -125,7 +125,7 @@ const sharedConfig: Config = {
           lineHeight: '1.375rem', // 22px
           fontWeight: '600',
           '@screen lg': {
-            fontSize: '1.125rem', // 18px
+            fontSize: '1rem', // 18px
             lineHeight: '1.5rem', // 24px
           },
         },
@@ -148,9 +148,15 @@ const sharedConfig: Config = {
         // 모바일, 데스크톱 동일: 14px / 20px / SemiBold
         // ---------------------
         '.btn2': {
-          fontSize: '0.875rem', // 14px
+          fontSize: '0.75rem', // 14px
           lineHeight: '1.25rem', // 20px
           fontWeight: '600',
+          letterSpacing: '-0.25%',
+          '@screen lg': {
+            fontSize: '0.875rem',
+            lineHeight: '1.25rem', // 20px
+            fontWeight: '600',
+          },
         },
         // ---------------------
         // 10) Caption1

@@ -3,7 +3,7 @@ import type { LayoutProps } from '@/types/common'
 
 const UserInfoLayout = ({ children }: LayoutProps) => {
   return (
-    <section className="w-[600px] justify-center rounded-lg bg-white p-[50px] shadow-sm">
+    <section className="mx-auto min-w-full max-w-[37.5rem] flex-col rounded-[3rem] bg-white p-[50px] shadow-sm lg:ml-[5rem]">
       {children}
     </section>
   )

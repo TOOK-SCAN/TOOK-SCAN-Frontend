@@ -45,7 +45,7 @@ const EditInfoPage = () => {
   }, [formInfo])
 
   return (
-    <div className="flex flex-col justify-start gap-4">
+    <div className="mx-auto flex w-full max-w-[50rem] flex-col gap-4">
       {/* 이름 */}
       <Section>
         <TitleLabel size="lg" type="required" title="이름" />
@@ -110,7 +110,7 @@ const EditInfoPage = () => {
           />
           <Button
             size="md"
-            className="whitespace-nowrap px-6 py-3"
+            className="whitespace-nowrap py-3"
             onClick={() =>
               showToast('테스트 메일을 전송 했습니다.', 'success', 'mail-heart')
             }
