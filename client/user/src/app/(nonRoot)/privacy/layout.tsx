@@ -1,10 +1,10 @@
 'use client'
 
 import { Banner } from '@tookscan/components'
+import type { MenuItem } from '@tookscan/components'
+import { Tab } from '@tookscan/components'
 import { usePathname, useRouter } from 'next/navigation'
 import type { LayoutProps } from '../../../types/common'
-import type { MenuItem } from '../../_components/RoutingButton'
-import RoutingButton from '../../_components/RoutingButton'
 
 const PrivacyLayout = ({ children }: LayoutProps) => {
   const pathname = usePathname() // 현재 경로를 가져옵니다.
@@ -37,7 +37,7 @@ const PrivacyLayout = ({ children }: LayoutProps) => {
             <div className="flex flex-col items-start justify-center">
               <div className="my-[1.5rem] flex w-[65rem] gap-[0.5rem]">
                 {menuItems.map((item, index) => (
-                  <RoutingButton
+                  <Tab
                     key={index}
                     item={item}
                     pathname={pathname}

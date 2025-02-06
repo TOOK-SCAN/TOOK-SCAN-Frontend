@@ -78,11 +78,11 @@ const OrderHistory = () => {
   }
 
   return (
-    <div className="mx-auto max-w-[600px] p-4">
+    <div className="mx-auto w-full px-4">
       {/* 드롭다운 영역 */}
-      <div className="mb-4 flex justify-end">
+      <div className="flex justify-end">
         <select
-          className="bg-transparent px-4 py-2 text-sm text-blue-primary focus:border-blue-400 focus:outline-none"
+          className="bg-transparent px-4 text-sm text-blue-primary focus:border-blue-400 focus:outline-none"
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
         >

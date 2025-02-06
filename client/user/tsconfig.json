@@ -17,6 +17,10 @@
     ],
     "moduleResolution": "node"
   },
-  "include": ["src/**/*", ".next/types/**/*.ts"],
+  "include": [
+    "src/**/*",
+    ".next/types/**/*.ts",
+    "../../packages/components/ui/Tab.tsx"
+  ],
   "exclude": ["node_modules"]
 }

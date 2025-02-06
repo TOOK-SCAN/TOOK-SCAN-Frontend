@@ -5,8 +5,8 @@ import { Banner } from '@tookscan/components'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
-import type { MenuItem } from '../../_components/RoutingButton'
-import RoutingButton from '../../_components/RoutingButton'
+import type { MenuItem } from '@tookscan/components'
+import { Tab } from '@tookscan/components'
 
 const profileItems: MenuItem[] = [
   { label: '개인정보 수정', link: '/profile/edit/info' },
@@ -28,17 +28,14 @@ const ProfileLayout = ({ children }: LayoutProps) => {
   return (
     <div>
       <Banner type={3} />
-      <main
-        className="flex-1 overflow-hidden bg-blue-secondary"
-        style={{ paddingTop: '2rem' }}
-      >
-        <div className="relative mx-auto mb-[5rem] mt-[5rem] flex max-w-7xl gap-6 px-6 lg:flex-row">
-          {/*  1024px 미만에서는 RoutingButton과 라벨을 상단 배치 */}
-          <div className="flex w-full max-w-md flex-col items-center justify-start lg:hidden">
+      <main className="flex flex-col overflow-hidden bg-blue-secondary p-[2rem] lg:p-[5rem]">
+        <div className="mx-auto mb-[2rem] flex w-full max-w-lg flex-col gap-6 lg:max-w-full lg:flex-row">
+          {/*  1024px 미만에서는 Tab과 라벨을 상단 배치 */}
+          <div className="w-full flex-col lg:hidden">
             {/*  라우팅 버튼 영역 */}
-            <div className="flex w-full justify-start gap-1.5">
+            <div className="flex w-full justify-start gap-1">
               {profileItems.map((item, index) => (
-                <RoutingButton
+                <Tab
                   key={index}
                   item={item}
                   pathname={pathname}
@@ -46,15 +43,15 @@ const ProfileLayout = ({ children }: LayoutProps) => {
                 />
               ))}
             </div>
-            {/*  선택된 라벨 */}
+            {/*  선택된 라벨*/}
             {currentLabel && (
-              <h2 className="text-title2 mt-0 self-start">{currentLabel}</h2>
+              <h2 className="title2 mt-[1rem] self-start">{currentLabel}</h2>
             )}
           </div>
 
           {/* 1024px 이상에서는 기존 사이드바 유지 */}
           <aside className="hidden flex-col items-start justify-start rounded-lg lg:flex">
-            <h2 className="mb-[1.5rem] mr-[1.5rem] w-[15.625rem] text-[2rem] font-bold">
+            <h2 className="mb-[1.5rem] mr-[1.5rem] mt-[3.5rem] w-[15.625rem] text-[2rem] font-bold">
               마이페이지
             </h2>
             <ul className="w-[15.625rem] text-[1rem]">
@@ -74,8 +71,8 @@ const ProfileLayout = ({ children }: LayoutProps) => {
             </ul>
           </aside>
 
-          {/*  콘텐츠 영역 */}
-          <div className="mt-[4rem] w-full">{children}</div>
+          {/* 콘텐츠 영역 */}
+          <div className="mt-8 flex w-full max-w-lg">{children}</div>
         </div>
       </main>
     </div>
