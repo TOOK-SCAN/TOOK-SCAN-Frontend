@@ -45,7 +45,7 @@ const EditInfoPage = () => {
   }, [formInfo])
 
   return (
-    <div className="mx-auto flex w-full max-w-[50rem] flex-col gap-4">
+    <div className="mx-auto flex w-full flex-col gap-4">
       {/* 이름 */}
       <Section>
         <TitleLabel size="lg" type="required" title="이름" />
