@@ -17,12 +17,6 @@
     ],
     "moduleResolution": "node"
   },
-  "include": [
-    "src/**/*",
-    ".next/types/**/*.ts",
-    "../../packages/types/api/phoneAuth.ts",
-    "../../packages/api/phoneAuth.ts",
-    "../../packages/api/phoneVerify.ts"
-  ],
+  "include": ["src/**/*", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
