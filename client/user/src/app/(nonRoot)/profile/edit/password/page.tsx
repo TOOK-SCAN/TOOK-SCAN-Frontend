@@ -3,7 +3,7 @@ import { Section } from '@/app/(nonRoot)/apply/_components'
 import { Button, InputField, TitleLabel } from '@tookscan/components'
 import React, { useState } from 'react'
 
-const OrderHistory: React.FC = () => {
+const PasswordManagement: React.FC = () => {
   // 비밀번호 관련 상태 관리: 기존비밀번호, 새 비밀번호, 새 비밀번호 확인
   const [passwordInfo, setPasswordInfo] = useState({
     current: '',
@@ -67,7 +67,7 @@ const OrderHistory: React.FC = () => {
       <Button
         type="button"
         size="md"
-        className="mt-[100px] h-[60px] w-full rounded-md bg-blue-500 px-[28px] py-[18px] text-white"
+        className="mt-[100px] h-[60px] w-full max-w-[30rem] rounded-md bg-blue-500 px-[28px] py-[18px] text-white"
         onClick={handleSubmit}
       >
         수정완료
@@ -76,4 +76,4 @@ const OrderHistory: React.FC = () => {
   )
 }
 
-export default OrderHistory
+export default PasswordManagement
