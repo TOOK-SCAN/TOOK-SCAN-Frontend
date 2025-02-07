@@ -19,3 +19,21 @@ export const login = async (
 
   return response.json()
 }
+
+export const sendAuthCode = async (name: string, phoneNumber: string) => {
+  return httpInstance.post('auth/authentication-code', {
+    json: {
+      name,
+      phone_number: phoneNumber.replace(/-/g, ''),
+    },
+  })
+}
+
+export const verifyAuthCode = async (phoneNumber: string, code: string) => {
+  return httpInstance.patch('auth/authentication-code', {
+    json: {
+      phone_number: phoneNumber.replace(/-/g, ''),
+      authentication_code: code,
+    },
+  })
+}
