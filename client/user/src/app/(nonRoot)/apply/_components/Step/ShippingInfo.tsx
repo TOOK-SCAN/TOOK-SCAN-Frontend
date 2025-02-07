@@ -2,6 +2,8 @@ import { getUserSummaries } from '@/api'
 import { Section } from '@/app/(nonRoot)/apply/_components/index'
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
 import { hasNonDropBooks } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
+import { useQuery } from '@tanstack/react-query'
+import { sendAuthCode, verifyAuthCode } from '@tookscan/api'
 import {
   Button,
   ConsentLabel,
@@ -10,7 +12,6 @@ import {
   TitleLabel,
   useToast,
 } from '@tookscan/components'
-import { httpInstance } from '@tookscan/config'
 import { useAuth, useModal } from '@tookscan/hooks'
 import React, { useEffect, useState } from 'react'
 
@@ -25,73 +26,51 @@ const ShippingInfo = React.memo(() => {
   const [showVerificationInput, setShowVerificationInput] = useState(false)
   const [isSendingAuthCode, setIsSendingAuthCode] = useState(false)
   const [isVerifyingAuth, setIsVerifyingAuth] = useState(false)
-  const [isFetching, setIsFetching] = useState(false)
+
+  const { data } = useQuery({
+    queryKey: ['userSummaries'],
+    queryFn: getUserSummaries,
+    enabled: isLogin,
+  })
 
   useEffect(() => {
-    if (isLogin) {
-      setIsFetching(true)
-      getUserSummaries()
-        .then((data) => {
-          if (!data) return
-          setShippingInfo({
-            recipient: data.name || '',
-            phone: data.phone_number || '',
-            email: data.email || '',
-            address: data.address?.address_name || '',
-            addressDetail: data.address?.address_detail || '',
-            region_1depth_name: data.address?.region_1depth_name || '',
-            region_2depth_name: data.address?.region_2depth_name || '',
-            region_3depth_name: data.address?.region_3depth_name || '',
-            region_4depth_name: data.address?.region_4depth_name || '',
-            longitude: data.address?.longitude || 0,
-            latitude: data.address?.latitude || 0,
-            request: '',
-          })
-          setIsSameAsDefault(true)
-          setIsVerified(true)
-        })
-        .finally(() => setIsFetching(false))
+    if (data) {
+      setShippingInfo({
+        recipient: data.name || '',
+        phone: data.phone_number || '',
+        email: data.email || '',
+        address: data.address?.address_name || '',
+        addressDetail: data.address?.address_detail || '',
+        region_1depth_name: data.address?.region_1depth_name || '',
+        region_2depth_name: data.address?.region_2depth_name || '',
+        region_3depth_name: data.address?.region_3depth_name || '',
+        region_4depth_name: data.address?.region_4depth_name || '',
+        longitude: data.address?.longitude || 0,
+        latitude: data.address?.latitude || 0,
+        request: '',
+      })
+      setIsSameAsDefault(true)
+      setIsVerified(true)
     }
-  }, [isLogin])
+  }, [data])
 
   // 전화번호 인증 요청
-  const sendAuthCode = async () => {
+  const handleSendAuthCode = async () => {
     setIsSendingAuthCode(true)
-    try {
-      await httpInstance.post('auth/authentication-code', {
-        json: {
-          name: shippingInfo.recipient,
-          phone_number: shippingInfo.phone.replace(/-/g, ''),
-        },
-      })
-      showToast('인증번호가 전송되었습니다', 'success', 'message-circle')
-      setShowVerificationInput(true)
-    } catch (error) {
-      showToast('인증번호 전송 실패', 'error', 'alert-triangle')
-    } finally {
-      setIsSendingAuthCode(false)
-    }
+    await sendAuthCode(shippingInfo.recipient, shippingInfo.phone)
+    showToast('인증번호가 전송되었습니다', 'success', 'message-circle')
+    setShowVerificationInput(true)
+    setIsSendingAuthCode(false)
   }
 
   // 인증번호 확인 요청
-  const verifyAuthCode = async () => {
+  const handleVerifyAuthCode = async () => {
     setIsVerifyingAuth(true)
-    try {
-      await httpInstance.patch('auth/authentication-code', {
-        json: {
-          phone_number: shippingInfo.phone.replace(/-/g, ''),
-          authentication_code: verificationCode,
-        },
-      })
-      showToast('인증되었습니다.', 'success', 'check')
-      setIsVerified(true)
-    } catch (error) {
-      showToast('인증 실패', 'error', 'alert-triangle')
-    } finally {
-      setIsVerifyingAuth(false)
-    }
+    await verifyAuthCode(shippingInfo.phone, verificationCode)
+    showToast('인증되었습니다.', 'success', 'check')
+    setIsVerified(true)
+    setIsVerifyingAuth(false)
   }
-
   const handleInputChange = (
     key: keyof typeof shippingInfo,
     value: string | number
@@ -171,10 +150,6 @@ const ShippingInfo = React.memo(() => {
         />
       </div>
 
-      {isFetching && (
-        <p className="text-sm text-gray-300">회원 정보를 불러오는 중...</p>
-      )}
-
       <Section>
         <TitleLabel size="lg" type="required" title="받는 이" />
         <InputField
@@ -213,7 +188,7 @@ const ShippingInfo = React.memo(() => {
           {!isLogin && (
             <Button
               size="md"
-              onClick={sendAuthCode}
+              onClick={handleSendAuthCode}
               disabled={isSendingAuthCode}
               className="px-6 py-3"
             >
@@ -236,7 +211,7 @@ const ShippingInfo = React.memo(() => {
             />
             <Button
               size="md"
-              onClick={verifyAuthCode}
+              onClick={handleVerifyAuthCode}
               disabled={isVerifyingAuth}
               className="px-6 py-3"
             >
