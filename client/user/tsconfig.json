@@ -20,7 +20,7 @@
   "include": [
     "src/**/*",
     ".next/types/**/*.ts",
-    "../../packages/components/ui/Tab.tsx"
+    "../../packages/components/**/*"
   ],
   "exclude": ["node_modules"]
 }
