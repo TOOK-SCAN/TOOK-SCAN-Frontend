@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import { debounce } from 'lodash'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { searchAddress } from '../../../api'
+import { Icon } from '../../../components'
 
 interface SearchAddressProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
@@ -20,8 +21,9 @@ export const SearchAddress = ({ onChange, closeModal }: SearchAddressProps) => {
 
   // 검색어 입력 시 자동으로 주소 검색
   const { data, hasNextPage, fetchNextPage } = useInfiniteQuery({
-    queryKey: ['search address', keyword],
-    queryFn: ({ pageParam = 1 }) => searchAddress(keyword, pageParam, 10),
+    queryKey: ['search address', keyword, center.lat, center.lng],
+    queryFn: ({ pageParam = 1 }) =>
+      searchAddress(keyword, center.lat, center.lng, pageParam, 10),
     enabled: !!keyword,
     getNextPageParam: (lastPage, allPages) => {
       if (!lastPage || lastPage.keywordResults.length === 0) {
@@ -78,7 +80,12 @@ export const SearchAddress = ({ onChange, closeModal }: SearchAddressProps) => {
   return (
     <div className="flex h-96 w-full flex-col">
       <div className="border-blue-secondary flex h-14 w-full flex-row items-center justify-start rounded-lg border-2">
-        <span className="text-blue-primary ml-2 text-lg">🔍</span>
+        <Icon
+          id="search"
+          width={20}
+          height={20}
+          className="text-blue-primary ml-2"
+        />
         <input
           ref={inputRef}
           type="text"
@@ -114,7 +121,12 @@ export const SearchAddress = ({ onChange, closeModal }: SearchAddressProps) => {
                   }}
                 >
                   <div className="flex w-full cursor-pointer flex-row items-center justify-start p-1 py-4">
-                    <span className="text-blue-primary mx-2 text-lg">📍</span>
+                    <Icon
+                      id="place"
+                      width={24}
+                      height={24}
+                      className="text-blue-primary mx-2"
+                    />
                     <div className="flex w-full flex-col items-start justify-center">
                       <p className="font-semibold text-black">
                         {doc.place_name}

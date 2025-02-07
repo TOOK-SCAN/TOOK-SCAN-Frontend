@@ -32,6 +32,8 @@ export interface KakaoAddressResponse {
 
 export async function searchAddress(
   keyword: string,
+  lat: number,
+  lng: number,
   page: string | number = 1,
   size: string | number = 10
 ) {
@@ -49,6 +51,8 @@ export async function searchAddress(
         },
         searchParams: {
           query: keyword,
+          x: lng.toString(),
+          y: lat.toString(),
           page: validPage.toString(),
           size: validSize.toString(),
         },
