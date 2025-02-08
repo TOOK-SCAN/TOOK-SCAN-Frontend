@@ -9,3 +9,8 @@ export type UserInfoRes = Common<{
   account_type: 'USER' | 'ADMIN'
   name: string
 }>
+
+export type SendAuthCodeRes = Common<{
+  username: string
+  phone_number: string
+}>
