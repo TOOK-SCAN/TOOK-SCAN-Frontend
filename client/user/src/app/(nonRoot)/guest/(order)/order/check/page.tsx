@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import { Button, InputField } from '@tookscan/components'
 import { useRouter } from 'next/navigation'
 

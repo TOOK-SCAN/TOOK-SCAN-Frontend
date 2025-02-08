@@ -1,7 +1,7 @@
 'use client'
 
-import { Icon } from '@/components'
 import Link from 'next/link'
+import { Icon } from '../../../../packages/components/ui/Icon'
 
 export const Footer = () => {
   return (
