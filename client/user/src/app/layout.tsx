@@ -1,7 +1,13 @@
-import { Footer, Header } from '@/components'
+import {
+  Footer,
+  GoogleTagManager,
+  GoogleTagManagerNoScript,
+  Header,
+} from '@/components'
 import type { LayoutProps } from '@/types/common'
 import {
   CommonSpriteSheet,
+  Modal,
   QueryProvider,
   SpriteSheet,
   ToastProvider,
@@ -9,9 +15,6 @@ import {
 import '@tookscan/styles/globals.css'
 import '@tookscan/styles/reset.css'
 import Head from 'next/head'
-
-import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components'
-import { Modal } from '@tookscan/components'
 
 export default function RootLayout({ children }: LayoutProps) {
   return (

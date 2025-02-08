@@ -18,7 +18,7 @@ export const Modal = () => {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [closeModal])
 
-  if (!isOpen) return <>open</>
+  if (!isOpen) return null
 
   return (
     <div
