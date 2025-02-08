@@ -26,6 +26,8 @@ const ShippingInfo = React.memo(() => {
   const [showVerificationInput, setShowVerificationInput] = useState(false)
   const [isSendingAuthCode, setIsSendingAuthCode] = useState(false)
   const [isVerifyingAuth, setIsVerifyingAuth] = useState(false)
+  const [isPhoneValid, setIsPhoneValid] = useState(false)
+  const [isVerificationValid, setIsVerificationValid] = useState(false)
 
   const { data } = useQuery({
     queryKey: ['userSummaries'],
@@ -63,13 +65,51 @@ const ShippingInfo = React.memo(() => {
     setIsSendingAuthCode(false)
   }
 
-  // 인증번호 확인 요청
   const handleVerifyAuthCode = async () => {
     setIsVerifyingAuth(true)
-    await verifyAuthCode(shippingInfo.phone, verificationCode)
-    showToast('인증되었습니다.', 'success', 'check')
-    setIsVerified(true)
-    setIsVerifyingAuth(false)
+    try {
+      await verifyAuthCode(shippingInfo.phone, verificationCode)
+      openModal(
+        <div className="flex flex-col items-center p-6">
+          <h2 className="text-lg font-bold text-black">인증 성공</h2>
+          <p className="mt-4 text-sm text-gray-600">
+            휴대폰 인증이 완료되었습니다.
+          </p>
+          <Button
+            className="mt-4 w-full"
+            size="lg"
+            variant="primary"
+            onClick={closeModal}
+          >
+            확인
+          </Button>
+        </div>
+      )
+      setIsVerified(true)
+    } catch (error) {
+      openModal(
+        <div className="flex flex-col items-center p-6">
+          <h2 className="text-lg font-bold text-red-500">인증 실패</h2>
+          <p className="mt-4 text-sm text-gray-600">
+            인증번호가 올바르지 않습니다.
+          </p>
+          <Button
+            className="mt-4 w-full"
+            size="lg"
+            variant="primary"
+            onClick={() => {
+              setVerificationCode('') // 인증번호 초기화
+              setIsVerificationValid(false)
+              closeModal()
+            }}
+          >
+            다시 입력하기
+          </Button>
+        </div>
+      )
+    } finally {
+      setIsVerifyingAuth(false)
+    }
   }
   const handleInputChange = (
     key: keyof typeof shippingInfo,
@@ -149,7 +189,6 @@ const ShippingInfo = React.memo(() => {
           }}
         />
       </div>
-
       <Section>
         <TitleLabel size="lg" type="required" title="받는 이" />
         <InputField
@@ -172,6 +211,8 @@ const ShippingInfo = React.memo(() => {
               const input = e.target as HTMLInputElement
               const rawValue = input.value.replace(/\D/g, '')
 
+              setIsPhoneValid(rawValue.length >= 11)
+
               if (rawValue.length > 11) {
                 input.value = rawValue.slice(0, 11)
               }
@@ -181,6 +222,7 @@ const ShippingInfo = React.memo(() => {
                 .replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/, (_, p1, p2, p3) =>
                   [p1, p2, p3].filter(Boolean).join('-')
                 )
+
               setShippingInfo((prev) => ({ ...prev, phone: formattedValue }))
             }}
             placeholder="010-1234-5678"
@@ -189,7 +231,11 @@ const ShippingInfo = React.memo(() => {
             <Button
               size="md"
               onClick={handleSendAuthCode}
-              disabled={isSendingAuthCode}
+              disabled={
+                !isPhoneValid ||
+                isSendingAuthCode ||
+                shippingInfo.recipient.trim() === ''
+              }
               className="px-6 py-3"
             >
               인증받기
@@ -197,7 +243,6 @@ const ShippingInfo = React.memo(() => {
           )}
         </div>
       </Section>
-
       {/*비회원일 때 인증번호 입력 필드 표시*/}
       {showVerificationInput && (
         <Section>
@@ -206,13 +251,22 @@ const ShippingInfo = React.memo(() => {
             <InputField
               type="simple"
               value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
+              onChange={(e) => {
+                const input = e.target as HTMLInputElement
+                let rawValue = input.value.replace(/\D/g, '')
+
+                if (rawValue.length > 6) {
+                  rawValue = rawValue.slice(0, 6)
+                }
+                setVerificationCode(rawValue)
+                setIsVerificationValid(rawValue.length >= 6)
+              }}
               placeholder="인증번호"
             />
             <Button
               size="md"
               onClick={handleVerifyAuthCode}
-              disabled={isVerifyingAuth}
+              disabled={isVerifyingAuth || !isVerificationValid}
               className="px-6 py-3"
             >
               인증하기
