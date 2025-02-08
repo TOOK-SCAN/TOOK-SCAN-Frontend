@@ -321,7 +321,6 @@ const ShippingInfo = React.memo(() => {
                 size="md"
                 className="whitespace-nowrap px-6 py-3"
                 onClick={() => {
-                  console.log('open modal')
                   openModal(
                     <SearchAddress
                       closeModal={closeModal}

@@ -2,7 +2,6 @@ import { Footer, Header } from '@/components'
 import type { LayoutProps } from '@/types/common'
 import {
   CommonSpriteSheet,
-  ModalProvider,
   QueryProvider,
   SpriteSheet,
   ToastProvider,
@@ -12,6 +11,7 @@ import '@tookscan/styles/reset.css'
 import Head from 'next/head'
 
 import { GoogleTagManager, GoogleTagManagerNoScript } from '@/components'
+import { Modal } from '@tookscan/components'
 
 export default function RootLayout({ children }: LayoutProps) {
   return (
@@ -28,16 +28,15 @@ export default function RootLayout({ children }: LayoutProps) {
         {CommonSpriteSheet}
         <GoogleTagManagerNoScript />
         <QueryProvider>
+          <Modal />
           <ToastProvider>
-            <ModalProvider>
-              <div className="flex min-h-screen flex-col">
-                <Header />
-                <main className="flex-1 overflow-hidden">{children}</main>
-                <div className="mt-auto">
-                  <Footer />
-                </div>
+            <div className="flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1 overflow-hidden">{children}</main>
+              <div className="mt-auto">
+                <Footer />
               </div>
-            </ModalProvider>
+            </div>
           </ToastProvider>
         </QueryProvider>
       </body>
