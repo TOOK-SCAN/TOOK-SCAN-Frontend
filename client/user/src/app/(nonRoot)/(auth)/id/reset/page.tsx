@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
-import InputField from '@tookscan/components/ui/InputField'
-import { Button } from '@tookscan/components/ui/Button'
 import Modal from '@/app/_components/Modal'
+import { Button } from '@tookscan/components/ui/Button'
+import { InputField } from '@tookscan/components/ui/InputField'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 const FindIdPage = () => {
   const [phone, setPhone] = useState('')
