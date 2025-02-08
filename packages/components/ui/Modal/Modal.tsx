@@ -1,16 +1,11 @@
 'use client'
 
 import clsx from 'clsx'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useModal } from '../../../hooks'
 
-interface ModalProps {
-  type: string
-  children: React.ReactNode
-}
-
-const Modal: React.FC<ModalProps> = ({ type, children }) => {
-  const { closeModal } = useModal()
+export const Modal = () => {
+  const { isOpen, content, closeModal } = useModal()
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -20,18 +15,17 @@ const Modal: React.FC<ModalProps> = ({ type, children }) => {
     }
 
     window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [closeModal])
+
+  if (!isOpen) return <>open</>
 
   return (
     <div
       className={clsx(
         'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'
       )}
-      onClick={closeModal} // Close on background click
+      onClick={closeModal}
     >
       <div
         className={clsx(
@@ -40,10 +34,8 @@ const Modal: React.FC<ModalProps> = ({ type, children }) => {
         )}
         onClick={(e) => e.stopPropagation()}
       >
-        {children}
+        {content}
       </div>
     </div>
   )
 }
-
-export default Modal
