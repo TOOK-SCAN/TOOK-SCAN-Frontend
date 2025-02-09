@@ -1,8 +1,7 @@
 'use client'
 
-import { Banner } from '@tookscan/components'
 import type { MenuItem } from '@tookscan/components'
-import { Tab } from '@tookscan/components'
+import { Banner, Tab } from '@tookscan/components'
 import { usePathname, useRouter } from 'next/navigation'
 import type { LayoutProps } from '../../../types/common'
 

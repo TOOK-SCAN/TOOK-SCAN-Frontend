@@ -84,6 +84,37 @@ const Purchase = () => {
     },
   })
 
+  // ✅ 함수 분리 (switch + 서브 함수)
+  const isButtonDisabled = () => {
+    // 책이 하나도 없으면 비활성화
+    if (books.length === 0) return true
+
+    switch (pageIndex) {
+      case 1:
+        // 낙장X 책이 하나라도 있으면 주소+상세주소까지
+        // 아니면 수령인/전화번호만
+        return hasNonDropBooks(books)
+          ? !isValidFullAddress()
+          : !isValidBasicInfo()
+      case 2:
+        // 약관 3개 모두 동의해야 활성화
+        return !isAllTermsAccepted()
+      default:
+        // 그 외 단계는 기본 false (비활성화 X)
+        return false
+    }
+  }
+
+  const isValidFullAddress = () =>
+    shippingInfo.recipient &&
+    shippingInfo.phone &&
+    shippingInfo.address &&
+    shippingInfo.addressDetail
+
+  const isValidBasicInfo = () => shippingInfo.recipient && shippingInfo.phone
+
+  const isAllTermsAccepted = () => terms.terms1 && terms.terms2 && terms.terms3
+
   // 신청 함수
   const apply = async () => {
     const orderRequest: OrderRequest = {
@@ -120,7 +151,7 @@ const Purchase = () => {
 
   return (
     <div
-      // 전체를 감싸는 컨테이너
+      // 전체 컨테이너
       className="mx-auto flex w-full min-w-[375px] flex-col rounded-3xl bg-white px-4 pb-8 pt-3 sm:max-w-[800px] sm:px-6 lg:gap-6"
     >
       {/* 헤더 영역: 제목 / 총액 / 드롭다운 아이콘(모바일 전용) */}
@@ -215,23 +246,9 @@ const Purchase = () => {
           size="lg"
           className="w-full"
           variant="primary"
-          disabled={
-            books.length === 0 ||
-            (!(terms.terms1 && terms.terms2 && terms.terms3) &&
-              pageIndex === 2) ||
-            (pageIndex === 1 &&
-              (hasNonDropBooks(books)
-                ? !(
-                    shippingInfo.recipient &&
-                    shippingInfo.phone &&
-                    shippingInfo.address &&
-                    shippingInfo.addressDetail
-                  )
-                : !(shippingInfo.recipient && shippingInfo.phone)))
-          }
+          disabled={isButtonDisabled()}
           onClick={() => {
             if (pageIndex === 0 || pageIndex === 1) {
-              // 다음 단계로 이동
               setPageIndex((prev: number) => prev + 1)
             } else if (pageIndex === 2) {
               // 결제(최종) 단계
