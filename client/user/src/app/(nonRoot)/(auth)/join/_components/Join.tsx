@@ -53,7 +53,8 @@ const Join = () => {
     return () => clearInterval(timer)
   }, [verificationState.timeLeft, setVerificationState])
 
-  const idValidationMessage = ''
+  // const idValidationMessage = ''
+  const idValidationMessage = stepState.id ? '' : '아이디를 입력해주세요.'
 
   return (
     <div className="mb-12 flex flex-col items-center">
