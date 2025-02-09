@@ -1,9 +1,9 @@
 'use client'
 
+import { Icon } from '@tookscan/components'
 import { useAuth } from '@tookscan/hooks'
 import clsx from 'clsx'
 import Link from 'next/link'
-import { Icon } from '../../../../../packages/components/ui/Icon'
 
 export const ClientHeader = () => {
   const isMobile = false

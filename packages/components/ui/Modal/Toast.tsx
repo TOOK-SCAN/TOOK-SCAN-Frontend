@@ -1,8 +1,8 @@
 'use client'
 
+import { Icon } from '@tookscan/components'
 import clsx from 'clsx'
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { Icon } from '../../../components'
 
 type ToastType = 'success' | 'error' | 'info'
 
