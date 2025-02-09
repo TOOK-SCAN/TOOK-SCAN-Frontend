@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface ClickedProps {
   isClicked: boolean
 }
@@ -36,8 +34,8 @@ const DropIcon = ({ isClicked }: ClickedProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="116"
-      height="116"
+      width="5rem"
+      height="5rem"
       viewBox="0 0 116 116"
       fill="none"
     >
@@ -57,8 +55,8 @@ const LooseIcon = ({ isClicked }: ClickedProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="148"
-      height="120"
+      width="5rem"
+      height="5rem"
       viewBox="0 0 148 120"
       fill="none"
     >
@@ -89,8 +87,8 @@ const SpiralIcon = ({ isClicked }: ClickedProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="125"
-      height="120"
+      width="4rem"
+      height="5rem"
       viewBox="0 0 125 120"
       fill="none"
     >
