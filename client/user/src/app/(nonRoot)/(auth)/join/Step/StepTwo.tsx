@@ -51,6 +51,10 @@ const StepTwoUI = ({
           </p>
         )}
         <div className="space-y-3">
+          <p className="mb-2 text-sm text-gray-600">
+            비밀번호는 8글자 이상 20자 이하이며, 영어 대소문자, 숫자, 특수문자
+            중 3가지 이상을 포함해야 합니다.
+          </p>
           <InputField
             type="password"
             placeholder="비밀번호 (8글자 이상 20자 이하, 영어 대소문자, 숫자, 특수문자 중 3가지 이상 사용)"
@@ -70,6 +74,12 @@ const StepTwoUI = ({
         size="lg"
         className="mt-4 w-full"
         onClick={handlers.handleSignUp}
+        disabled={
+          !stepState.id ||
+          !stepState.password ||
+          !stepState.confirmPassword ||
+          stepState.password !== stepState.confirmPassword
+        }
       >
         가입하기
       </Button>
