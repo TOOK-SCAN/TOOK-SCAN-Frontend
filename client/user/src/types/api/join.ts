@@ -1,8 +1,5 @@
-export interface defaultResponse<T, E = unknown> {
-  success: boolean
-  data: T
-  error: E | null
-}
+import type { Common } from '@tookscan/types'
+
 export interface SignUpDefaultRequest {
   name: string
   serial_id: string
@@ -17,6 +14,6 @@ export interface SignUpOAuthRequest {
   marketing_allowed: boolean
 }
 
-export type SignUpResponse = defaultResponse<null>
+export type SignUpResponse = Common<null>
 
-export type SignUpIDCheckResponse = defaultResponse<{ is_valid: boolean }>
+export type SignUpIDCheckResponse = Common<{ is_valid: boolean }>

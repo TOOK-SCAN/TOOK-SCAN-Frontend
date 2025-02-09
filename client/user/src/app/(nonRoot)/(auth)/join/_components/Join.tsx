@@ -2,10 +2,10 @@
 'use client'
 
 import { useEffect } from 'react'
-import Modal from './_components/Modal'
-import { useJoinHandlers, useJoinStore } from './JoinStore'
-import StepOneUI from './Step/StepOne'
-import StepTwoUI from './Step/StepTwo'
+import { useJoinHandlers, useJoinStore } from '../JoinStore'
+import StepOneUI from '../Step/StepOne'
+import StepTwoUI from '../Step/StepTwo'
+import Modal from './Modal'
 
 const Join = () => {
   const {
