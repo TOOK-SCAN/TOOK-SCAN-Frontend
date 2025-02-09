@@ -24,7 +24,7 @@ const PageInfo = () => {
       setPageIndex((prev: number) => prev - 1)
   }
   return (
-    <div className={clsx('flex w-full flex-col justify-start gap-6')}>
+    <div className={clsx('mx-auto flex w-full flex-col justify-start gap-6')}>
       <div className={clsx('flex flex-row gap-4')}>
         {[0, 1, 2].map((index) => (
           <Icon
@@ -39,19 +39,19 @@ const PageInfo = () => {
         ))}
       </div>
       <div className="gap-2">
-        <h2 className={clsx('text-2xl font-semibold text-blue-primary')}>
+        <h2 className={clsx('h2 font-semibold text-blue-primary')}>
           STEP {pageIndex + 1}.
         </h2>
-        <h2 className={clsx('text-4xl font-bold')}>
+        <h2 className={clsx('font-bold title2')}>
           {stepDetails[pageIndex].title || '잘못된 단계입니다.'}
         </h2>
       </div>
-      <p className="text-xl text-black-800">
+      <p className="text-black-800 body1">
         {stepDetails[pageIndex].description || '잘못된 단계입니다.'}
       </p>
       {pageIndex !== 0 && (
         <button
-          className={clsx('flex text-xl text-blue-primary')}
+          className={clsx('flex text-blue-primary btn2')}
           onClick={handleGoBack}
         >
           &lt; 이전으로

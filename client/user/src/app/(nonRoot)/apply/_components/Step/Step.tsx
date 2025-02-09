@@ -1,6 +1,6 @@
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
-import { ScanInfo, ShippingInfo, TermsAgreement } from '../index'
 import clsx from 'clsx'
+import { ScanInfo, ShippingInfo, TermsAgreement } from '../index'
 
 const Step = {
   0: () => <ScanInfo />,
@@ -14,7 +14,7 @@ const StepSheet = () => {
   return StepComponent ? (
     <div
       className={clsx(
-        'flex w-[60rem] flex-col gap-12 rounded-3xl bg-white p-12'
+        'mx-auto flex w-full max-w-[60rem] flex-col gap-12 rounded-3xl bg-white p-12'
       )}
     >
       <StepComponent />
