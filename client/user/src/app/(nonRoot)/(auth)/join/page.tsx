@@ -1,7 +1,9 @@
 'use client'
 
-import Join from './Join'
+import Join from './_components/Join'
 
-export default function Page() {
+const Page = () => {
   return <Join />
 }
+
+export default Page
