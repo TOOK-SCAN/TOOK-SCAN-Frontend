@@ -226,12 +226,12 @@ const Purchase = () => {
           </ul>
 
           <div className="flex items-center justify-between px-2 pt-4 sm:px-4 sm:pt-8">
-            <p className="font-semibold">배송비</p>
+            <p className="caption1">배송비</p>
             <p>
               {hasNonDropBooks(books) ? (
                 '2,500원'
               ) : (
-                <span className="text-lg text-blue-primary">
+                <span className="text-blue-primary caption1">
                   <del className="text-black">2,500원</del> 0원
                 </span>
               )}
@@ -254,7 +254,7 @@ const Purchase = () => {
               // 결제(최종) 단계
               openModal(
                 <div className="flex w-full flex-col">
-                  <div className="pt-6 text-center text-lg font-bold text-black">
+                  <div className="pt-6 text-center font-bold text-black btn1">
                     스캔 신청
                   </div>
                   <div className="mt-4 h-[1px] w-full bg-gray-300" />
