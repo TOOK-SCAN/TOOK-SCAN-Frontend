@@ -21,7 +21,9 @@ export const signUpOAuth = async (
 // 아이디 중복검사
 export const signUpIDCheck = async (
   serial_id: string
-): Promise<SignUpIDCheckResponse> =>
-  httpInstance
-    .get(`auth/existence/serial-id?serial-id=${encodeURIComponent(serial_id)}`)
+): Promise<SignUpIDCheckResponse> => {
+  const params = new URLSearchParams({ 'serial-id': serial_id })
+  return httpInstance
+    .get(`auth/existence/serial-id?${params.toString()}`)
     .json()
+}
