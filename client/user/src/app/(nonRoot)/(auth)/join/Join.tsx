@@ -49,7 +49,6 @@ const Join = () => {
     return () => clearInterval(timer)
   }, [verificationState.timeLeft, setVerificationState])
 
-  // idValidationMessage은 별도 상태로 관리하지 않으므로 빈 문자열 전달 (필요시 추가 가능)
   const idValidationMessage = ''
 
   return (

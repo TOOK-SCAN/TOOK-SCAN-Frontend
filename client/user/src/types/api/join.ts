@@ -1,7 +1,7 @@
-export interface defaultResponse<T> {
+export interface defaultResponse<T, E = unknown> {
   success: boolean
   data: T
-  error: null
+  error: E | null
 }
 export interface SignUpDefaultRequest {
   name: string
