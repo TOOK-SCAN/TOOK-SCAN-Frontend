@@ -19,6 +19,8 @@ const Join = () => {
     setAgreement,
     modal,
     setModal,
+    isValidating,
+    setIsValidating,
   } = useJoinStore()
 
   const handlers = useJoinHandlers({
@@ -30,6 +32,8 @@ const Join = () => {
     setAgreement,
     modal,
     setModal,
+    isValidating,
+    setIsValidating,
   })
 
   // 인증 타이머 효과
@@ -72,6 +76,7 @@ const Join = () => {
           stepState={stepState}
           handlers={handlers}
           idValidationMessage={idValidationMessage}
+          isValidating={isValidating}
         />
       )}
       {modal.isOpen && (

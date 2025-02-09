@@ -42,6 +42,8 @@ export const useJoinStore = () => {
     content: { title: '', content: '' },
   })
 
+  const [isValidating, setIsValidating] = useState<boolean>(false)
+
   return {
     step,
     setStep,
@@ -53,6 +55,8 @@ export const useJoinStore = () => {
     setAgreement,
     modal,
     setModal,
+    isValidating,
+    setIsValidating,
   }
 }
 
@@ -116,6 +120,8 @@ export const useJoinHandlers = (store: {
       content: { title: string; content: string }
     }>
   >
+  isValidating: boolean
+  setIsValidating: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
   const router = useRouter()
 
@@ -179,11 +185,16 @@ export const useJoinHandlers = (store: {
           verificationMessage: '',
         }))
       } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : '인증 코드를 보내는 데 실패했습니다.'
         store.setVerificationState((prev) => ({
           ...prev,
           isSendingAuthCode: false,
+          verificationMessage: errorMessage,
         }))
-        openModal('인증 실패', '인증 코드를 보내는 데 실패했습니다.')
+        openModal('인증 실패', errorMessage)
       }
     },
     // 인증 확인
@@ -240,8 +251,10 @@ export const useJoinHandlers = (store: {
 
     // 아이디 중복 확인
     handleIdValidation: async () => {
+      store.setIsValidating(true)
       if (!store.stepState.id.trim()) {
         openModal('에러', '아이디를 입력하세요.')
+        store.setIsValidating(false)
         return
       }
       try {
@@ -253,11 +266,22 @@ export const useJoinHandlers = (store: {
         }
       } catch (error) {
         openModal('에러', '아이디 중복 확인에 실패했습니다.')
+      } finally {
+        store.setIsValidating(false)
       }
     },
 
     // 회원가입
     handleSignUp: async () => {
+      const passwordRegex =
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/
+      if (!passwordRegex.test(store.stepState.password)) {
+        openModal(
+          '비밀번호 오류',
+          '비밀번호는 8자 이상, 20자 이하이며, 영문, 숫자, 특수문자를 포함해야 합니다.'
+        )
+        return
+      }
       if (store.stepState.password !== store.stepState.confirmPassword) {
         openModal('비밀번호 오류', '비밀번호와 확인이 일치하지 않습니다.')
         return
