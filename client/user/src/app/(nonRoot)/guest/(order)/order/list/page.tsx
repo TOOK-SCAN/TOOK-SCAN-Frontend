@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
-import Link from 'next/link'
 import { Button, DetailBox as OrderDetailBox } from '@tookscan/components'
 import html2canvas from 'html2canvas'
+import Link from 'next/link'
+import { useState } from 'react'
 
 const OrderDetails = () => {
   const [showDetails, setShowDetails] = useState(false) // 자세히 버튼 상태
