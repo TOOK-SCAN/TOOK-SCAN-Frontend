@@ -42,6 +42,7 @@ export const useJoinStore = () => {
     content: { title: '', content: '' },
   })
 
+  const [idValidationMessage, setIdValidationMessage] = useState<string>('')
   const [isValidating, setIsValidating] = useState<boolean>(false)
 
   return {
@@ -55,6 +56,8 @@ export const useJoinStore = () => {
     setAgreement,
     modal,
     setModal,
+    idValidationMessage,
+    setIdValidationMessage,
     isValidating,
     setIsValidating,
   }
@@ -148,7 +151,10 @@ export const useJoinHandlers = (store: {
       }))
     },
     handleIdChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-      store.setStepState((prev) => ({ ...prev, id: e.target.value }))
+      const value = e.target.value.trim()
+      if (value.length > 20) return
+
+      store.setStepState((prev) => ({ ...prev, id: value }))
     },
     handlePasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => {
       store.setStepState((prev) => ({ ...prev, password: e.target.value }))
