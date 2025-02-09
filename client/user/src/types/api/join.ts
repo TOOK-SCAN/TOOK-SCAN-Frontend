@@ -1,3 +1,8 @@
+export interface defaultResponse<T> {
+  success: boolean
+  data: T
+  error: null
+}
 export interface SignUpDefaultRequest {
   name: string
   serial_id: string
@@ -12,16 +17,6 @@ export interface SignUpOAuthRequest {
   marketing_allowed: boolean
 }
 
-export interface SignUpResponse {
-  success: boolean
-  data: null
-  error: null
-}
+export type SignUpResponse = defaultResponse<null>
 
-export interface SignUpIDCheckResponse {
-  success: boolean
-  data: {
-    is_valid: boolean
-  }
-  error: null
-}
+export type SignUpIDCheckResponse = defaultResponse<{ is_valid: boolean }>
