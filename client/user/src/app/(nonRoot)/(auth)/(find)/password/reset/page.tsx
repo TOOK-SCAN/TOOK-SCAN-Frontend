@@ -61,7 +61,7 @@ const FindPwPage = () => {
     <>
       {/* 1단계: 아이디 입력 */}
       {step === 1 && (
-        <div className="mt-4 space-y-4">
+        <div className="flex flex-col gap-6">
           <InputField
             type="simple"
             placeholder="아이디"
@@ -69,7 +69,7 @@ const FindPwPage = () => {
             onChange={(e) => setId(e.target.value)}
           />
           <Button
-            className="mt-4 w-full"
+            className="w-full"
             variant="primary"
             size="md"
             onClick={() => setStep(2)} // 다음 단계로 이동

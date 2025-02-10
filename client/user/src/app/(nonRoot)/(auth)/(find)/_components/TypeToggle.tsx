@@ -15,7 +15,7 @@ export const TypeToggle = () => {
   }
 
   return (
-    <div className="flex w-[23.75rem] max-w-full px-3 py-4 h3">
+    <div className="body flex w-[23.75rem] max-w-full">
       <Link
         href={ID_FIND}
         className={clsx(
