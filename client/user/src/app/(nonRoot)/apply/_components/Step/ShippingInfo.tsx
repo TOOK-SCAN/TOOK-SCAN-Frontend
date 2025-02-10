@@ -24,7 +24,7 @@ const ShippingInfo = React.memo(() => {
   const [isVerified, setIsVerified] = useState(false) // 인증여부
   const [verificationCode, setVerificationCode] = useState('')
   const [showVerificationInput, setShowVerificationInput] = useState(false)
-  const [isSendingAuthCode, setIsSendingAuthCode] = usetate(false)
+  const [isSendingAuthCode, setIsSendingAuthCode] = useState(false)
   const [isVerifyingAuth, setIsVerifyingAuth] = useState(false)
   const [isPhoneValid, setIsPhoneValid] = useState(false)
   const [isVerificationValid, setIsVerificationValid] = useState(false)
