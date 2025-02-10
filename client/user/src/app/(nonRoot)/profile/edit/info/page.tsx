@@ -5,9 +5,8 @@ import {
   InputField,
   SearchAddress,
   TitleLabel,
-  useToast,
 } from '@tookscan/components'
-import { useModal } from '@tookscan/hooks'
+import { useModal, useToast } from '@tookscan/hooks'
 import { useEffect, useState } from 'react'
 
 const EditInfoPage = () => {
@@ -21,7 +20,7 @@ const EditInfoPage = () => {
     request: '',
   })
 
-  const showToast = useToast()
+  const { showToast } = useToast()
   const { openModal, closeModal } = useModal()
 
   // 입력 값 변경 핸들러 (key에 따라 formInfo 업데이트)

@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { sendAuthCode, verifyAuthCode } from '../api'
-import { useToast } from '../components'
+import { useToast } from '../hooks'
 import type { ErrorRes, SendAuthCodeRes, VerifyAuthCodeRes } from '../types'
 
 export const usePhoneAuth = () => {
@@ -11,7 +11,7 @@ export const usePhoneAuth = () => {
     verificationCode: '',
   })
   const [timeLeft, setTimeLeft] = useState(0)
-  const showToast = useToast()
+  const { showToast } = useToast()
 
   // 인증번호 요청
   const { mutateAsync: sendAuth } = useMutation<SendAuthCodeRes, ErrorRes>({
