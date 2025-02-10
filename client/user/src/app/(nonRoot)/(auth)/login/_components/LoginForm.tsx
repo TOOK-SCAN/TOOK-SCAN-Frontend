@@ -107,7 +107,7 @@ export const LoginForm = () => {
 
         {/* 아이디/비밀번호 찾기 링크 */}
         <div className="mt-6 flex justify-end text-xs text-gray-500">
-          <Link href="/id/reset">아이디 · 비밀번호 찾기</Link>
+          <Link href="/id/find">아이디 · 비밀번호 찾기</Link>
         </div>
       </div>
 

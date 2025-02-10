@@ -6,7 +6,7 @@ export type LoginRes = Common<{
 }>
 
 export type UserInfoRes = Common<{
-  account_type: 'USER' | 'ADMIN'
+  account_type: 'USER' | 'ADMIN' | 'GUEST'
   name: string
 }>
 
