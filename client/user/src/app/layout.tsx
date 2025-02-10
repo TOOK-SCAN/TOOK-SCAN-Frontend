@@ -1,4 +1,4 @@
-'use client'
+'use server'
 
 import { CommonLayout, Meta, Providers } from '@/app/_components'
 import { GoogleTagManagerNoScript } from '@/components'
@@ -6,7 +6,7 @@ import type { LayoutProps } from '@/types/common'
 import '@tookscan/styles/globals.css'
 import '@tookscan/styles/reset.css'
 
-export default function RootLayout({ children }: LayoutProps) {
+const RootLayout = async ({ children }: LayoutProps) => {
   return (
     <html lang="ko">
       <Meta />
@@ -19,3 +19,5 @@ export default function RootLayout({ children }: LayoutProps) {
     </html>
   )
 }
+
+export default RootLayout

@@ -23,7 +23,7 @@ export const TypeToggle = () => {
           pathname.startsWith(ID_FIND) ? style.active : style.inactive
         )}
       >
-        아이디찾기
+        아이디 찾기
       </Link>
       <Link
         href="/password/reset"
@@ -32,7 +32,7 @@ export const TypeToggle = () => {
           pathname.startsWith(PASSWORD_RESET) ? style.active : style.inactive
         )}
       >
-        비밀번호찾기
+        비밀번호 초기화
       </Link>
     </div>
   )

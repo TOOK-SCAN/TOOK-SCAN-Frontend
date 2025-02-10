@@ -1,7 +1,9 @@
+'use server'
+
 import { GoogleTagManager } from '@/components'
 import Head from 'next/head'
 
-export const Meta = () => {
+export const Meta = async () => {
   return (
     <Head>
       <GoogleTagManager />
