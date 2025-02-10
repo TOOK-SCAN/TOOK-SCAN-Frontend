@@ -141,7 +141,7 @@ const FindIdPage = () => {
   return (
     <>
       {/* 입력 필드 */}
-      <div className="mt-4 space-y-4">
+      <div className="flex flex-col gap-4">
         <InputField
           type="simple"
           placeholder="이름"
@@ -186,7 +186,7 @@ const FindIdPage = () => {
         )}
       </div>
       <Button
-        className="mt-4 w-full"
+        className="w-full"
         variant="primary"
         size="md"
         onClick={() => verifyAuth().then((res) => res.success && findId())}
