@@ -119,7 +119,7 @@ const FindPwPage = () => {
                                   copyData={res.data.temporary_password}
                                 />
                               </div>
-                              <div className="flex justify-center gap-3">
+                              <div className="flex w-full justify-center gap-3">
                                 <Button
                                   className="flex-1"
                                   variant="secondary"
@@ -132,7 +132,10 @@ const FindPwPage = () => {
                                   className="flex-1"
                                   variant="primary"
                                   size="md"
-                                  onClick={() => router.push('/login')}
+                                  onClick={() => {
+                                    closeModal()
+                                    router.push('/login')
+                                  }}
                                 >
                                   로그인
                                 </Button>

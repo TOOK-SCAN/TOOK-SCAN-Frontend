@@ -1,6 +1,8 @@
+'use server'
+
 import Script from 'next/script'
 
-export const GoogleTagManagerNoScript = () => {
+export const GoogleTagManagerNoScript = async () => {
   const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
   if (!GTM_ID) {
@@ -21,7 +23,7 @@ export const GoogleTagManagerNoScript = () => {
   )
 }
 
-export const GoogleTagManager = () => {
+export const GoogleTagManager = async () => {
   const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
   if (!GTM_ID) {
