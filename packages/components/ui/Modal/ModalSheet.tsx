@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import { useEffect } from 'react'
 import { useModal } from '../../../hooks'
 
-export const Modal = () => {
+export const ModalSheet = () => {
   const { isOpen, content, closeModal } = useModal()
 
   useEffect(() => {
