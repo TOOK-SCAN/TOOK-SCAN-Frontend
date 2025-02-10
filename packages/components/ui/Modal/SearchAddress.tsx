@@ -1,10 +1,10 @@
 'use client'
 
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { Icon } from '@tookscan/components'
 import clsx from 'clsx'
 import { debounce } from 'lodash'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { Icon } from '../'
 import { searchAddress } from '../../../api'
 
 interface SearchAddressProps {
