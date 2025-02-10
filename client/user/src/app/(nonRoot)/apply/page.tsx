@@ -24,7 +24,6 @@ const ApplyContent = () => {
         event.returnValue = '페이지를 나가시면 작성 중인 내용이 사라집니다! '
       }
     }
-
     window.addEventListener('beforeunload', handleBeforeUnload)
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
@@ -54,7 +53,7 @@ const ApplyContent = () => {
 
           {/* books가 있을 때만 Purchase 보여주고, 없으면 안내문구 */}
           {books.length > 0 ? (
-            // 데스크톱 전용 (lg 이상) Purchase
+            // 데스크톱 전용 (lg 이상): Purchase 바로 표시
             <div className="hidden w-full lg:block">
               <Purchase />
             </div>
@@ -71,11 +70,7 @@ const ApplyContent = () => {
         </div>
       </div>
 
-      {/* 
-        모바일/태블릿 (lg 미만)에서는 Purchase를 
-        화면 아래에서 올라오는 Bottom Sheet 형태로 고정 표시
-        books가 있을 때만 표시 
-      */}
+      {/* 모바일/태블릿 (lg 미만)에서는 Purchase를 화면 아래에 고정 */}
       {books.length > 0 && (
         <div className="fixed bottom-0 left-0 right-0 z-50 block lg:hidden">
           <Purchase />
