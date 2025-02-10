@@ -2,7 +2,7 @@ import { UserInfoRes } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { userInfo } from '../api'
 
-export type AccountType = 'USER' | 'ADMIN'
+export type AccountType = 'USER' | 'ADMIN' | 'GUEST'
 
 export interface AuthState {
   isLogin: boolean
@@ -21,12 +21,12 @@ export const useAuth = () => {
     },
   })
 
-  const isLogin = data?.success && !data.error
+  const isLogin = data?.data.account_type !== 'GUEST'
 
   return {
     isLogin,
-    username: data?.data.name || '',
-    accountType: data?.data.account_type || 'USER',
+    username: data?.data.name || 'null',
+    accountType: data?.data.account_type || 'GUEST',
     isLoading,
     error,
   }
