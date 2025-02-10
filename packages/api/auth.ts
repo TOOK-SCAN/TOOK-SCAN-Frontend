@@ -1,5 +1,6 @@
 import { httpInstance } from '../config'
 import type {
+  FindPasswordRes,
   FindSerialIdRes,
   LoginRes,
   SendAuthCodeRes,
@@ -61,6 +62,20 @@ export const findSerialId = async (
   const response = await httpInstance.post('auth/verification/serial-id', {
     json: {
       name: username,
+      phone_number: phone.replace(/-/g, ''),
+    },
+  })
+
+  return response.json()
+}
+
+export const findPassword = async (
+  id: string,
+  phone: string
+): Promise<FindPasswordRes> => {
+  const response = await httpInstance.post('auth/reissue/password', {
+    json: {
+      serial_id: id,
       phone_number: phone.replace(/-/g, ''),
     },
   })

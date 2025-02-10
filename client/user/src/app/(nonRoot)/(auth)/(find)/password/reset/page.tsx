@@ -1,61 +1,26 @@
 'use client'
 
-import Modal from '@/app/_components/Modal'
-import { Button, InputField } from '@tookscan/components'
-import { useEffect, useState } from 'react'
+import { SuccessField } from '@/app/(nonRoot)/(auth)/(find)/_components/SuccessField'
+import { findPassword } from '@tookscan/api'
+import { Button, Confirm, InputField } from '@tookscan/components'
+import { useModal, usePhoneAuth } from '@tookscan/hooks'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 const FindPwPage = () => {
-  const [step, setStep] = useState(1) // 단계 상태
-  const [id, setId] = useState('') // 1단계: 아이디 입력
-  const [name, setName] = useState('') // 2단계: 이름 입력
-  const [phone, setPhone] = useState('') // 2단계: 전화번호 입력
-  const [verificationCode, setVerificationCode] = useState('')
-  const [timeLeft, setTimeLeft] = useState(0)
-  const [isVerified, setIsVerified] = useState(false)
-  const [verificationResult, setVerificationResult] = useState<string | null>(
-    null
-  ) // 인증 결과 표시
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalProps, setModalProps] = useState({
-    type: 'input',
-    content: '',
-    icon: '',
-    title: '회원님의 임시비밀번호 입니다.',
-  })
+  const [step, setStep] = useState(1)
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout
-    if (timeLeft > 0) {
-      timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000)
-    }
-    return () => clearInterval(timer)
-  }, [timeLeft])
-
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60)
-    const seconds = time % 60
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
-  }
-
-  const handleVerification = () => {
-    if (verificationCode === '111') {
-      setVerificationResult('인증되었습니다.')
-      setIsVerified(true)
-    } else {
-      setVerificationResult('인증에 실패했습니다.')
-      setIsVerified(false)
-    }
-  }
-
-  const handleModal = () => {
-    setModalProps({
-      type: 'input',
-      content: 'password',
-      icon: '',
-      title: '회원님의 임시비밀번호 입니다.',
-    })
-    setIsModalOpen(true)
-  }
+  const {
+    formValues,
+    setFormValues,
+    sendAuth,
+    verifyAuth,
+    timeLeft,
+    formatTime,
+  } = usePhoneAuth()
+  const [serialId, setSerialId] = useState('')
+  const { openModal, closeModal } = useModal()
+  const router = useRouter()
 
   return (
     <>
@@ -65,15 +30,15 @@ const FindPwPage = () => {
           <InputField
             type="simple"
             placeholder="아이디"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            value={serialId}
+            onChange={(e) => setSerialId(e.target.value)}
           />
           <Button
             className="w-full"
             variant="primary"
             size="md"
             onClick={() => setStep(2)} // 다음 단계로 이동
-            disabled={!id}
+            disabled={!serialId}
           >
             다음
           </Button>
@@ -85,23 +50,27 @@ const FindPwPage = () => {
           <InputField
             type="simple"
             placeholder="이름"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={formValues.username}
+            onChange={(e) =>
+              setFormValues({ ...formValues, username: e.target.value })
+            }
           />
           <div className="flex items-center space-x-2">
             <InputField
               type="simple"
               placeholder="전화번호"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              value={formValues.phone}
+              onChange={(e) =>
+                setFormValues({ ...formValues, phone: e.target.value })
+              }
             />
             <Button
               className="w-[120px]"
               variant="primary"
               size="md"
-              onClick={() => setTimeLeft(90)}
+              onClick={() => sendAuth()}
             >
-              인증받기
+              인증 받기
             </Button>
           </div>
           {timeLeft > 0 && (
@@ -109,36 +78,21 @@ const FindPwPage = () => {
               <InputField
                 type="simple"
                 placeholder="인증번호 입력"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
+                value={formValues.verificationCode}
+                onChange={(e) =>
+                  setFormValues({
+                    ...formValues,
+                    verificationCode: e.target.value,
+                  })
+                }
+                suffix={timeLeft > 0 ? formatTime(timeLeft) : '시간 초과'}
               />
-              <span className="text-sm text-red-500">
-                {formatTime(timeLeft)}
-              </span>
-              <Button
-                className="w-[100px]"
-                variant="primary"
-                size="md"
-                onClick={handleVerification}
-                disabled={timeLeft <= 0}
-              >
-                인증확인
-              </Button>
             </div>
           )}
-          {/* 인증 결과 표시 */}
-          {verificationResult && (
-            <div
-              className={`mt-2 text-sm ${
-                isVerified ? 'text-blue-500' : 'text-red-500'
-              }`}
-            >
-              {verificationResult}
-            </div>
-          )}
-          <div className="mt-6 flex justify-between">
+
+          <div className="mt-6 flex justify-between gap-3">
             <Button
-              className="w-[48%]"
+              className="flex-1"
               variant="secondary"
               size="md"
               onClick={() => setStep(1)}
@@ -146,27 +100,88 @@ const FindPwPage = () => {
               이전
             </Button>
             <Button
-              className="w-[48%]"
-              variant={isVerified ? 'primary' : 'disabled'}
+              className="flex-1"
+              variant="primary"
               size="md"
-              onClick={handleModal}
-              disabled={!name || !phone || !isVerified}
+              onClick={() =>
+                verifyAuth().then((res) => {
+                  if (res.success) {
+                    findPassword(serialId, formValues.phone)
+                      .then((res) => {
+                        if (res.success) {
+                          openModal(
+                            <Confirm title="회원님의 임시 비밀번호입니다.">
+                              <div className="flex flex-col items-center gap-4">
+                                <p className="flex w-full items-center justify-center body2">
+                                  안전을 위해 비밀번호를 변경해 주세요
+                                </p>
+                                <SuccessField
+                                  copyData={res.data.temporary_password}
+                                />
+                              </div>
+                              <div className="flex justify-center gap-3">
+                                <Button
+                                  className="flex-1"
+                                  variant="secondary"
+                                  size="md"
+                                  onClick={closeModal}
+                                >
+                                  닫기
+                                </Button>
+                                <Button
+                                  className="flex-1"
+                                  variant="primary"
+                                  size="md"
+                                  onClick={() => router.push('/login')}
+                                >
+                                  로그인
+                                </Button>
+                              </div>
+                            </Confirm>
+                          )
+                        }
+                      })
+                      .catch((err) => {
+                        openModal(
+                          <Confirm title="비밀번호 찾기 실패">
+                            <p className="flex body2">{err.error.message}</p>
+                            <div className="flex w-full gap-3">
+                              <Button
+                                variant="secondary"
+                                size="md"
+                                onClick={closeModal}
+                                className="flex-1"
+                              >
+                                닫기
+                              </Button>
+                              <Button
+                                variant="primary"
+                                size="md"
+                                onClick={() => {
+                                  closeModal()
+                                  router.push('/join')
+                                }}
+                                className="flex-1"
+                              >
+                                회원가입
+                              </Button>
+                            </div>
+                          </Confirm>
+                        )
+                      })
+                  }
+                })
+              }
+              disabled={
+                !formValues.username ||
+                !formValues.phone ||
+                !formValues.verificationCode
+              }
             >
               비밀번호찾기
             </Button>
           </div>
         </div>
-      )}
-
-      {/* 모달 */}
-      {isModalOpen && (
-        <Modal
-          type={modalProps.type as 'input' | 'message' | 'external'}
-          content={modalProps.content}
-          icon={modalProps.icon as 'kakao' | 'google'}
-          onClose={() => setIsModalOpen(false)}
-          title={modalProps.title} // 타이틀 전달
-        />
       )}
     </>
   )

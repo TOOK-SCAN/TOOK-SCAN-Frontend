@@ -1,16 +1,11 @@
 'use client'
 
+import { SuccessField } from '@/app/(nonRoot)/(auth)/(find)/_components/SuccessField'
 import GoogleCircle from '@/assets/images/login/GoogleCircle.svg'
 import KakaoCircle from '@/assets/images/login/KakaoCircle.svg'
 import { useMutation } from '@tanstack/react-query'
 import { findSerialId } from '@tookscan/api'
-import {
-  Button,
-  Confirm,
-  Icon,
-  InputField,
-  useToast,
-} from '@tookscan/components'
+import { Button, Confirm, InputField } from '@tookscan/components'
 import { useModal, usePhoneAuth } from '@tookscan/hooks'
 import type { ErrorRes, FindSerialIdRes } from '@tookscan/types'
 import Image from 'next/image'
@@ -27,7 +22,6 @@ const FindIdPage = () => {
   } = usePhoneAuth()
 
   const { openModal, closeModal } = useModal()
-  const showToast = useToast()
   const router = useRouter()
 
   // 아이디 찾기 post 요청
@@ -40,29 +34,7 @@ const FindIdPage = () => {
           <Confirm title="회원님의 아이디를 확인해 주세요">
             <div className="flex flex-col gap-12">
               {data.data.provider === 'DEFAULT' ? (
-                <div className="flex w-80 items-center justify-between rounded-2xl bg-blue-secondary px-6 py-4">
-                  <div className="body2">{data.data.serial_id}</div>
-                  <button
-                    onClick={async () => {
-                      try {
-                        await navigator.clipboard.writeText(data.data.serial_id)
-                        showToast(
-                          '클립보드에 복사되었습니다.',
-                          'success',
-                          'check'
-                        )
-                      } catch (err) {
-                        showToast(
-                          '클립보드에 복사를 실패했습니다.: ' + err,
-                          'error',
-                          'warning-2'
-                        )
-                      }
-                    }}
-                  >
-                    <Icon id="duplicate" width={20} height={20} />
-                  </button>
-                </div>
+                <SuccessField copyData={data.data.serial_id} />
               ) : (
                 <div className="flex flex-col items-center justify-center gap-4">
                   <Image

@@ -10,7 +10,9 @@ export const Confirm = ({ title, children }: ConfirmType) => {
         {title}
       </h3>
       <hr className="-px-8 h-[1px] w-full bg-gray-300" />
-      <div className="mt-8 flex">{children}</div>
+      <div className="mt-8 flex w-full flex-col items-center gap-12">
+        {children}
+      </div>
     </div>
   )
 }
