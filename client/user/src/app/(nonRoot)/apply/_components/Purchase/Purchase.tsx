@@ -3,6 +3,7 @@
 import { useMutation } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { useRouter } from 'next/navigation'
+import type { TouchEvent } from 'react'
 import { useState } from 'react'
 
 import { postOrder } from '@/api/order'
@@ -30,8 +31,12 @@ const Purchase = () => {
   const router = useRouter()
   const { openModal, closeModal } = useModal()
 
-  // 드롭다운 열림 상태
+  // 책 리스트 펼침/접힘 상태 (모바일에서만 사용)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+  // Bottom Sheet 드래그 상태 (모바일)
+  const [touchStartY, setTouchStartY] = useState<number | null>(null)
+  const [translateY, setTranslateY] = useState(0)
 
   // react-query 뮤테이션
   const orderMutation = useMutation<OrderResponse, unknown, OrderRequest>({
@@ -64,7 +69,9 @@ const Purchase = () => {
 
       openModal(
         <div className="flex w-full flex-col">
-          <div className="pt-6 text-center font-bold text-black">오류 발생</div>
+          <div className="pt-6 text-center text-lg font-bold text-black">
+            오류 발생
+          </div>
           <div className="mt-4 h-[1px] w-full bg-gray-300" />
           <p className="whitespace-pre-line px-6 py-8 text-center text-red-500">
             {errorMessage}
@@ -84,38 +91,7 @@ const Purchase = () => {
     },
   })
 
-  // ✅ 함수 분리 (switch + 서브 함수)
-  const isButtonDisabled = () => {
-    // 책이 하나도 없으면 비활성화
-    if (books.length === 0) return true
-
-    switch (pageIndex) {
-      case 1:
-        // 낙장X 책이 하나라도 있으면 주소+상세주소까지
-        // 아니면 수령인/전화번호만
-        return hasNonDropBooks(books)
-          ? !isValidFullAddress()
-          : !isValidBasicInfo()
-      case 2:
-        // 약관 3개 모두 동의해야 활성화
-        return !isAllTermsAccepted()
-      default:
-        // 그 외 단계는 기본 false (비활성화 X)
-        return false
-    }
-  }
-
-  const isValidFullAddress = () =>
-    shippingInfo.recipient &&
-    shippingInfo.phone &&
-    shippingInfo.address &&
-    shippingInfo.addressDetail
-
-  const isValidBasicInfo = () => shippingInfo.recipient && shippingInfo.phone
-
-  const isAllTermsAccepted = () => terms.terms1 && terms.terms2 && terms.terms3
-
-  // 신청 함수
+  // 주문 요청 함수
   const apply = async () => {
     const orderRequest: OrderRequest = {
       documents: books.map((book) => ({
@@ -149,26 +125,102 @@ const Purchase = () => {
     orderMutation.mutate(orderRequest)
   }
 
+  // 버튼 비활성화 로직
+  const isButtonDisabled = () => {
+    if (books.length === 0) return true
+
+    // pageIndex === 2인데, 약관 동의 X
+    if (pageIndex === 2 && !(terms.terms1 && terms.terms2 && terms.terms3)) {
+      return true
+    }
+    // pageIndex === 1인데, 낙장X 책이 있다면 주소+상세주소까지 필요
+    if (pageIndex === 1) {
+      if (hasNonDropBooks(books)) {
+        return !(
+          shippingInfo.recipient &&
+          shippingInfo.phone &&
+          shippingInfo.address &&
+          shippingInfo.addressDetail
+        )
+      }
+      return !(shippingInfo.recipient && shippingInfo.phone)
+    }
+    return false
+  }
+
+  // =======================
+  // 터치 드래그 이벤트
+  // =======================
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    setTouchStartY(e.touches[0].clientY)
+  }
+
+  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+    if (!touchStartY) return
+
+    const currentY = e.touches[0].clientY
+    const deltaY = currentY - touchStartY
+
+    // 아래로 당길 때만 translateY 증가
+    // (위로 당기는 건 sheet 확장 로직이 필요하다면 추가)
+    if (deltaY < 0) {
+      setTranslateY(0)
+    } else {
+      // 최대 300px까지만
+      setTranslateY(Math.min(deltaY, 300))
+    }
+  }
+
+  const handleTouchEnd = () => {
+    // 150px 이상 내렸으면 시트 닫기
+    if (translateY > 150) {
+      // 상위에서 Purchase를 fixed로 띄우고 있으므로
+      // 여기서는 "닫기"가 필요하다면,
+      // books.length > 0 이면 표시하도록 한 부분을 false로 만들거나,
+      // 추가 상태를 써야 함. 일단 dropdown만 닫도록 예시.
+      setIsDropdownOpen(false)
+    }
+    setTranslateY(0)
+    setTouchStartY(null)
+  }
+
   return (
     <div
-      // 전체 컨테이너
-      className="mx-auto flex w-full min-w-[375px] flex-col rounded-3xl bg-white px-4 pb-8 pt-3 sm:max-w-[800px] sm:px-6 lg:gap-6"
+      // 데스크톱: 그냥 박스 / 모바일: bottom-0 고정
+      // (상위 ApplyContent에서 mobile시 고정해도 되지만 여기서도 해줄 수 있음)
+      className={clsx(
+        'flex w-full flex-col gap-6 rounded-3xl bg-white px-6 pb-8 pt-3',
+        'lg:static', // 데스크톱에서는 static
+        'lg:shadow-none', // 그림자 제거
+        'shadow-[0_-2px_12px_rgba(0,0,0,0.1)]' // 모바일일 때 그림자
+      )}
+      // 하단 시트 드래그
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      style={{
+        transform: `translateY(${translateY}px)`,
+        transition: touchStartY ? 'none' : 'transform 0.2s ease-out',
+      }}
     >
-      {/* 헤더 영역: 제목 / 총액 / 드롭다운 아이콘(모바일 전용) */}
-      <div className="flex items-center justify-between border-b border-black-800 py-4 sm:py-6">
-        <h2 className="font-bold h3">예상 총 금액</h2>
-
+      {/* 드래그 바 (시각적) - 상단에 작은 막대 표시 */}
+      <div className="mx-auto mb-1 mt-2 h-1 w-10 rounded-full bg-gray-300 lg:hidden" />
+      {/* 상단 영역: 총 금액, 드롭다운 토글 버튼 */}
+      <div
+        className={clsx(
+          'flex items-center justify-between border-b border-black-800 px-3 py-6 font-bold'
+        )}
+      >
+        <h2 className="h3">예상 총 금액</h2>
         <div className="flex items-center gap-2">
-          <p className="font-bold text-blue-primary h2">
+          <p className="text-blue-primary h2">
             {calculateTotalPrice({ books }).toLocaleString()}원
           </p>
-          {/* 모바일 구간에서만 보이는 화살표 버튼 */}
+          {/* 모바일: 책 목록 펼침/접힘 토글 */}
           <button
-            type="button"
-            onClick={() => setIsDropdownOpen((prev) => !prev)}
             className="block lg:hidden"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            {/* Heroicons 예시 (chevron-down) */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className={clsx(
@@ -190,8 +242,18 @@ const Purchase = () => {
         </div>
       </div>
 
-      {/* lg 이상에서는 항상 리스트 보이도록 */}
-      <div className="hidden w-full rounded-xl bg-blue-secondary p-4 sm:p-6 lg:block">
+      <hr className="-mt-6 border-[1px]" />
+
+      {/* 모바일에서만 책 리스트를 토글 (isDropdownOpen) */}
+      <div
+        className={clsx(
+          'w-full rounded-xl bg-blue-secondary p-6',
+          // 데스크톱: 항상 보이기
+          'lg:block',
+          // 모바일: 토글
+          isDropdownOpen ? 'block' : 'hidden'
+        )}
+      >
         <ul className="flex flex-col gap-2">
           {books.map((book) => (
             <li key={book.id}>
@@ -199,96 +261,66 @@ const Purchase = () => {
             </li>
           ))}
         </ul>
-
-        <div className="flex items-center justify-between px-2 pt-4 sm:px-4 sm:pt-8">
-          <p className="btn2">배송비</p>
+        <div className="flex items-center justify-between px-4 pt-8">
+          <p className="font-semibold btn2">배송비</p>
           <p>
             {hasNonDropBooks(books) ? (
               '2,500원'
             ) : (
               <span className="text-blue-primary caption1">
-                <del className="text-black">2,500원</del> 0원
+                <del className="text-black caption1">2,500원</del> 0원
               </span>
             )}
           </p>
         </div>
       </div>
 
-      {/* 모바일 전용 드롭다운 영역 */}
-      {isDropdownOpen && (
-        <div className="block w-full rounded-xl bg-blue-secondary p-4 sm:p-6 lg:hidden">
-          <ul className="flex flex-col gap-2">
-            {books.map((book) => (
-              <li key={book.id}>
-                <BookInCart {...book} />
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex items-center justify-between px-2 pt-4 sm:px-4 sm:pt-8">
-            <p className="caption1">배송비</p>
-            <p>
-              {hasNonDropBooks(books) ? (
-                '2,500원'
-              ) : (
-                <span className="text-blue-primary caption1">
-                  <del className="text-black">2,500원</del> 0원
-                </span>
-              )}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* 버튼 영역 */}
-      <div className="w-full pt-2 sm:pt-4">
-        <Button
-          size="lg"
-          className="w-full"
-          variant="primary"
-          disabled={isButtonDisabled()}
-          onClick={() => {
-            if (pageIndex === 0 || pageIndex === 1) {
-              setPageIndex((prev: number) => prev + 1)
-            } else if (pageIndex === 2) {
-              // 결제(최종) 단계
-              openModal(
-                <div className="flex w-full flex-col">
-                  <div className="pt-6 text-center font-bold text-black btn1">
-                    스캔 신청
-                  </div>
-                  <div className="mt-4 h-[1px] w-full bg-gray-300" />
-                  <p className="px-6 py-8">스캔신청을 하시겠습니까?</p>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="secondary"
-                      size="lg"
-                      onClick={closeModal}
-                      className="flex-1"
-                    >
-                      취소
-                    </Button>
-
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      className="w-full flex-1"
-                      onClick={async () => {
-                        closeModal()
-                        apply()
-                      }}
-                    >
-                      신청
-                    </Button>
-                  </div>
+      {/* 하단 버튼 */}
+      <Button
+        size="lg"
+        className="w-full"
+        variant="primary"
+        disabled={isButtonDisabled()}
+        onClick={() => {
+          if (pageIndex === 0 || pageIndex === 1) {
+            setPageIndex((prev: number) => prev + 1)
+          } else if (pageIndex === 2) {
+            openModal(
+              <div className="flex w-full flex-col">
+                <div className="pt-6 text-center text-lg font-bold text-black">
+                  스캔 신청
                 </div>
-              )
-            }
-          }}
-        >
-          {pageIndex === 2 ? '결제하기' : '다음'}
-        </Button>
-      </div>
+                <div className="mt-4 h-[1px] w-full bg-gray-300" />
+                <p className="px-6 py-8">스캔신청을 하시겠습니까?</p>
+                <div className="flex gap-2">
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    onClick={closeModal}
+                    className="flex-1"
+                  >
+                    취소
+                  </Button>
+
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    className="w-full flex-1"
+                    onClick={async () => {
+                      closeModal()
+                      apply()
+                    }}
+                  >
+                    신청
+                  </Button>
+                </div>
+              </div>
+            )
+          }
+        }}
+      >
+        {pageIndex === 2 ? '결제하기' : '다음'}
+      </Button>
     </div>
   )
 }
