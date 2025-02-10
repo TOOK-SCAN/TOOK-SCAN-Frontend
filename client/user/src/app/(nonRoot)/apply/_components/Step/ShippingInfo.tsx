@@ -10,14 +10,13 @@ import {
   InputField,
   SearchAddress,
   TitleLabel,
-  useToast,
 } from '@tookscan/components'
-import { useAuth, useModal } from '@tookscan/hooks'
+import { useAuth, useModal, useToast } from '@tookscan/hooks'
 import React, { useEffect, useState } from 'react'
 
 const ShippingInfo = React.memo(() => {
   const { books, shippingInfo, setShippingInfo } = useApplyContext()
-  const showToast = useToast()
+  const { showToast } = useToast()
   const { openModal, closeModal } = useModal()
   const { isLogin } = useAuth()
   const [isSameAsDefault, setIsSameAsDefault] = useState(false)

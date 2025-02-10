@@ -73,7 +73,7 @@ export const findPassword = async (
   id: string,
   phone: string
 ): Promise<FindPasswordRes> => {
-  const response = await httpInstance.post('auth/reissue/password', {
+  const response = await httpInstance.patch('auth/reissue/password', {
     json: {
       serial_id: id,
       phone_number: phone.replace(/-/g, ''),

@@ -1,16 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { Icon, Tag, Button, useToast } from '@tookscan/components'
+import { Button, Icon, Tag } from '@tookscan/components'
+import { useToast } from '@tookscan/hooks'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 const Success = () => {
   const searchParams = useSearchParams() || ''
   const router = useRouter()
   const order = searchParams.get('order')
-  const showToast = useToast()
+  const { showToast } = useToast()
   const [orderData, setOrderData] = useState<{
     orderDate?: string
     delivery_info?: {

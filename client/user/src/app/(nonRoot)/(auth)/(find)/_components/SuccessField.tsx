@@ -1,11 +1,12 @@
-import { Icon, useToast } from '@tookscan/components'
+import { Icon } from '@tookscan/components'
+import { useToast } from '@tookscan/hooks'
 
 interface SuccessFieldProps {
   copyData: string
 }
 
 export const SuccessField = ({ copyData }: SuccessFieldProps) => {
-  const showToast = useToast()
+  const { showToast } = useToast()
   return (
     <div className="flex w-80 items-center justify-between rounded-2xl bg-blue-secondary px-6 py-4">
       <p className="body2">{copyData}</p>
