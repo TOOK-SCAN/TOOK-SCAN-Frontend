@@ -11,6 +11,12 @@ export type UserInfoRes = Common<{
 }>
 
 export type SendAuthCodeRes = Common<{
-  username: string
-  phone_number: string
+  try_cnt: number
+}>
+
+export type VerifyAuthCodeRes = Common<{}>
+
+export type FindSerialIdRes = Common<{
+  provider: 'DEFAULT' | 'KAKAO' | 'GOOGLE'
+  serial_id: string
 }>

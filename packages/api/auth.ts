@@ -1,5 +1,11 @@
 import { httpInstance } from '../config'
-import type { LoginRes, SendAuthCodeRes, UserInfoRes } from '../types/api'
+import type {
+  FindSerialIdRes,
+  LoginRes,
+  SendAuthCodeRes,
+  UserInfoRes,
+  VerifyAuthCodeRes,
+} from '../types/api'
 
 export const userInfo = async (): Promise<UserInfoRes> => {
   const response = await httpInstance.get('auth/briefs')
@@ -34,11 +40,28 @@ export const sendAuthCode = async (
   return response.json()
 }
 
-export const verifyAuthCode = async (phone: string, authCode: string) => {
-  const response = await httpInstance.post('auth/authentication-code', {
+export const verifyAuthCode = async (
+  phone: string,
+  authCode: string
+): Promise<VerifyAuthCodeRes> => {
+  const response = await httpInstance.patch('auth/authentication-code', {
     json: {
       phone_number: phone.replace(/-/g, ''),
       authentication_code: authCode,
+    },
+  })
+
+  return response.json()
+}
+
+export const findSerialId = async (
+  username: string,
+  phone: string
+): Promise<FindSerialIdRes> => {
+  const response = await httpInstance.post('auth/verification/serial-id', {
+    json: {
+      name: username,
+      phone_number: phone.replace(/-/g, ''),
     },
   })
 
