@@ -51,6 +51,8 @@ export const usePhoneAuth = () => {
     let timer: NodeJS.Timeout
     if (timeLeft > 0) {
       timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000)
+    } else {
+      setFormValues((prev) => ({ ...prev, verificationCode: '' }))
     }
     return () => clearInterval(timer)
   }, [timeLeft])

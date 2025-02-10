@@ -20,3 +20,7 @@ export type FindSerialIdRes = Common<{
   provider: 'DEFAULT' | 'KAKAO' | 'GOOGLE'
   serial_id: string
 }>
+
+export type FindPasswordRes = Common<{
+  temporary_password: string
+}>
