@@ -1,7 +1,10 @@
 'use client'
 
+import { useMutation } from '@tanstack/react-query'
+import { logout } from '@tookscan/api'
 import { Icon } from '@tookscan/components'
-import { useAuth } from '@tookscan/hooks'
+import { useAuth, useToast } from '@tookscan/hooks'
+import { deleteCookie } from '@tookscan/utils'
 import clsx from 'clsx'
 import Link from 'next/link'
 
@@ -10,8 +13,19 @@ export const ClientHeader = () => {
   const textSize = isMobile ? 'text-[12px]' : 'text-[14px]'
   const heightSize = isMobile ? 'h-4' : 'h-[5.625rem]'
 
-  // 초기 서버에서 받은 auth 정보를 상태로 관리 (필요 시 업데이트할 수 있도록)
-  const { username, isLogin } = useAuth()
+  const { username, isLogin, refetchAuth } = useAuth()
+  const { showToast } = useToast()
+
+  const { mutate: logoutMutate } = useMutation({
+    mutationKey: ['logout'],
+    mutationFn: logout,
+    onSuccess: () => {
+      deleteCookie('access_token')
+      deleteCookie('refresh_token')
+      refetchAuth()
+      showToast('로그아웃 되었습니다.', 'success', 'check')
+    },
+  })
 
   return (
     <div className="flex">
@@ -81,9 +95,12 @@ export const ClientHeader = () => {
               <Link href="/profile" className="text-black hover:underline">
                 마이페이지
               </Link>
-              <Link href="/logout" className="text-black hover:underline">
+              <button
+                className="text-black hover:underline"
+                onClick={() => logoutMutate()}
+              >
                 로그아웃
-              </Link>
+              </button>
             </>
           )}
         </div>

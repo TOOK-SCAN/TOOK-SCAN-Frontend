@@ -82,3 +82,7 @@ export const findPassword = async (
 
   return response.json()
 }
+
+export const logout = async () => {
+  await httpInstance.post('auth/logout')
+}
