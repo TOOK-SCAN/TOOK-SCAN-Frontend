@@ -48,6 +48,6 @@ const httpInstance = createApiClient(
   `${process.env.NEXT_PUBLIC_APP_URL}/api/proxy`
 )
 
-const proxyInstance = createApiClient(``)
+const kyInstance = createApiClient('')
 
-export { httpInstance, proxyInstance }
+export { httpInstance, kyInstance }
