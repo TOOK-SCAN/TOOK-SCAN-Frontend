@@ -129,11 +129,9 @@ const Purchase = () => {
   const isButtonDisabled = () => {
     if (books.length === 0) return true
 
-    // pageIndex === 2인데, 약관 동의 X
     if (pageIndex === 2 && !(terms.terms1 && terms.terms2 && terms.terms3)) {
       return true
     }
-    // pageIndex === 1인데, 낙장X 책이 있다면 주소+상세주소까지 필요
     if (pageIndex === 1) {
       if (hasNonDropBooks(books)) {
         return !(
@@ -162,11 +160,9 @@ const Purchase = () => {
     const deltaY = currentY - touchStartY
 
     // 아래로 당길 때만 translateY 증가
-    // (위로 당기는 건 sheet 확장 로직이 필요하다면 추가)
     if (deltaY < 0) {
       setTranslateY(0)
     } else {
-      // 최대 300px까지만
       setTranslateY(Math.min(deltaY, 300))
     }
   }
@@ -174,10 +170,6 @@ const Purchase = () => {
   const handleTouchEnd = () => {
     // 150px 이상 내렸으면 시트 닫기
     if (translateY > 150) {
-      // 상위에서 Purchase를 fixed로 띄우고 있으므로
-      // 여기서는 "닫기"가 필요하다면,
-      // books.length > 0 이면 표시하도록 한 부분을 false로 만들거나,
-      // 추가 상태를 써야 함. 일단 dropdown만 닫도록 예시.
       setIsDropdownOpen(false)
     }
     setTranslateY(0)
@@ -186,15 +178,17 @@ const Purchase = () => {
 
   return (
     <div
-      // 데스크톱: 그냥 박스 / 모바일: bottom-0 고정
-      // (상위 ApplyContent에서 mobile시 고정해도 되지만 여기서도 해줄 수 있음)
+      // z-40으로 설정하여 주소 모달(z-50)보다 아래에 위치
       className={clsx(
-        'flex w-full flex-col gap-6 rounded-3xl bg-white px-6 pb-8 pt-3',
-        'lg:static', // 데스크톱에서는 static
-        'lg:shadow-none', // 그림자 제거
-        'shadow-[0_-2px_12px_rgba(0,0,0,0.1)]' // 모바일일 때 그림자
+        'z-40 flex w-full flex-col gap-6 rounded-t-3xl bg-white',
+        // 패딩 줄임: px-4, py-4
+        'px-4 py-4',
+        'lg:static lg:shadow-none',
+        // 모바일에서 그림자
+        'shadow-[0_-2px_12px_rgba(0,0,0,0.1)]',
+        // 터치 스크롤 해제
+        '[touch-action:none]'
       )}
-      // 하단 시트 드래그
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -205,10 +199,12 @@ const Purchase = () => {
     >
       {/* 드래그 바 (시각적) - 상단에 작은 막대 표시 */}
       <div className="mx-auto mb-1 mt-2 h-1 w-10 rounded-full bg-gray-300 lg:hidden" />
+
       {/* 상단 영역: 총 금액, 드롭다운 토글 버튼 */}
       <div
         className={clsx(
-          'flex items-center justify-between border-b border-black-800 px-3 py-6 font-bold'
+          'flex items-center justify-between border-b border-black-800',
+          'px-2 py-4 font-bold'
         )}
       >
         <h2 className="h3">예상 총 금액</h2>
@@ -242,15 +238,15 @@ const Purchase = () => {
         </div>
       </div>
 
-      <hr className="-mt-6 border-[1px]" />
+    
 
       {/* 모바일에서만 책 리스트를 토글 (isDropdownOpen) */}
       <div
         className={clsx(
-          'w-full rounded-xl bg-blue-secondary p-6',
-          // 데스크톱: 항상 보이기
+          'w-full rounded-xl bg-blue-secondary',
+          // 패딩 줄임
+          'p-4',
           'lg:block',
-          // 모바일: 토글
           isDropdownOpen ? 'block' : 'hidden'
         )}
       >
@@ -261,7 +257,7 @@ const Purchase = () => {
             </li>
           ))}
         </ul>
-        <div className="flex items-center justify-between px-4 pt-8">
+        <div className="flex items-center justify-between px-2 pt-6">
           <p className="font-semibold btn2">배송비</p>
           <p>
             {hasNonDropBooks(books) ? (
@@ -275,10 +271,10 @@ const Purchase = () => {
         </div>
       </div>
 
-      {/* 하단 버튼 */}
+      {/* 하단 버튼: 사이즈 md로 줄이기 */}
       <Button
-        size="lg"
-        className="w-full"
+        size="md"
+        className="mt-2 w-full"
         variant="primary"
         disabled={isButtonDisabled()}
         onClick={() => {
@@ -301,7 +297,6 @@ const Purchase = () => {
                   >
                     취소
                   </Button>
-
                   <Button
                     variant="primary"
                     size="lg"
