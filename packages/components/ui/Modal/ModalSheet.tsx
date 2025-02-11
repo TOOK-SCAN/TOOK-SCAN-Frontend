@@ -23,14 +23,15 @@ export const ModalSheet = () => {
   return (
     <div
       className={clsx(
-        'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'
+        'fixed inset-0 z-[9999] flex items-center justify-center',
+        'bg-black bg-opacity-50 backdrop-blur-sm'
       )}
       onClick={closeModal}
     >
       <div
         className={clsx(
-          'relative flex w-full max-w-lg rounded-lg bg-white p-8',
-          'shadow-lg transition-transform duration-300'
+          'relative mx-[1rem] w-full max-w-lg rounded-lg bg-white p-6',
+          'shadow-xl transition-transform duration-300'
         )}
         onClick={(e) => e.stopPropagation()}
       >

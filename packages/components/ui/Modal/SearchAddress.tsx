@@ -78,7 +78,7 @@ export const SearchAddress = ({ onChange, closeModal }: SearchAddressProps) => {
   )
 
   return (
-    <div className="flex h-96 w-full flex-col">
+    <div className="z-50 flex h-96 w-full flex-col">
       <div className="border-blue-secondary flex h-14 w-full flex-row items-center justify-start rounded-lg border-2">
         <Icon
           id="search"
