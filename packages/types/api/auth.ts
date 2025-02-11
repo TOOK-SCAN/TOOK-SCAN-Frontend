@@ -1,3 +1,4 @@
+import { AccountType } from '../'
 import type { Common } from '../api'
 
 export type LoginRes = Common<{
@@ -6,7 +7,7 @@ export type LoginRes = Common<{
 }>
 
 export type UserInfoRes = Common<{
-  account_type: 'USER' | 'ADMIN' | 'GUEST'
+  account_type: AccountType
   name: string
 }>
 
