@@ -19,6 +19,7 @@ export type ToastState = {
 export const useToast = create<ToastState>((set) => ({
   isOpen: false,
   toasts: [],
+
   showToast: (message, type, icon) => {
     const id = Date.now().toString()
     set({ isOpen: true, toasts: [{ id, message, type, icon }] })

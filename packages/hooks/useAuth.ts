@@ -21,11 +21,13 @@ export const useAuth = () => {
     },
   })
 
-  const isLogin = data?.data.account_type !== 'GUEST'
+  const isLogin = Boolean(
+    data?.data && !error && data.data.account_type !== 'GUEST'
+  )
 
   return {
     isLogin,
-    username: data?.data.name || 'null',
+    username: data?.data.name || 'USER',
     accountType: data?.data.account_type || 'GUEST',
     isLoading,
     error,

@@ -178,7 +178,8 @@ const FindPwPage = () => {
               disabled={
                 !formValues.username ||
                 !formValues.phone ||
-                !formValues.verificationCode
+                !formValues.verificationCode ||
+                timeLeft <= 0
               }
             >
               비밀번호찾기
