@@ -1,6 +1,6 @@
 'use client'
 
-import type { AccountType } from '@tookscan/hooks'
+import type { AccountType } from '@tookscan/types'
 import { ClientHeader } from './ClientHeader'
 
 export type AuthResult = {
