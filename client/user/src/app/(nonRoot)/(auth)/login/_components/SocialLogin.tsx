@@ -6,12 +6,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 const SocialLogin = () => {
-  const OAUTH_BASE_URL = process.env.NEXT_PUBLIC_PREFIX_URL
-    ? `${process.env.NEXT_PUBLIC_PREFIX_URL}/oauth2/authorization`
+  const OAUTH_BASE_URL = process.env.NEXT_PUBLIC_API_URL
+    ? `${process.env.NEXT_PUBLIC_API_URL}/oauth2/authorization`
     : (() => {
-        throw new Error(
-          'NEXT_PUBLIC_PREFIX_URL 환경 변수가 설정되지 않았습니다.'
-        )
+        throw new Error('NEXT_PUBLIC_API_URL 환경 변수가 설정되지 않았습니다.')
       })()
 
   return (

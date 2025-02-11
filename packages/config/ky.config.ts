@@ -1,22 +1,17 @@
 import ky from 'ky'
-import { ENV } from '../config'
-import { getCookie } from '../utils'
 import { devConsole } from '../utils/devConsole'
 
-const createApiClient = (headers?: Record<string, string>) => {
+const createApiClient = (
+  prefixUrl: string,
+  headers?: Record<string, string>
+) => {
   return ky.create({
-    prefixUrl: `${process.env.NEXT_PUBLIC_PREFIX_URL}/api/v1`,
+    prefixUrl: prefixUrl,
     timeout: 3000,
     headers,
     hooks: {
       beforeRequest: [
         (req) => {
-          if (ENV.IS_DEV) {
-            const accessToken = getCookie('access_token')
-            if (accessToken) {
-              req.headers.set('Authorization', `Bearer ${accessToken}`)
-            }
-          }
           devConsole.log('[Request Config]:', {
             url: req.url,
             method: req.method,
@@ -49,11 +44,10 @@ const createApiClient = (headers?: Record<string, string>) => {
     throwHttpErrors: false,
   })
 }
+const httpInstance = createApiClient(
+  `${process.env.NEXT_PUBLIC_APP_URL}/api/proxy`
+)
 
-const httpInstance = createApiClient({})
+const proxyInstance = createApiClient(``)
 
-const uploadInstance = createApiClient({
-  'Content-Type': 'multipart/form-data',
-})
-
-export { httpInstance, uploadInstance }
+export { httpInstance, proxyInstance }

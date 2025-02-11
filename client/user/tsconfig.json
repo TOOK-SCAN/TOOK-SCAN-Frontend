@@ -3,7 +3,9 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -19,8 +21,9 @@
   },
   "include": [
     "src/**/*",
-    ".next/types/**/*.ts",
-    "../../packages/components/**/*"
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
