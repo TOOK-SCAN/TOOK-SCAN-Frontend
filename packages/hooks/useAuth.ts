@@ -1,5 +1,5 @@
 import { UserInfoRes } from '@/types'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { userInfo } from '../api'
 
 export type AccountType = 'USER' | 'ADMIN' | 'GUEST'
@@ -13,22 +13,28 @@ export interface AuthState {
 }
 
 export const useAuth = () => {
+  const queryClient = useQueryClient()
+
   const { data, isLoading, error } = useQuery<UserInfoRes>({
     queryKey: ['auth'],
-    queryFn: async () => {
-      const data = await userInfo()
-      return data
-    },
+    queryFn: userInfo,
   })
 
   const isLogin = Boolean(
     data?.data && !error && data.data.account_type !== 'GUEST'
   )
 
+  const refreshAuth = () => {
+    queryClient.invalidateQueries({
+      queryKey: ['auth'],
+    })
+  }
+
   return {
     isLogin,
     username: data?.data.name || 'USER',
     accountType: data?.data.account_type || 'GUEST',
+    refreshAuth,
     isLoading,
     error,
   }
