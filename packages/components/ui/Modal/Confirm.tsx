@@ -5,7 +5,12 @@ interface ConfirmType {
 
 export const Confirm = ({ title, children }: ConfirmType) => {
   return (
-    <div className="flex w-full flex-col items-center">
+    <div
+      role="dialog"
+      aria-labelledby="modal-title"
+      aria-model="true"
+      className="flex w-full flex-col items-center"
+    >
       <h3 id="modal-title" className="h3 px-5 py-6">
         {title}
       </h3>
