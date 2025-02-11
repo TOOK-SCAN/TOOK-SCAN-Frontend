@@ -4,6 +4,7 @@ import { Button } from '@tookscan/components'
 import { Accordion } from '@tookscan/components/ui/Accordion'
 import { useState } from 'react'
 
+
 const ScanAgreePage = () => {
   // 로컬 상태로 terms 항목 관리
   const [terms, setTerms] = useState({
