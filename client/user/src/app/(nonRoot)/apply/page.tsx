@@ -58,8 +58,8 @@ const ApplyContent = () => {
               <Purchase />
             </div>
           ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center">
-              <div className="flex h-full flex-col items-center justify-center">
+            <div className="h-full w-full flex-col items-center justify-center">
+              <div className="hidden h-full flex-col items-center justify-center lg:flex">
                 <Icon id="logo" className="text-blue-primary" />
                 <p className="mt-8 text-2xl font-bold text-blue-primary">
                   Took Scan을 통해 고품질 스캔 파일을 이용해 보세요!
