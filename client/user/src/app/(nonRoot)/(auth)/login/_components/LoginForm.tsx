@@ -4,11 +4,12 @@ import { useMutation } from '@tanstack/react-query'
 import { login } from '@tookscan/api'
 import { Button, ConsentLabel, InputField } from '@tookscan/components'
 import { ENV } from '@tookscan/config'
+import { useAuth } from '@tookscan/hooks'
 import type { ErrorRes, LoginRes } from '@tookscan/types'
-import { devConsole, setCookie } from '@tookscan/utils'
+import { deleteCookie, devConsole, getCookie, setCookie } from '@tookscan/utils'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SocialLogin from './SocialLogin'
 
 export const LoginForm = () => {
@@ -23,6 +24,16 @@ export const LoginForm = () => {
     password: '',
   })
 
+  const { refetchAuth } = useAuth()
+
+  useEffect(() => {
+    const serialId = getCookie('serial_id')
+    if (serialId) {
+      setCredentials((prev) => ({ ...prev, id: serialId }))
+      setAuthPreference((prev) => ({ ...prev, saveId: true }))
+    }
+  }, [])
+
   const { mutate: loginMutate, error } = useMutation<LoginRes, ErrorRes>({
     mutationFn: () => login(credentials.id, credentials.password),
     onSuccess: (data: LoginRes) => {
@@ -32,6 +43,12 @@ export const LoginForm = () => {
           setCookie('access_token', data.data.access_token, 1)
           setCookie('refresh_token', data.data.refresh_token, 1)
         }
+        if (authPreference.saveId) {
+          setCookie('serial_id', credentials.id, 1)
+        } else {
+          deleteCookie('serial_id')
+        }
+        refetchAuth()
         router.push('/apply')
       }
     },
@@ -65,7 +82,7 @@ export const LoginForm = () => {
             />
           </div>
           {/* 자동 로그인 */}
-          <div className="flex-1 space-x-1">
+          {/* <div className="flex-1 space-x-1"> // TODO: 자동 로그인 기능은 추후 구현 예정
             <ConsentLabel
               content="자동 로그인"
               consentStatus={authPreference.autoLogin}
@@ -77,7 +94,7 @@ export const LoginForm = () => {
                 }))
               }
             />
-          </div>
+          </div> */}
         </div>
 
         {/* 아이디, 비밀번호 입력 필드 */}

@@ -24,7 +24,7 @@ export const useAuth = () => {
     data?.data && !error && data.data.account_type !== 'GUEST'
   )
 
-  const refreshAuth = () => {
+  const refetchAuth = () => {
     queryClient.invalidateQueries({
       queryKey: ['auth'],
     })
@@ -34,7 +34,7 @@ export const useAuth = () => {
     isLogin,
     username: data?.data.name || 'USER',
     accountType: data?.data.account_type || 'GUEST',
-    refreshAuth,
+    refetchAuth,
     isLoading,
     error,
   }
