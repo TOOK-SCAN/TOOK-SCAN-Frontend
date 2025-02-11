@@ -46,12 +46,14 @@ async function proxyRequest(request: Request, slug: string[]) {
   // ✅ Access Token이 만료된 경우 Refresh Token을 이용해 재발급 후 재요청
   if (backendResponse.status === 401 && refreshToken) {
     devConsole.log('🔄 Access Token expired. Trying to refresh token...')
-    const refreshResponse = await ky(`${BACKEND_API_URL}/auth/refresh`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${refreshToken}`,
-      },
-    })
+    const refreshResponse = await ky.post(
+      `${BACKEND_API_URL}/auth/reissue/token`,
+      {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      }
+    )
 
     if (refreshResponse.ok) {
       const refreshData = (await refreshResponse.json()) as {
