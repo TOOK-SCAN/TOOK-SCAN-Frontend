@@ -1,8 +1,7 @@
 import { UserInfoRes } from '@/types'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { userInfo } from '../api'
-
-export type AccountType = 'USER' | 'ADMIN' | 'GUEST'
+import { AccountType } from '../types'
 
 export interface AuthState {
   isLogin: boolean
