@@ -3,7 +3,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { login } from '@tookscan/api'
 import { Button, ConsentLabel, InputField } from '@tookscan/components'
-import { ENV } from '@tookscan/config'
 import { useAuth } from '@tookscan/hooks'
 import type { ErrorRes, LoginRes } from '@tookscan/types'
 import { deleteCookie, devConsole, getCookie, setCookie } from '@tookscan/utils'
@@ -38,11 +37,6 @@ export const LoginForm = () => {
     mutationFn: () => login(credentials.id, credentials.password),
     onSuccess: (data: LoginRes) => {
       if (data.success && !data.error) {
-        devConsole.log('로그인 성공:', data)
-        if (ENV.IS_DEV) {
-          setCookie('access_token', data.data.access_token, 1)
-          setCookie('refresh_token', data.data.refresh_token, 1)
-        }
         if (authPreference.saveId) {
           setCookie('serial_id', credentials.id, 1)
         } else {

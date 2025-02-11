@@ -4,7 +4,6 @@ import { useMutation } from '@tanstack/react-query'
 import { logout } from '@tookscan/api'
 import { Icon } from '@tookscan/components'
 import { useAuth, useToast } from '@tookscan/hooks'
-import { deleteCookie } from '@tookscan/utils'
 import clsx from 'clsx'
 import Link from 'next/link'
 
@@ -20,8 +19,6 @@ export const ClientHeader = () => {
     mutationKey: ['logout'],
     mutationFn: logout,
     onSuccess: () => {
-      deleteCookie('access_token')
-      deleteCookie('refresh_token')
       refetchAuth()
       showToast('로그아웃 되었습니다.', 'success', 'check')
     },
