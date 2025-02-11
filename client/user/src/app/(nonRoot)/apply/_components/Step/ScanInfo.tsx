@@ -72,7 +72,7 @@ const ScanInfo = () => {
       </Section>
       <Section>
         <TitleLabel size="lg" type="required" title="3. 책 복원 옵션 선택" />
-        <div className={clsx('flex flex-col gap-3')}>
+        <div className={clsx('flex flex-col gap-2')}>
           {restoreOptions.map(({ type, title, price }, index) => (
             <div className="flex flex-col" key={index}>
               <Restore
