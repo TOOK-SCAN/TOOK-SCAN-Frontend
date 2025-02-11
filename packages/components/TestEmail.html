@@ -12,11 +12,13 @@
         background-color: #f7f9fc;
       }
       .container {
+        width: 100%;
         max-width: 600px;
-        height:100%;
+        height: 100%;
         margin: 0 auto;
         background: #ffffff;
         padding: 20px;
+        box-sizing: border-box;
       }
       .banner {
         width: 100%;
@@ -43,7 +45,6 @@
         text-align: start;
         color: #777777;
       }
-    
       .content {
         text-align: center;
         padding: 20px;
@@ -51,19 +52,14 @@
       .content img {
         max-width: 250px;
         height: auto;
-
       }
       .img {
         text-align: center;
-      
-       
       }
-   
       .message-section {
         padding: 20px;
         font-size: 16px;
         color: #333;
-       
         text-align: start;
       }
       .footer {
@@ -86,13 +82,11 @@
         <h1>테스트 이메일이 도착했어요!</h1>
         <p>가장 합리적인 비대면 셀프 스캔, 한방에 툭스캔!</p>
       </div>
-     <div class="img">
+      <div class="img">
         <a href="https://imgbb.com/"
           ><img src="https://i.ibb.co/HTS5jm9m/testmail.png" alt="testmail"
         /></a>
-    </div>
-      
-      
+      </div>
       <div class="message-section">
         <p>
           안녕하세요, 요청하신 테스트 이메일을 발송드렸습니다.<br /><br/>
@@ -105,10 +99,9 @@
       <div class="footer">
         <p><strong>가장 합리적인 비대면 셀프 스캔, 한방에 툭스캔!</strong></p>
         <p>인천시 서구 청라한울로96 321동 101호 (실제 배송지와 달라요)</p>
-        <p>대표자 민경훈 | Support@tookscan.com | 010-7604-8320</p>
+        <p>대표자 {{representative_name}} | {{support_email}} | {{support_phone}}</p>
         <p>© 툭스캔. All rights reserved</p>
       </div>
     </div>
-</div>
   </body>
 </html>
