@@ -1,4 +1,4 @@
-import { proxyInstance } from '@tookscan/config'
+import { kyInstance } from '@tookscan/config'
 import type { LoginRes } from '@tookscan/types'
 import { NextResponse } from 'next/server'
 
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     }
 
     // ✅ 백엔드 서버로 로그인 요청 전송
-    const backendResponse = await proxyInstance(url, {
+    const backendResponse = await kyInstance(url, {
       method: 'POST',
       body: formData,
     })

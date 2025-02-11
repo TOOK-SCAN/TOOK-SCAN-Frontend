@@ -1,4 +1,4 @@
-import { proxyInstance } from '@tookscan/config'
+import { kyInstance } from '@tookscan/config'
 import { devConsole } from '@tookscan/utils'
 import ky from 'ky'
 import { cookies } from 'next/headers'
@@ -34,7 +34,7 @@ async function proxyRequest(request: Request, slug: string[]) {
   }
 
   // ✅ 백엔드로 API 요청 전송
-  let backendResponse = await proxyInstance(url.toString(), {
+  let backendResponse = await kyInstance(url.toString(), {
     method: request.method,
     headers,
     body:
@@ -77,7 +77,7 @@ async function proxyRequest(request: Request, slug: string[]) {
 
       // ✅ 새로운 Access Token으로 백엔드 API 재요청
       headers.set('Authorization', `Bearer ${accessToken}`)
-      backendResponse = await proxyInstance(url.toString(), {
+      backendResponse = await kyInstance(url.toString(), {
         method: request.method,
         headers,
         body:

@@ -1,4 +1,4 @@
-import { proxyInstance } from '@tookscan/config'
+import { kyInstance } from '@tookscan/config'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -19,7 +19,7 @@ export async function POST() {
     }
 
     // ✅ 백엔드로 로그아웃 요청 전송
-    const backendResponse = await proxyInstance(url, {
+    const backendResponse = await kyInstance(url, {
       method: 'POST',
       headers,
     })
