@@ -74,7 +74,7 @@ const StepOneUI = ({
   ]
 
   return (
-    <div className="mt-6 w-[440px] rounded-lg bg-white p-6 shadow-md">
+    <div className="mx-auto mt-6 w-full max-w-[30rem] rounded-lg bg-white p-6 shadow-md">
       <StepIndicator currentStep={1} />
       <div className="mt-4 space-y-4">
         <InputField
@@ -110,13 +110,13 @@ const StepOneUI = ({
               verificationState.isSendingAuthCode ||
               verificationState.isVerified
             }
-            className="whitespace-nowrap px-6"
+            className="px-6"
           >
             인증받기
           </Button>
         </div>
         {verificationState.timeLeft > 0 && (
-          <div className="mt-4 flex items-center space-x-2">
+          <div className="mx-auto mt-4 flex w-full items-center space-x-2">
             <InputField
               type="simple"
               placeholder="인증번호 입력"
@@ -125,7 +125,7 @@ const StepOneUI = ({
               disabled={verificationState.isVerified}
               isSuccess={verificationState.isVerified}
             />
-            <span className="whitespace-nowrap px-4 text-xs text-red-500">
+            <span className="px-4 text-xs text-red-500">
               {formatTime(verificationState.timeLeft)}
             </span>
             <Button
@@ -136,7 +136,7 @@ const StepOneUI = ({
                 verificationState.verificationCode.length !== 6 ||
                 verificationState.isVerified
               }
-              className="whitespace-nowrap px-6"
+              className="px-6"
             >
               인증완료
             </Button>

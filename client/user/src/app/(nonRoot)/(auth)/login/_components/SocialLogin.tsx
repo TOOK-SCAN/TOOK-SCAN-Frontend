@@ -15,7 +15,7 @@ const SocialLogin = () => {
       })()
 
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="mx-auto flex w-full max-w-[25rem] flex-col space-y-2">
       {/* 카카오 로그인 버튼 */}
       <Link className="w-full" href={`${OAUTH_BASE_URL}/kakao`}>
         <Image

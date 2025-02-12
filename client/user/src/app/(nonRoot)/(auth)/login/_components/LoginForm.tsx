@@ -41,9 +41,9 @@ export const LoginForm = () => {
   })
 
   return (
-    <div className="flex w-[440px] flex-col gap-8 rounded-lg bg-white p-6 shadow-md">
+    <div className="m-4 mx-auto flex w-full max-w-[30rem] flex-col gap-8 rounded-lg bg-white p-8 shadow-md">
       {/* 로그인 헤더 */}
-      <div className="border-b-2 border-blue-primary py-4 text-center text-lg font-semibold text-blue-primary">
+      <div className="w-full max-w-[25rem] border-b-2 border-blue-primary py-4 text-center text-lg font-semibold text-blue-primary">
         로그인
       </div>
 
@@ -106,14 +106,14 @@ export const LoginForm = () => {
         </div>
 
         {/* 아이디/비밀번호 찾기 링크 */}
-        <div className="mt-6 flex justify-end text-xs text-gray-500">
+        <div className="mt-6 flex w-full justify-end text-xs text-gray-500">
           <Link href="/id/find">아이디 · 비밀번호 찾기</Link>
         </div>
       </div>
 
       {/* 로그인 버튼 */}
       <Button
-        className="w-full"
+        className="w-full max-w-[25rem]"
         variant="primary"
         size="md"
         disabled={!credentials.id || !credentials.password} // TODO: 입력값 유효성 검사를 위해 React Hook Form, Zod, Formik, Yup 등을 사용하여 리팩토링
@@ -123,7 +123,7 @@ export const LoginForm = () => {
       </Button>
 
       {/* SNS 로그인 구분선 */}
-      <div className="flex items-center space-x-4">
+      <div className="mx-auto flex w-full max-w-[30rem] items-center space-x-4">
         <hr className="h-px flex-grow bg-gray-300" />
         <span className="text-sm text-gray-500">SNS 로그인</span>
         <hr className="h-px flex-grow bg-gray-300" />
@@ -133,7 +133,7 @@ export const LoginForm = () => {
       <SocialLogin />
 
       {/* 회원가입 안내 영역 */}
-      <div className="w-full p-4 text-center">
+      <div className="mx-auto w-full p-4 text-center">
         <div className="text-sm font-semibold">아직 계정이 없으신가요?</div>
         <div className="mt-2 text-xs text-black-600">
           회원가입을 통해 툭스캔의 모든 서비스를 이용할 수 있습니다.

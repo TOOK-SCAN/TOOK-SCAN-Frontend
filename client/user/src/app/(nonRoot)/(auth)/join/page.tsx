@@ -98,7 +98,7 @@ const Join = () => {
 
   return (
     <div className="mb-12 flex flex-col items-center">
-      <div className="mt-10 w-[440px] text-left">
+      <div className="mx-auto mt-10 w-full max-w-[30rem] text-left">
         <div className="text-xs font-bold text-blue-primary">회원가입</div>
         <div className="mt-2 text-lg font-bold leading-tight text-black-800">
           툭스캔과 함께해요!
@@ -107,7 +107,7 @@ const Join = () => {
 
       {/* Step 1 */}
       {step === 1 && (
-        <div className="mt-6 w-[440px] rounded-lg bg-white p-6 shadow-md">
+        <div className="mx-auto mt-6 w-full max-w-[30rem] rounded-lg bg-white p-6 shadow-md">
           <StepIndicator currentStep={step} />
           <div className="mt-4 space-y-4">
             <InputField
@@ -124,7 +124,7 @@ const Join = () => {
                 onChange={(e) => setPhone(e.target.value)}
               />
               <Button
-                className="whitespace-nowrap px-6"
+                className="px-3"
                 variant="primary"
                 size="default"
                 onClick={() => setShowVerificationField(true)}
@@ -140,11 +140,11 @@ const Join = () => {
                   value={verificationCode}
                   onChange={(e) => setVerificationCode(e.target.value)}
                 />
-                <span className="whitespace-nowrap px-4 text-xs text-red-500">
+                <span className="px-4 text-xs text-red-500">
                   {timeLeft > 0 ? formatTime(timeLeft) : '시간 초과'}
                 </span>
                 <Button
-                  className="whitespace-nowrap px-6"
+                  className="px-3"
                   variant="primary"
                   size="md"
                   onClick={handleVerification}
@@ -249,7 +249,7 @@ const Join = () => {
       )}
 
       {step === 2 && (
-        <div className="mt-6 w-[440px] rounded-lg bg-white p-6 shadow-md">
+        <div className="mx-auto mt-6 w-full max-w-[30rem] rounded-lg bg-white p-6 shadow-md">
           <StepIndicator currentStep={step} />
           <div className="space-y-4">
             {/* 아이디 입력과 중복확인 버튼 */}

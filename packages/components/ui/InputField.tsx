@@ -44,10 +44,11 @@ export const InputField = ({
   }
 
   return (
-    <div className="flex w-full flex-col gap-2">
+    <div className="flex w-full max-w-[30rem] flex-col gap-2">
       <div
         className={clsx(
           'bg-blue-secondary flex h-[3.125rem] flex-row items-center gap-1 rounded-lg px-[1.12rem] py-3',
+          'w-auto max-w-full sm:w-full', // 반응형 적용
           disabled && 'bg-black-200 text-black-800 cursor-not-allowed',
           isError && !disabled && 'border-status-error rounded-lg border',
           isSuccess && !disabled && 'border-status-success border'
