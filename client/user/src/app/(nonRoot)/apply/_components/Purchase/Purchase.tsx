@@ -121,7 +121,6 @@ const Purchase = () => {
       },
     }
 
-    localStorage.setItem('lastOrder', JSON.stringify(orderRequest))
     orderMutation.mutate(orderRequest)
   }
 
@@ -129,7 +128,17 @@ const Purchase = () => {
   const isButtonDisabled = () => {
     if (books.length === 0) return true
 
-    if (pageIndex === 2 && !(terms.terms1 && terms.terms2 && terms.terms3)) {
+    // pageIndex === 2인데, 약관 동의 X
+    if (
+      pageIndex === 2 &&
+      !(
+        terms.terms1 &&
+        terms.terms2 &&
+        terms.terms3 &&
+        terms.terms4 &&
+        terms.terms5
+      )
+    ) {
       return true
     }
     if (pageIndex === 1) {
@@ -209,7 +218,7 @@ const Purchase = () => {
       >
         <h2 className="h3">예상 총 금액</h2>
         <div className="flex items-center gap-2">
-          <p className="text-blue-primary h2">
+          <p className="h2 text-blue-primary">
             {calculateTotalPrice({ books }).toLocaleString()}원
           </p>
           {/* 모바일: 책 목록 펼침/접힘 토글 */}
@@ -238,8 +247,6 @@ const Purchase = () => {
         </div>
       </div>
 
-    
-
       {/* 모바일에서만 책 리스트를 토글 (isDropdownOpen) */}
       <div
         className={clsx(
@@ -258,13 +265,13 @@ const Purchase = () => {
           ))}
         </ul>
         <div className="flex items-center justify-between px-2 pt-6">
-          <p className="font-semibold btn2">배송비</p>
+          <p className="btn2 font-semibold">배송비</p>
           <p>
             {hasNonDropBooks(books) ? (
               '2,500원'
             ) : (
-              <span className="text-blue-primary caption1">
-                <del className="text-black caption1">2,500원</del> 0원
+              <span className="caption1 text-blue-primary">
+                <del className="caption1 text-black">2,500원</del> 0원
               </span>
             )}
           </p>

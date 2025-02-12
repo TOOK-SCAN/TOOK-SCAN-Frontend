@@ -1,9 +1,10 @@
-import { TitleLabel, Accordion } from '@tookscan/components'
-import React from 'react'
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
+import { Accordion, TitleLabel } from '@tookscan/components'
+import { useAuth } from '@tookscan/hooks'
 
 const TermsAgreement = () => {
   const { terms, setTerms } = useApplyContext()
+  const { isLogin } = useAuth()
   return (
     <div className="flex flex-col justify-start gap-6">
       <TitleLabel
@@ -14,15 +15,28 @@ const TermsAgreement = () => {
       />
       <Accordion
         title="전체 동의"
-        isCheck={terms.terms1 && terms.terms2 && terms.terms3 && terms.terms4}
+        isCheck={
+          terms.terms1 &&
+          terms.terms2 &&
+          terms.terms3 &&
+          terms.terms4 &&
+          terms.terms5
+        }
         onClick={() => {
-          if (terms.terms1 && terms.terms2 && terms.terms3 && terms.terms4) {
+          if (
+            terms.terms1 &&
+            terms.terms2 &&
+            terms.terms3 &&
+            terms.terms4 &&
+            terms.terms5
+          ) {
             setTerms({
               ...terms,
               terms1: false,
               terms2: false,
               terms3: false,
               terms4: false,
+              terms5: false,
             })
           } else {
             setTerms({
@@ -31,6 +45,7 @@ const TermsAgreement = () => {
               terms2: true,
               terms3: true,
               terms4: true,
+              terms5: true,
             })
           }
         }}
@@ -57,11 +72,20 @@ const TermsAgreement = () => {
         />
 
         <Accordion
-          title="[선택] 마케팅 목적 기반 정보 확인 동의"
-          contents="Took Scan은 서비스 품질 개선 및 맞춤형 정보 제공을 위해 마케팅 정보를 활용할 수 있습니다. 동의를 선택하시면 할인 혜택, 이벤트 정보 등을 이메일 또는 문자로 받아보실 수 있으며, 언제든지 동의를 철회할 수 있습니다."
+          title="[필수] 서비스 제공기간 안내"
+          contents="내용 추가 필요."
           isCheck={terms.terms4}
           onClick={() => setTerms({ ...terms, terms4: !terms.terms4 })}
         />
+
+        {!isLogin && (
+          <Accordion
+            title="[필수] 개인정보 수집 및 이용동의"
+            contents="내용 추가 필요."
+            isCheck={terms.terms5}
+            onClick={() => setTerms({ ...terms, terms5: !terms.terms5 })}
+          />
+        )}
       </div>
     </div>
   )

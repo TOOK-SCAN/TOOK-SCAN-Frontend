@@ -12,6 +12,7 @@ import {
   TitleLabel,
 } from '@tookscan/components'
 import { useAuth, useModal, useToast } from '@tookscan/hooks'
+import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 
 const ShippingInfo = React.memo(() => {
@@ -27,6 +28,7 @@ const ShippingInfo = React.memo(() => {
   const [isVerifyingAuth, setIsVerifyingAuth] = useState(false)
   const [isPhoneValid, setIsPhoneValid] = useState(false)
   const [isVerificationValid, setIsVerificationValid] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(90)
 
   const { data } = useQuery({
     queryKey: ['userSummaries'],
@@ -55,12 +57,23 @@ const ShippingInfo = React.memo(() => {
     }
   }, [data])
 
+  // 타이머
+  useEffect(() => {
+    if (showVerificationInput && !isVerified && timeLeft > 0) {
+      const timerInterval = setInterval(() => {
+        setTimeLeft((prev) => prev - 1)
+      }, 1000)
+      return () => clearInterval(timerInterval)
+    }
+  }, [showVerificationInput, isVerified, timeLeft])
+
   // 전화번호 인증 요청
   const handleSendAuthCode = async () => {
     setIsSendingAuthCode(true)
     await sendAuthCode(shippingInfo.recipient, shippingInfo.phone)
     showToast('인증번호가 전송되었습니다', 'success', 'message-circle')
     setShowVerificationInput(true)
+    setTimeLeft(90)
     setIsSendingAuthCode(false)
   }
 
@@ -121,6 +134,10 @@ const ShippingInfo = React.memo(() => {
       setIsVerified(false) // 인증 초기화
     }
   }
+
+  const formattedTime = `${Math.floor(timeLeft / 60)}:${String(
+    timeLeft % 60
+  ).padStart(2, '0')}`
 
   return (
     <div className="flex flex-col justify-start gap-4">
@@ -202,7 +219,7 @@ const ShippingInfo = React.memo(() => {
       {/*전화번호 입력 및 인증*/}
       <Section>
         <TitleLabel size="lg" type="required" title="전화번호" />
-        <div className="flex gap-2">
+        <div className={clsx('flex gap-2', isVerified && 'opacity-50')}>
           <InputField
             type="simple"
             value={shippingInfo.phone}
@@ -225,6 +242,7 @@ const ShippingInfo = React.memo(() => {
               setShippingInfo((prev) => ({ ...prev, phone: formattedValue }))
             }}
             placeholder="010-1234-5678"
+            disabled={isVerified}
           />
           {!isLogin && (
             <Button
@@ -233,7 +251,9 @@ const ShippingInfo = React.memo(() => {
               disabled={
                 !isPhoneValid ||
                 isSendingAuthCode ||
-                shippingInfo.recipient.trim() === ''
+                shippingInfo.recipient.trim() === '' ||
+                (showVerificationInput && timeLeft > 0) ||
+                isVerified
               }
               className="px-6 py-3"
             >
@@ -246,7 +266,7 @@ const ShippingInfo = React.memo(() => {
       {showVerificationInput && (
         <Section>
           <TitleLabel size="lg" type="required" title="인증번호" />
-          <div className="flex gap-2">
+          <div className={clsx('flex gap-2', isVerified && 'opacity-50')}>
             <InputField
               type="simple"
               value={verificationCode}
@@ -261,16 +281,19 @@ const ShippingInfo = React.memo(() => {
                 setIsVerificationValid(rawValue.length >= 6)
               }}
               placeholder="인증번호"
+              disabled={isVerified}
             />
+
             <Button
               size="md"
               onClick={handleVerifyAuthCode}
-              disabled={isVerifyingAuth || !isVerificationValid}
+              disabled={isVerifyingAuth || !isVerificationValid || isVerified}
               className="px-6 py-3"
             >
               인증하기
             </Button>
           </div>
+          <span className="text-sm text-error">{formattedTime}</span>
         </Section>
       )}
       <Section>
