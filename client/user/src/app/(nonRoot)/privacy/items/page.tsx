@@ -124,12 +124,12 @@ const data: TableRow[] = [
 const AgreementTable = () => {
   return (
     <div className="flex flex-col justify-start gap-6">
-      <div className="flex w-[22rem] items-center justify-start">
+      <div className="flex w-full max-w-[22rem] items-center justify-start">
         <div>
-          <h2 className="mb-4 text-[1.25rem] font-bold text-black">
+          <h2 className="mb-4 font-bold text-black h3">
             개인정보 수집목적 및 이용목적
           </h2>
-          <p className="text-[1rem] text-gray-700">
+          <p className="text-gray-700 body2">
             회사는 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는
             개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이
             변경되는 경우에는 개인정보보호법 제18조에 따라 별도의 동의를 받는 등

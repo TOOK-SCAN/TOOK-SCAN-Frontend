@@ -1,8 +1,8 @@
 const Agreement5 = () => {
   return (
     <div className="flex flex-col justify-start gap-6">
-      <h2 className="text-xl font-bold text-black">개인정보의 수집 방법</h2>
-      <ul className="list-disc pl-6 text-[1rem] text-gray-700" role="list">
+      <h2 className="font-bold text-black h3">개인정보의 수집 방법</h2>
+      <ul className="list-disc pl-6 text-gray-700 body2" role="list">
         <li>
           회원가입 및 서비스 이용 과정에서 이용자가 개인정보 수집에 대해
           동의하고 입력하는 경우

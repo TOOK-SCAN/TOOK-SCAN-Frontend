@@ -3,11 +3,16 @@
 import type { MenuItem } from '@tookscan/components'
 import { Banner, Tab } from '@tookscan/components'
 import { usePathname, useRouter } from 'next/navigation'
+import { useRef, useState } from 'react'
 import type { LayoutProps } from '../../../types/common'
 
 const PrivacyLayout = ({ children }: LayoutProps) => {
-  const pathname = usePathname() // 현재 경로를 가져옵니다.
-  const router = useRouter() // 클라이언트 네비게이션을 위해 사용합니다.
+  const pathname = usePathname()
+  const router = useRouter()
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
 
   const menuItems: MenuItem[] = [
     { label: '개인정보 수집목적 및 이용목적', link: '/privacy/purpose' },
@@ -18,23 +23,49 @@ const PrivacyLayout = ({ children }: LayoutProps) => {
   ]
 
   const handleButtonClick = (link: string) => {
-    router.push(link) // 클라이언트 네비게이션을 사용해 새로고침 없이 이동
+    router.push(link)
+  }
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setStartX(e.pageX - scrollRef.current.offsetLeft)
+    setScrollLeft(scrollRef.current.scrollLeft)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    e.preventDefault()
+    const x = e.pageX - scrollRef.current.offsetLeft
+    const walk = (x - startX) * 1.5 // 이동 속도 조절
+    scrollRef.current.scrollLeft = scrollLeft - walk
+  }
+
+  const handleMouseUp = () => {
+    setIsDragging(false)
   }
 
   return (
-    <div className="min-h-screen bg-blue-secondary">
-      <Banner type={1}></Banner>
+    <div className="bg-blue-secondary">
+      <Banner type={1} />
       <div className="flex flex-col items-center justify-center">
-        <div className="py-[6.25rem]">
-          <div className="my-[3.5rem]">
-            <div className="">
+        <div className="w-full px-4 py-[6.25rem] md:px-8">
+          <div className="my-[3.5rem] w-full">
+            <div className="text-start">
               <h1 className="text-blue-primary">이용약관 | 개인정보처리방침</h1>
               <h1 className="text-title2 mt-[0.8rem] font-semibold text-black">
                 약관을 확인해주세요
               </h1>
             </div>
-            <div className="flex flex-col items-start justify-center">
-              <div className="my-[1.5rem] flex w-[65rem] gap-[0.5rem]">
+            <div
+              ref={scrollRef}
+              className="hide-scrollbar w-full cursor-grab overflow-x-auto active:cursor-grabbing"
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
+            >
+              <div className="mx-auto my-[1.5rem] flex w-max gap-[0.5rem] whitespace-nowrap">
                 {menuItems.map((item, index) => (
                   <Tab
                     key={index}
@@ -46,7 +77,7 @@ const PrivacyLayout = ({ children }: LayoutProps) => {
               </div>
             </div>
           </div>
-          <div className="w-[65rem] rounded-md bg-white p-12 shadow-md">
+          <div className="mx-auto w-full max-w-[65rem] rounded-md bg-white p-6 shadow-md md:p-12">
             {children}
           </div>
         </div>
