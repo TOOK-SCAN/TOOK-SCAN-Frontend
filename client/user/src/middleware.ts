@@ -1,4 +1,5 @@
 import type { UserInfoRes } from '@tookscan/types'
+import { cookieOptions } from '@tookscan/utils'
 import ky from 'ky'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
@@ -49,19 +50,15 @@ export async function middleware(req: NextRequest) {
           if (reissueRes.success) {
             // 새로운 토큰으로 쿠키 업데이트
             const response = NextResponse.next()
-            response.cookies.set('access_token', reissueRes.data.access_token, {
-              httpOnly: true,
-              secure: process.env.NODE_ENV === 'production',
-              path: '/',
-            })
+            response.cookies.set(
+              'access_token',
+              reissueRes.data.access_token,
+              cookieOptions(3600)
+            )
             response.cookies.set(
               'refresh_token',
               reissueRes.data.refresh_token,
-              {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                path: '/',
-              }
+              cookieOptions()
             )
             // 토큰 재발급 성공 시, middleware에서 바로 다음 단계로 진행
             return response

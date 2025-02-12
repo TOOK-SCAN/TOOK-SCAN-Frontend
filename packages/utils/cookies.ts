@@ -69,3 +69,12 @@ export const resetCookies = (): void => {
     deleteCookie(cookieName)
   }
 }
+
+export const cookieOptions = (time?: number) => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict' as const,
+  path: '/',
+  maxAge: time,
+  domain: process.env.NEXT_PUBLIC_APP_URL,
+})

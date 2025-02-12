@@ -1,5 +1,6 @@
 import { kyInstance } from '@tookscan/config'
 import type { LoginRes } from '@tookscan/types'
+import { cookieOptions } from '@tookscan/utils'
 import { NextResponse } from 'next/server'
 
 const BACKEND_API_URL = process.env.NEXT_PUBLIC_API_URL
@@ -50,19 +51,9 @@ export async function POST(request: Request) {
     // ✅ HttpOnly 쿠키로 Access Token 및 Refresh Token 설정 (보안 강화)
     const response = NextResponse.json(data, { status: backendResponse.status })
 
-    response.cookies.set('access_token', accessToken, {
-      httpOnly: true, // 클라이언트에서 접근 불가 (XSS 공격 방지)
-      secure: process.env.NODE_ENV === 'production', // 프로덕션에서는 HTTPS 필수
-      sameSite: 'strict', // CSRF 방지
-      path: '/', // 모든 페이지에서 쿠키 사용 가능
-    })
+    response.cookies.set('access_token', accessToken, cookieOptions(3600))
 
-    response.cookies.set('refresh_token', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      path: '/',
-    })
+    response.cookies.set('refresh_token', refreshToken, cookieOptions(604800))
 
     return response
   } catch (error) {
