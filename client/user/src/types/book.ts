@@ -25,6 +25,7 @@ export interface Terms {
   terms2: boolean
   terms3: boolean
   terms4: boolean
+  terms5: boolean
 }
 
 export const initialShippingInfo: ShippingInfo = {
@@ -47,4 +48,5 @@ export const initialTerms: Terms = {
   terms2: false,
   terms3: false,
   terms4: false,
+  terms5: false,
 }

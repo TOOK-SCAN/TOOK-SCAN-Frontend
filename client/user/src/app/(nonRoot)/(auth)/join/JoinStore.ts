@@ -29,13 +29,7 @@ export const useJoinStore = () => {
   })
 
   // 약관 상태
-  const [agreement, setAgreement] = useState({
-    all: false,
-    terms1: false,
-    terms2: false,
-    terms3: false,
-    marketing: false,
-  })
+  const [agreement, setAgreement] = useState<{ [termId: number]: boolean }>({})
 
   const [modal, setModal] = useState({
     isOpen: false,
@@ -100,22 +94,11 @@ export const useJoinHandlers = (store: {
       canEditPhone: boolean
     }>
   >
-  agreement: {
-    all: boolean
-    terms1: boolean
-    terms2: boolean
-    terms3: boolean
-    marketing: boolean
-  }
+  agreement: { [termId: number]: boolean }
   setAgreement: React.Dispatch<
-    React.SetStateAction<{
-      all: boolean
-      terms1: boolean
-      terms2: boolean
-      terms3: boolean
-      marketing: boolean
-    }>
+    React.SetStateAction<{ [termId: number]: boolean }>
   >
+
   modal: { isOpen: boolean; content: { title: string; content: string } }
   setModal: React.Dispatch<
     React.SetStateAction<{
@@ -187,7 +170,7 @@ export const useJoinHandlers = (store: {
         await sendAuthCode(store.stepState.name, store.stepState.phone)
         store.setVerificationState((prev) => ({
           ...prev,
-          timeLeft: 300,
+          timeLeft: 90,
           verificationMessage: '',
         }))
       } catch (error) {
@@ -232,27 +215,11 @@ export const useJoinHandlers = (store: {
     },
 
     // 약관
-    handleAgreementChange: (field: keyof typeof store.agreement | 'all') => {
-      store.setAgreement((prev) => {
-        if (field === 'all') {
-          const newValue = !prev.all
-          return {
-            all: newValue,
-            terms1: newValue,
-            terms2: newValue,
-            terms3: newValue,
-            marketing: newValue,
-          }
-        } else {
-          const updated = { ...prev, [field]: !prev[field] }
-          updated.all =
-            updated.terms1 &&
-            updated.terms2 &&
-            updated.terms3 &&
-            updated.marketing
-          return updated
-        }
-      })
+    handleAgreementChange: (termId: number, value?: boolean) => {
+      store.setAgreement((prev) => ({
+        ...prev,
+        [termId]: value !== undefined ? value : !prev[termId],
+      }))
     },
 
     // 아이디 중복 확인
@@ -298,7 +265,7 @@ export const useJoinHandlers = (store: {
           serial_id: store.stepState.id,
           password: store.stepState.password,
           phone_number: store.stepState.phone,
-          marketing_allowed: store.agreement.marketing,
+          marketing_allowed: store.agreement[4] || false,
         })
         router.push('/welcome')
       } catch (error: unknown) {

@@ -39,19 +39,19 @@ const PageInfo = () => {
         ))}
       </div>
       <div className="gap-2">
-        <h2 className={clsx('h2 font-semibold text-blue-primary')}>
+        <h2 className={clsx('h2 font-semibold text-blue-primary')}>
           STEP {pageIndex + 1}.
         </h2>
-        <h2 className={clsx('font-bold title2')}>
+        <h2 className={clsx('title2 font-bold')}>
           {stepDetails[pageIndex].title || '잘못된 단계입니다.'}
         </h2>
       </div>
-      <p className="text-black-800 body1">
+      <p className="body1 text-black-800">
         {stepDetails[pageIndex].description || '잘못된 단계입니다.'}
       </p>
       {pageIndex !== 0 && (
         <button
-          className={clsx('flex text-blue-primary btn2')}
+          className={clsx('btn2 flex text-blue-primary')}
           onClick={handleGoBack}
         >
           &lt; 이전으로
