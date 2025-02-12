@@ -1,4 +1,5 @@
 import { kyInstance } from '@tookscan/config'
+import { cookieOptions } from '@tookscan/utils'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -35,21 +36,8 @@ export async function POST() {
         { status: 200 }
       )
 
-      response.cookies.set('access_token', '', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        path: '/',
-        maxAge: 0, // 즉시 만료
-      })
-
-      response.cookies.set('refresh_token', '', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        path: '/',
-        maxAge: 0, // 즉시 만료
-      })
+      response.cookies.set('access_token', '', cookieOptions(0))
+      response.cookies.set('refresh_token', '', cookieOptions(0))
 
       return response
     }
