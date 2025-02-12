@@ -8,7 +8,7 @@ const GuestOrderInquiry = () => {
   return (
     <div className="flex min-h-screen flex-col items-center bg-gray-100">
       {/* 타이틀 */}
-      <div className="mt-10 w-[440px] text-left">
+      <div className="mx-auto mt-10 w-full max-w-[30rem] text-left">
         <div className="text-xs font-bold text-blue-primary">
           비회원 주문조회
         </div>
@@ -22,7 +22,7 @@ const GuestOrderInquiry = () => {
       </div>
 
       {/* 상자 */}
-      <div className="mt-6 w-[440px] rounded-lg bg-white p-6 shadow-md">
+      <div className="mx-auto mt-6 w-full max-w-[30rem] rounded-lg bg-white p-6 shadow-md">
         {/* 상자 제목 */}
         <div className="text-center text-lg font-bold text-blue-primary">
           비회원 주문조회

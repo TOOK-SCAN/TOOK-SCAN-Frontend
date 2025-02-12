@@ -4,13 +4,13 @@ import { LoginForm } from './_components/LoginForm'
 
 const LoginPage = () => {
   return (
-    <div className="flex max-w-[1080px] flex-col items-center bg-blue-secondary py-2 pb-12">
+    <div className="mx-auto flex w-full max-w-[67.5rem] flex-col items-center bg-blue-secondary py-2 pb-12">
       {/* 타이틀 영역 */}
-      <header className="w-[440px] py-8 text-left">
+      <header className="w-full max-w-[30rem] py-8 text-left">
         <h2 className="text-lg font-bold text-blue-primary">
           툭스캔과 함께해요!
         </h2>
-        <h1 className="mt-2 text-3xl font-bold leading-tight text-black-800">
+        <h1 className="mt-2 font-bold leading-tight text-black-800 title2">
           <span>툭스캔과 함께라면</span>
           <br />
           <span>간편해지는 나의 생활</span>

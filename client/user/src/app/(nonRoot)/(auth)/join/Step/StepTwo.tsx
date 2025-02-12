@@ -32,7 +32,7 @@ const StepTwoUI = ({
       ? passwordRegex.test(stepState.password)
       : undefined
   return (
-    <div className="mt-6 w-[440px] rounded-lg bg-white p-6 shadow-md">
+    <div className="mx-auto mt-6 w-full max-w-[30rem] rounded-lg bg-white p-6 shadow-md">
       <StepIndicator currentStep={2} />
       <div className="space-y-4">
         <div className="flex items-center space-x-2">
@@ -47,7 +47,7 @@ const StepTwoUI = ({
           <Button
             variant="primary"
             size="md"
-            className="w-[100px]"
+            className="w-full max-w-[6rem]"
             onClick={handlers.handleIdValidation}
             disabled={
               isValidating || idValidationMessage == '사용 가능한 아이디입니다.'

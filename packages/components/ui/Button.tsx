@@ -26,12 +26,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary disabled:pointer-events-none group whitespace-nowrap'
+      'inline-flex items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-primary disabled:pointer-events-none group'
 
     const variantStyles = {
       primary: 'bg-blue-primary text-white hover:bg-blue-dark hover:text-white',
       secondary:
-        'bg-blue-secondary text-blue-primary hover:bg-blue-shadow hover:text-blue-dark',
+        'w-full mx-auto bg-blue-secondary text-blue-primary hover:bg-blue-shadow hover:text-blue-dark',
       tertiary:
         'bg-white text-blue-primary border border-blue-primary hover:bg-blue-shadow hover:text-blue-dark',
       disabled: 'bg-black-100 text-black-400 cursor-not-allowed',
@@ -39,10 +39,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     const sizeStyles = {
-      default: '',
-      lg: 'text-lg py-[1.125rem] px-[1.75rem]',
-      md: 'text-sm py-[0.875rem] px-[1.75rem]',
-      sm: 'text-xs py-[0.625rem] px-[1.25rem]',
+      default: 'btn2 mx-auto w-full max-w-[6rem] py-2',
+      lg: 'text-lg py-[1.125rem] px-[1.75rem] mx-auto  sm:w-full',
+      md: 'text-sm py-[0.875rem] px-[1.75rem] mx-auto  sm:w-full',
+      sm: 'text-xs py-[0.625rem] px-[1.25rem] mx-auto  sm:w-full',
     }
 
     const isDisabled = disabled ? 'disabled' : variant

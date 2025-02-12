@@ -11,7 +11,7 @@ export interface OrderInfo {
   address: string
   payment: string
   price: number
-  currentStatus: string // 현재 작업 단계를 표시하기 위해 추가했습니다
+  currentStatus: string
 }
 
 interface OrderCardProps {
@@ -26,16 +26,16 @@ export const OrderCard = ({ data }: OrderCardProps) => {
 
   return (
     <>
-      <div className="mx-auto mt-[12px] h-[349px] w-full rounded-[2rem] bg-white p-[32px] shadow">
+      <div className="mx-auto mt-[12px] w-full max-w-[500px] rounded-[2rem] bg-white p-[24px] shadow md:p-[32px]">
         {/* 상단 경로(진행단계) */}
-        <nav className="mb-4 text-sm text-gray-500">
+        <nav className="btn2 mb-4 text-gray-500">
           발송완료 &gt; 업체도착 &gt; 스캔진행 &gt;{' '}
           <span className="text-blue-500">작업완료</span>
         </nav>
 
         {/* 제목 */}
         <div className="mb-4">
-          <h1 className="text-xl font-semibold">
+          <h1 className="btn1 font-semibold md:text-xl">
             {data.userName} | {data.dateTime}
           </h1>
         </div>
@@ -46,19 +46,27 @@ export const OrderCard = ({ data }: OrderCardProps) => {
         {/* 주문 상세 정보 */}
         <div className="mb-4 space-y-2 text-gray-700">
           <div>
-            <span className="mr-[12px] text-[12px] font-medium">주문상품 </span>
+            <span className="btn2 mr-[12px] font-medium md:text-sm">
+              주문상품{' '}
+            </span>
             <span className="font-semibold">{data.productName}</span>
           </div>
           <div>
-            <span className="mr-[12px] text-[12px] font-medium">주문번호 </span>
+            <span className="btn2 mr-[12px] font-medium md:text-sm">
+              주문번호{' '}
+            </span>
             <span className="font-semibold">{data.orderNumber}</span>
           </div>
           <div>
-            <span className="mr-[12px] text-[12px] font-medium">배송정보 </span>
+            <span className="btn2 mr-[12px] font-medium md:text-sm">
+              배송정보{' '}
+            </span>
             <span className="font-semibold">{data.address}</span>
           </div>
           <div>
-            <span className="mr-[12px] text-[12px] font-medium">결제수단 </span>
+            <span className="btn2 mr-[12px] font-medium md:text-sm">
+              결제수단{' '}
+            </span>
             <span className="font-semibold">{data.payment}</span>
           </div>
         </div>
@@ -70,15 +78,15 @@ export const OrderCard = ({ data }: OrderCardProps) => {
               {data.price.toLocaleString()}원
             </div>
           </div>
-          <div />
 
-          <div className="flex flex-row justify-center space-x-2">
-            <button className="border-1 mx-auto h-[38px] w-full min-w-[8rem] rounded border border-blue-500 px-4 py-2 text-blue-500 transition hover:bg-blue-50">
+          {/* 버튼 그룹 (가로 정렬 유지) */}
+          <div className="flex w-full flex-row justify-center space-x-2">
+            <button className="border-1 h-[38px] w-full max-w-[13rem] rounded border border-blue-500 px-4 py-2 text-blue-500 transition hover:bg-blue-50">
               배송조회
             </button>
             <button
-              className="border-1 mx-auto h-[38px] w-full min-w-[8rem] rounded border border-blue-500 px-4 py-2 text-blue-500 transition hover:bg-blue-50"
-              onClick={handleOpenModal} // 주문 상세 클릭 시 모달 열기
+              className="border-1 h-[38px] w-full max-w-[13rem] rounded border border-blue-500 px-4 py-2 text-blue-500 transition hover:bg-blue-50"
+              onClick={handleOpenModal}
             >
               주문 상세
             </button>

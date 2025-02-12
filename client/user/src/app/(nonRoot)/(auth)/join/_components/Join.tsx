@@ -56,29 +56,31 @@ const Join = () => {
   const idValidationMessage = stepState.id ? '' : '아이디를 입력해주세요.'
 
   return (
-    <div className="mb-12 flex flex-col items-center">
-      <div className="mt-10 w-[440px] text-left">
-        <div className="text-xs font-bold text-blue-primary">회원가입</div>
-        <div className="mt-2 text-lg font-bold leading-tight text-black-800">
+    <div className="mb-12 flex w-full flex-col items-center">
+      <div className="mx-auto mt-10 w-full max-w-[25rem] px-4 text-left">
+        <div className="font-bold text-blue-primary btn1">회원가입</div>
+        <div className="mt-2 font-bold leading-tight text-black-800 title2">
           툭스캔과 함께해요!
         </div>
       </div>
-      {step === 1 ? (
-        <StepOneUI
-          stepState={stepState}
-          verificationState={verificationState}
-          agreement={agreement}
-          handlers={handlers}
-          setStep={setStep}
-        />
-      ) : (
-        <StepTwoUI
-          stepState={stepState}
-          handlers={handlers}
-          idValidationMessage={idValidationMessage}
-          isValidating={isValidating}
-        />
-      )}
+      <div className="w-full max-w-[30rem] px-4">
+        {step === 1 ? (
+          <StepOneUI
+            stepState={stepState}
+            verificationState={verificationState}
+            agreement={agreement}
+            handlers={handlers}
+            setStep={setStep}
+          />
+        ) : (
+          <StepTwoUI
+            stepState={stepState}
+            handlers={handlers}
+            idValidationMessage={idValidationMessage}
+            isValidating={isValidating}
+          />
+        )}
+      </div>
       {modal.isOpen && (
         <Modal
           isOpen={modal.isOpen}

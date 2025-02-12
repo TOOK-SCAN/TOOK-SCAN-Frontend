@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 export const Footer = () => {
   return (
-    <footer className="w-full bg-white px-6 py-8 lg:px-[96px] lg:py-[32px]">
+    <footer className="w-full  bg-white px-6 py-8 lg:px-[96px] lg:py-[32px]">
       {/* 로고와 슬로건 */}
       <div className="flex flex-col items-start">
         {/* 로고 */}
