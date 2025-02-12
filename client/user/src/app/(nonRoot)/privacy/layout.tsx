@@ -26,6 +26,7 @@ const PrivacyLayout = ({ children }: LayoutProps) => {
     router.push(link)
   }
 
+  // 🖱️ 마우스 드래그 핸들러
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollRef.current) return
     setIsDragging(true)
@@ -37,11 +38,31 @@ const PrivacyLayout = ({ children }: LayoutProps) => {
     if (!isDragging || !scrollRef.current) return
     e.preventDefault()
     const x = e.pageX - scrollRef.current.offsetLeft
-    const walk = (x - startX) * 1.5 // 이동 속도 조절
+    const walk = (x - startX) * 1.5
     scrollRef.current.scrollLeft = scrollLeft - walk
   }
 
   const handleMouseUp = () => {
+    setIsDragging(false)
+  }
+
+  // 📱 터치 이벤트 핸들러 (모바일 대응)
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!scrollRef.current) return
+    setIsDragging(true)
+    setStartX(e.touches[0].pageX - scrollRef.current.offsetLeft)
+    setScrollLeft(scrollRef.current.scrollLeft)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !scrollRef.current) return
+    e.preventDefault()
+    const x = e.touches[0].pageX - scrollRef.current.offsetLeft
+    const walk = (x - startX) * 1.5
+    scrollRef.current.scrollLeft = scrollLeft - walk
+  }
+
+  const handleTouchEnd = () => {
     setIsDragging(false)
   }
 
@@ -64,6 +85,9 @@ const PrivacyLayout = ({ children }: LayoutProps) => {
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               <div className="mx-auto my-[1.5rem] flex w-max gap-[0.5rem] whitespace-nowrap">
                 {menuItems.map((item, index) => (
