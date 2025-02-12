@@ -51,9 +51,9 @@ export async function POST(request: Request) {
     // ✅ HttpOnly 쿠키로 Access Token 및 Refresh Token 설정 (보안 강화)
     const response = NextResponse.json(data, { status: backendResponse.status })
 
-    response.cookies.set('access_token', accessToken, cookieOptions(3600))
+    response.cookies.set('access_token', accessToken, cookieOptions())
 
-    response.cookies.set('refresh_token', refreshToken, cookieOptions(604800))
+    response.cookies.set('refresh_token', refreshToken, cookieOptions())
 
     return response
   } catch (error) {

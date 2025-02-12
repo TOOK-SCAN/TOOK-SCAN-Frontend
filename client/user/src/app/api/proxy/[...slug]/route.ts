@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { kyInstance } from '@tookscan/config'
 import type { ErrorRes, ReissueTokenRes } from '@tookscan/types'
 import { cookieOptions, devConsole } from '@tookscan/utils'
@@ -13,6 +14,7 @@ const MAX_RETRY = 3 // 최대 3번 재발급 시도
  * - 요청을 백엔드로 전달하고 응답을 클라이언트로 반환
  * - Access Token이 만료된 경우 최대 3번까지 Refresh Token으로 자동 갱신
  */
+
 async function proxyRequest(
   request: Request,
   slug: string[],
@@ -50,96 +52,89 @@ async function proxyRequest(
           ? await request.text()
           : undefined,
     })
-  } catch (error) {
+  } catch (error: any) {
     devConsole.error('🚨 API 요청 중 네트워크 오류 발생:', error)
-    // 네트워크 오류 발생 시 502 Bad Gateway 반환
-    return NextResponse.json({ error: '네트워크 오류 발생' }, { status: 502 })
-  }
-
-  devConsole.log('🔥 Backend response status:', backendResponse.status)
-
-  // Access Token이 만료되었거나 권한이 없을 경우 (401 또는 403) refreshToken으로 재발급 시도
-  if (
-    (backendResponse.status === 401 || backendResponse.status === 403) &&
-    refreshToken
-  ) {
-    if (retryCount >= MAX_RETRY) {
-      devConsole.log(
-        '❌ Maximum token refresh attempts reached. Logging out...'
-      )
-      // 쿠키 초기화 (토큰 삭제)
-      cookieStore.delete('access_token')
-      cookieStore.delete('refresh_token')
-      // 로그인 페이지로 리디렉트
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
-
-    devConsole.log(
-      `🔄 Access Token expired. Attempting refresh... (${retryCount + 1}/${MAX_RETRY})`
-    )
-    // 재발급 API 호출 함수 정의
-    const reissueToken = async (): Promise<ReissueTokenRes | ErrorRes> => {
-      try {
-        const response = await ky.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/reissue/token`,
-          {
-            headers: {
-              Authorization: `Bearer ${refreshToken}`,
-            },
-          }
+    if (
+      (error.error?.code === 40101 || error.error?.code === 40103) &&
+      refreshToken
+    ) {
+      if (retryCount >= MAX_RETRY) {
+        devConsole.log(
+          '❌ Maximum token refresh attempts reached. Logging out...'
         )
-        if (!response.ok) {
-          devConsole.error('❌ Error refreshing token:', response.statusText)
+        // 로그인 페이지로 리디렉트
+        return NextResponse.redirect(new URL('/login', request.url))
+      }
+
+      devConsole.log(
+        `🔄 Access Token expired. Attempting refresh... (${retryCount + 1}/${MAX_RETRY})`
+      )
+      // 재발급 API 호출 함수 정의
+      const reissueToken = async (): Promise<ReissueTokenRes | ErrorRes> => {
+        try {
+          const response = await ky.post(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/reissue/token`,
+            {
+              headers: {
+                Authorization: `Bearer ${refreshToken}`,
+              },
+            }
+          )
+          if (!response.ok) {
+            devConsole.error('❌ Error refreshing token:', response.statusText)
+            cookieStore.delete('access_token')
+            cookieStore.delete('refresh_token')
+            return {
+              success: false,
+              data: null,
+              error: {
+                message: 'Token reissue failed',
+                code: response.status,
+              },
+            }
+          }
+          return await response.json()
+        } catch (error) {
+          devConsole.error('❌ Exception during token reissue:', error)
+          // 쿠키 초기화 후 실패 처리
+          cookieStore.delete('access_token')
+          cookieStore.delete('refresh_token')
           return {
             success: false,
             data: null,
             error: {
               message: 'Token reissue failed',
-              code: response.status,
+              code: 401,
             },
           }
         }
-        return await response.json()
-      } catch (error) {
-        devConsole.error('❌ Exception during token reissue:', error)
-        // 쿠키 초기화 후 실패 처리
-        cookieStore.delete('access_token')
-        cookieStore.delete('refresh_token')
-        return {
-          success: false,
-          data: null,
-          error: {
-            message: 'Token reissue failed',
-            code: 401,
-          },
-        }
+      }
+
+      const refreshResponse = await reissueToken()
+
+      if (refreshResponse.success) {
+        accessToken = refreshResponse.data.access_token
+        refreshToken = refreshResponse.data.refresh_token
+        devConsole.log('✅ Access Token refreshed successfully')
+
+        // 새 Access Token & Refresh Token을 쿠키에 저장 (예: 3600초, 604800초 만료)
+        cookieStore.set('access_token', accessToken, cookieOptions())
+        cookieStore.set('refresh_token', refreshToken, cookieOptions())
+
+        // 새로운 Access Token으로 헤더 업데이트 후 재요청 (재귀 호출)
+        headers.set('Authorization', `Bearer ${accessToken}`)
+        return proxyRequest(request, slug, retryCount + 1)
+      } else {
+        devConsole.log(
+          '❌ Refresh Token expired or reissue failed. Logging out...'
+        )
+        return NextResponse.redirect(new URL('/login', request.url))
       }
     }
-
-    const refreshResponse = await reissueToken()
-
-    if (refreshResponse.success) {
-      accessToken = refreshResponse.data.access_token
-      refreshToken = refreshResponse.data.refresh_token
-      devConsole.log('✅ Access Token refreshed successfully')
-
-      // 새 Access Token & Refresh Token을 쿠키에 저장 (예: 3600초, 604800초 만료)
-      cookieStore.set('access_token', accessToken, cookieOptions(3600))
-      cookieStore.set('refresh_token', refreshToken, cookieOptions(604800))
-
-      // 새로운 Access Token으로 헤더 업데이트 후 재요청 (재귀 호출)
-      headers.set('Authorization', `Bearer ${accessToken}`)
-      return proxyRequest(request, slug, retryCount + 1)
-    } else {
-      devConsole.log(
-        '❌ Refresh Token expired or reissue failed. Logging out...'
-      )
-      // 재발급 실패 시 쿠키 초기화 및 로그인 페이지로 리디렉션
-      cookieStore.delete('access_token')
-      cookieStore.delete('refresh_token')
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
+    return NextResponse.json({ error: '네트워크 오류 발생' }, { status: 502 })
   }
+
+  // Access Token이 만료되었거나 권한이 없을 경우 (401 또는 403) refreshToken으로 재발급 시도
 
   // 응답이 JSON인지 확인 후 변환 (예외 처리 포함)
   let data
