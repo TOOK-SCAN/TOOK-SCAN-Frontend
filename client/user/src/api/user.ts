@@ -8,3 +8,4 @@ export const getUserSummaries = async (): Promise<
   const result: UserSummariesResponse = await response.json()
   return result?.data ?? null
 }
+export const getUserDetail = async (): Promise<
