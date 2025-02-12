@@ -9,13 +9,10 @@ import type { MenuItem } from '@tookscan/components'
 import { Tab } from '@tookscan/components'
 
 const profileItems: MenuItem[] = [
+  { label: '주문 내역 조회', link: '/profile/order' },
   { label: '개인정보 수정', link: '/profile/edit/info' },
   { label: '비밀번호 변경', link: '/profile/edit/password' },
-  { label: '주문 내역 조회', link: '/profile/order' },
 ]
-
-
-
 
 const ProfileLayout = ({ children }: LayoutProps) => {
   const pathname = usePathname()
@@ -48,7 +45,7 @@ const ProfileLayout = ({ children }: LayoutProps) => {
             </div>
             {/*  선택된 라벨*/}
             {currentLabel && (
-              <h2 className="title2 mt-[1rem] self-start">{currentLabel}</h2>
+              <h2 className="mt-[1rem] self-start title2">{currentLabel}</h2>
             )}
           </div>
 
