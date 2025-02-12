@@ -25,3 +25,8 @@ export type FindSerialIdRes = Common<{
 export type FindPasswordRes = Common<{
   temporary_password: string
 }>
+
+export type ReissueTokenRes = Common<{
+  access_token: string
+  refresh_token: string
+}>
