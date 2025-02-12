@@ -4,10 +4,10 @@ const Agreement1 = () => {
       {/* 첫 번째 글 상자 */}
       <div className="flex items-center justify-start">
         <div>
-          <h2 className="mb-4 text-[1.25rem] font-bold text-black">
+          <h2 className="mb-4 font-bold text-black h3">
             개인정보 수집목적 및 이용목적
           </h2>
-          <p className="text-[1rem] text-gray-700">
+          <p className="text-gray-700 body2">
             회사는 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는
             개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이
             변경되는 경우에는 개인정보보호법 제18조에 따라 별도의 동의를 받는 등
@@ -19,7 +19,7 @@ const Agreement1 = () => {
       {/* 두 번째 글 상자 */}
       <div className="flex items-center justify-start">
         <div>
-          <ul className="list-decimal pl-6 text-[1rem] text-gray-700">
+          <ul className="list-decimal pl-6 text-gray-700 body2">
             <li className="mb-2">
               홈페이지 회원 가입 및 관리
               <p className="text-gray-600">
