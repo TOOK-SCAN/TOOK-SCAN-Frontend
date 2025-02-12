@@ -1,7 +1,10 @@
 'use client'
+import { getUserDetail, updateUserDetail } from '@/api'
 import { Section } from '@/app/(nonRoot)/apply/_components'
+import { sendAuthCode, verifyAuthCode } from '@tookscan/api'
 import {
   Button,
+  CheckButton,
   InputField,
   SearchAddress,
   TitleLabel,
@@ -17,31 +20,126 @@ const EditInfoPage = () => {
     email: '',
     address: '',
     addressDetail: '',
-    request: '',
+    emailConsent: false,
+    smsConsent: false,
   })
+
+  const [state, setState] = useState({
+    isIdChecked: false,
+    isVerified: false,
+    verificationCode: '',
+    showVerificationInput: false,
+    isVerificationValid: false,
+    isPhoneValid: false,
+    isUpdating: false,
+  })
+
+  // 상태 업데이트 함수 (부분 업데이트 가능)
+  const updateState = <K extends keyof typeof state>(
+    key: K,
+    value: (typeof state)[K]
+  ) => {
+    setState((prev) => ({ ...prev, [key]: value }))
+  }
 
   const { showToast } = useToast()
   const { openModal, closeModal } = useModal()
 
-  // 입력 값 변경 핸들러 (key에 따라 formInfo 업데이트)
-  const handleInputChange = (
-    key: keyof typeof formInfo,
-    value: string
-  ): void => {
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const data = await getUserDetail()
+      if (data) {
+        setFormInfo({
+          recipient: data.name || '',
+          id: data.serial_id || '',
+          phone: data.phone_number || '',
+          email: data.email || '',
+          address: data.address?.address_name || '',
+          addressDetail: data.address?.address_detail || '',
+          emailConsent: false,
+          smsConsent: false,
+        })
+        updateState('isIdChecked', true)
+        updateState('isVerified', true)
+      }
+    }
+    fetchUserData()
+  }, [])
+
+  const handleInputChange = (key: keyof typeof formInfo, value: string) => {
     setFormInfo((prev) => ({ ...prev, [key]: value }))
+    updateState('isUpdating', true)
+
+    if (key === 'id') {
+      updateState('isIdChecked', false)
+    }
+    if (key === 'phone') {
+      updateState('isVerified', false)
+      updateState('showVerificationInput', false)
+    }
   }
 
-  // 컴포넌트 마운트 또는 formInfo 변경 시, input 태그의 초기 값을 동기화
-  useEffect(() => {
-    Object.entries(formInfo).forEach(([key, value]) => {
-      const inputElement = document.querySelector<HTMLInputElement>(
-        `input[name="${key}"]`
-      )
-      if (inputElement) {
-        inputElement.value = value || ''
-      }
+  // 아이디 중복 검사
+  const handleIdCheck = () => {
+    if (!formInfo.id.trim()) {
+      showToast('아이디를 입력하세요.', 'error')
+      return
+    }
+    updateState('isIdChecked', true)
+    showToast('사용 가능한 아이디입니다.', 'success')
+  }
+
+  // 인증번호 전송
+  const handleSendAuthCode = async () => {
+    await sendAuthCode(formInfo.recipient, formInfo.phone)
+    showToast('인증번호가 전송되었습니다.', 'success')
+    updateState('showVerificationInput', true)
+  }
+
+  // 인증번호 확인
+  const handleVerifyAuthCode = async () => {
+    try {
+      await verifyAuthCode(formInfo.phone, state.verificationCode)
+      updateState('isVerified', true)
+      showToast('휴대폰 인증이 완료되었습니다.', 'success')
+    } catch (error) {
+      showToast('인증번호가 올바르지 않습니다.', 'error')
+    }
+  }
+
+  const isChangeButtonEnabled =
+    state.isUpdating && state.isIdChecked && state.isVerified
+
+  // 정보 수정 요청
+  const handleUpdateInfo = async () => {
+    if (!state.isIdChecked) {
+      showToast('아이디 중복 확인을 해주세요.', 'error')
+      return
+    }
+    if (!state.isVerified) {
+      showToast('휴대폰 인증을 완료해주세요.', 'error')
+      return
+    }
+    if (!formInfo.email) {
+      showToast('이메일을 입력해주세요.', 'error')
+      return
+    }
+    await updateUserDetail({
+      phone: formInfo.phone,
+      email: formInfo.email,
+      address: {
+        address_name: formInfo.address,
+        region_1depth_name: '',
+        region_2depth_name: '',
+        region_3depth_name: '',
+        address_detail: formInfo.addressDetail,
+        longitude: 0,
+        latitude: 0,
+      },
     })
-  }, [formInfo])
+    showToast('정보가 업데이트되었습니다.', 'success')
+    updateState('isUpdating', false)
+  }
 
   return (
     <div className="mx-auto flex w-full flex-col gap-4">
@@ -59,38 +157,90 @@ const EditInfoPage = () => {
       {/* 아이디 */}
       <Section>
         <TitleLabel size="lg" type="required" title="아이디" />
-        <InputField
-          type="simple"
-          name="id"
-          value={formInfo.id}
-          onChange={(e) => handleInputChange('id', e.target.value)}
-          placeholder="아이디값"
-        />
+        <div className="flex gap-2">
+          <InputField
+            type="simple"
+            name="id"
+            value={formInfo.id}
+            onChange={(e) => {
+              handleInputChange('id', e.target.value)
+              updateState('isIdChecked', false)
+            }}
+            placeholder="아이디값"
+          />
+          <Button
+            size="md"
+            onClick={handleIdCheck}
+            disabled={state.isIdChecked}
+          >
+            중복 확인
+          </Button>
+        </div>
       </Section>
       {/* 전화번호 */}
       <Section>
         <TitleLabel size="lg" type="required" title="전화번호" />
-        <InputField
-          type="simple"
-          name="phone"
-          value={formInfo.phone}
-          onChange={(e) => {
-            const input = e.target as HTMLInputElement
-            const rawValue = input.value.replace(/\D/g, '')
-            if (rawValue.length > 11) {
-              input.value = rawValue.slice(0, 11)
-            }
-            const formattedValue = rawValue
-              .slice(0, 11)
-              .replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/, (_, p1, p2, p3) =>
-                [p1, p2, p3].filter(Boolean).join('-')
-              )
-            input.value = formattedValue
-            handleInputChange('phone', rawValue.slice(0, 11))
-          }}
-          placeholder="010-1234-5678"
-        />
+        <div className="flex gap-2">
+          <InputField
+            type="simple"
+            name="phone"
+            value={formInfo.phone}
+            onChange={(e) => {
+              const input = e.target as HTMLInputElement
+              const rawValue = input.value.replace(/\D/g, '')
+              if (rawValue.length > 11) {
+                input.value = rawValue.slice(0, 11)
+              }
+              const formattedValue = rawValue
+                .slice(0, 11)
+                .replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/, (_, p1, p2, p3) =>
+                  [p1, p2, p3].filter(Boolean).join('-')
+                )
+              input.value = formattedValue
+              handleInputChange('phone', rawValue.slice(0, 11))
+              updateState('isVerified', false)
+            }}
+            placeholder="010-1234-5678"
+          />
+          <Button
+            size="md"
+            onClick={handleSendAuthCode}
+            disabled={!state.isVerificationValid}
+          >
+            인증받기
+          </Button>
+        </div>
+        {state.showVerificationInput && (
+          <Section>
+            <div className="flex gap-2">
+              <InputField
+                type="simple"
+                name="verificationCode"
+                value={state.verificationCode}
+                onChange={(e) =>
+                  setState((prev) => ({
+                    ...prev,
+                    verificationCode: e.target.value
+                      .replace(/\D/g, '')
+                      .slice(0, 6),
+                    isVerificationValid:
+                      e.target.value.replace(/\D/g, '').length === 6,
+                  }))
+                }
+                placeholder="인증번호"
+              />
+              <Button
+                size="md"
+                onClick={handleVerifyAuthCode}
+                disabled={!state.isVerificationValid}
+              >
+                인증하기
+              </Button>
+            </div>
+          </Section>
+        )}
       </Section>
+
       {/* 이메일 */}
       <Section>
         <TitleLabel
@@ -170,6 +320,74 @@ const EditInfoPage = () => {
           />
         </Section>
       </div>
+      <div className="mt-4 border-t border-gray-300" />
+
+      <Section>
+        <TitleLabel
+          size="sm"
+          type="default"
+          title="광고 및 이벤트 목적의 개인정보 수집 및 이용 동의"
+          description="툭스캔 서비스와 관련된 이벤트 안내, 고객 혜택 등 다양한 정보를 제공합니다."
+        />
+        <div className="mt-2 flex gap-4">
+          <CheckButton
+            size="lg"
+            isChecked={formInfo.emailConsent}
+            onClick={() =>
+              setFormInfo((prev) => ({
+                ...prev,
+                emailConsent: !prev.emailConsent,
+              }))
+            }
+          />
+          <span className="self-center">E-Mail 수신 동의 (선택)</span>
+          <CheckButton
+            size="lg"
+            isChecked={formInfo.smsConsent}
+            onClick={() =>
+              setFormInfo((prev) => ({ ...prev, smsConsent: !prev.smsConsent }))
+            }
+          />
+          <span className="self-center">SMS 수신 동의 (선택)</span>
+        </div>
+      </Section>
+      {/* <Button
+        size="lg"
+        variant={isChangeButtonEnabled ? 'primary' : 'disabled'}
+        disabled={!isChangeButtonEnabled}
+        onClick={async () => {
+          await updateUserDetail({
+            phone: formInfo.phone,
+            email: formInfo.email,
+            address: {
+              address_name: formInfo.address,
+              region_1depth_name: '',
+              region_2depth_name: '',
+              region_3depth_name: '',
+              region_4depth_name: '',
+              address_detail: formInfo.addressDetail,
+              longitude: 0,
+              latitude: 0,
+            },
+          })
+          showToast('정보가 업데이트되었습니다.', 'success')
+          updateState('isUpdating', false)
+        }}
+        className="mt-4 w-full"
+      >
+        변경
+      </Button> */}
+      <Button
+        size="lg"
+        variant={isChangeButtonEnabled ? 'primary' : 'disabled'}
+        disabled={!isChangeButtonEnabled}
+        onClick={async () => {
+          await handleUpdateInfo()
+        }}
+        className="mt-4 w-full"
+      >
+        변경
+      </Button>
     </div>
   )
 }
