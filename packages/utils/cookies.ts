@@ -76,5 +76,5 @@ export const cookieOptions = (time?: number) => ({
   sameSite: 'strict' as const,
   path: '/',
   maxAge: time,
-  domain: process.env.NEXT_PUBLIC_APP_URL,
+  domain: process.env.NEXT_PUBLIC_DOMAIN,
 })
