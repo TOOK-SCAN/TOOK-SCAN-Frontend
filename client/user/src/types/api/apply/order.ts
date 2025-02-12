@@ -1,3 +1,5 @@
+import type { Common } from '@tookscan/types'
+
 export interface OrderRequest {
   documents: {
     name: string
@@ -23,20 +25,13 @@ export interface OrderRequest {
   }
 }
 
-export interface OrderResponse {
-  success: boolean
-  data?: {
-    order_number: string
-    name: string
-    payment_prediction: number
-    email: string
-    address: string
-  }
-  error?: {
-    code: number
-    message: string
-  } | null
-}
+export type OrderResponse = Common<{
+  order_number: string
+  name: string
+  payment_prediction: number
+  email: string
+  address: string
+}>
 
 export interface UserSummariesResponse {
   success: boolean
