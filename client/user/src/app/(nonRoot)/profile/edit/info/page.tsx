@@ -1,5 +1,5 @@
 'use client'
-import { getUserDetail, updateUserDetail } from '@/api'
+import { getUserDetail, signUpIDCheck, updateUserDetail } from '@/api'
 import { Section } from '@/app/(nonRoot)/apply/_components'
 import { sendAuthCode, verifyAuthCode } from '@tookscan/api'
 import {
@@ -32,9 +32,9 @@ const EditInfoPage = () => {
     isVerificationValid: false,
     isPhoneValid: false,
     isUpdating: false,
+    isValidating: false,
   })
 
-  // 상태 업데이트 함수 (부분 업데이트 가능)
   const updateState = <K extends keyof typeof state>(
     key: K,
     value: (typeof state)[K]
@@ -79,14 +79,26 @@ const EditInfoPage = () => {
     }
   }
 
-  // 아이디 중복 검사
-  const handleIdCheck = () => {
+  const handleIdCheck = async () => {
     if (!formInfo.id.trim()) {
       showToast('아이디를 입력하세요.', 'error')
       return
     }
-    updateState('isIdChecked', true)
-    showToast('사용 가능한 아이디입니다.', 'success')
+    updateState('isValidating', true)
+    try {
+      const response = await signUpIDCheck(formInfo.id)
+      if (!response.data.is_valid) {
+        showToast('이미 사용 중인 아이디입니다.', 'error')
+        updateState('isIdChecked', false)
+      } else {
+        showToast('사용 가능한 아이디입니다.', 'success')
+        updateState('isIdChecked', true)
+      }
+    } catch (error) {
+      showToast('아이디 중복 확인에 실패했습니다.', 'error')
+    } finally {
+      updateState('isValidating', false)
+    }
   }
 
   // 인증번호 전송
@@ -351,32 +363,7 @@ const EditInfoPage = () => {
           <span className="self-center">SMS 수신 동의 (선택)</span>
         </div>
       </Section>
-      {/* <Button
-        size="lg"
-        variant={isChangeButtonEnabled ? 'primary' : 'disabled'}
-        disabled={!isChangeButtonEnabled}
-        onClick={async () => {
-          await updateUserDetail({
-            phone: formInfo.phone,
-            email: formInfo.email,
-            address: {
-              address_name: formInfo.address,
-              region_1depth_name: '',
-              region_2depth_name: '',
-              region_3depth_name: '',
-              region_4depth_name: '',
-              address_detail: formInfo.addressDetail,
-              longitude: 0,
-              latitude: 0,
-            },
-          })
-          showToast('정보가 업데이트되었습니다.', 'success')
-          updateState('isUpdating', false)
-        }}
-        className="mt-4 w-full"
-      >
-        변경
-      </Button> */}
+
       <Button
         size="lg"
         variant={isChangeButtonEnabled ? 'primary' : 'disabled'}

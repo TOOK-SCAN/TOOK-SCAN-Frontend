@@ -24,9 +24,8 @@ export const getUserDetail = async (): Promise<
 
 export const updateUserDetail = async (
   requestBody: UserDetailFetchRequest
-): Promise<UserDetailFetchRes> => {
-  return await httpInstance.put('users', { json: requestBody }).json()
-}
+): Promise<UserDetailFetchRes> =>
+  httpInstance.put('users', { json: requestBody }).json()
 
 export const updatePW = async (
   old_password: string,
