@@ -3,7 +3,7 @@
 import { OrderDetailBox } from '@tookscan/components'
 import Link from 'next/link'
 
-const OrderDetail = () => {
+const TestPage = () => {
   return (
     <div className="flex min-h-screen flex-col items-center bg-gray-100">
       {/* 이전으로 링크 */}
@@ -39,4 +39,4 @@ const OrderDetail = () => {
   )
 }
 
-export default OrderDetail
+export default TestPage

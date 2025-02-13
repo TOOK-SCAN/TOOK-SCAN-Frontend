@@ -12,7 +12,7 @@ export const CheckButton = ({ isChecked, onClick, size }: CheckButtonProps) => {
     size === 'lg' ? { width: 16, height: 16 } : { width: 10, height: 10 }
 
   return (
-    <div className="flex px-4 py-2">
+    <div className="z-10 flex px-4 py-2">
       <button
         className={`flex items-center justify-center rounded-full ${buttonSize} ${
           isChecked
