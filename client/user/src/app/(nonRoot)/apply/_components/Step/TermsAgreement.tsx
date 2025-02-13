@@ -24,11 +24,7 @@ const TermsAgreement = () => {
         for (const term of visibleTerms) {
           newTerms[term.id] = prev[term.id] ?? false
         }
-        const merged = { ...prev, ...newTerms }
-        if (JSON.stringify(prev) === JSON.stringify(merged)) {
-          return prev
-        }
-        return merged
+        return newTerms
       })
     }
   }, [visibleTerms, setTerms])
