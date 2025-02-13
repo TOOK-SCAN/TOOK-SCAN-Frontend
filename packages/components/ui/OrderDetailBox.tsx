@@ -3,6 +3,8 @@
 import html2canvas from 'html2canvas'
 import React from 'react'
 import { Button } from '../../components'
+import { useModal } from '../../hooks'
+import DeliveryTracking from '../ui/DeliveryTracking'
 
 interface DetailBoxProps {
   currentStatus?: string
@@ -16,7 +18,7 @@ interface DetailBoxProps {
   onCloseModal?: () => void
 }
 
-export const DetailBox = ({
+export const OrderDetailBox = ({
   currentStatus,
   orderDate,
   customer,
@@ -27,6 +29,13 @@ export const DetailBox = ({
   isModal = false,
   onCloseModal,
 }: DetailBoxProps) => {
+  const { openModal } = useModal()
+
+  // 배송조회 모달 열기
+  const handleOpenTrackingModal = () => {
+    openModal(<DeliveryTracking trackingNumber={deliveryInfo} />)
+  }
+
   const handleSaveImage = async () => {
     try {
       const element = document.querySelector('.detail-box')
@@ -99,6 +108,7 @@ export const DetailBox = ({
             <Button
               className="h-[28px] w-[70px] px-[1rem] text-sm"
               variant="primary"
+              onClick={handleOpenTrackingModal} // 배송조회 모달 열기
             >
               배송조회
             </Button>

@@ -30,7 +30,7 @@ export const ModalSheet = () => {
     >
       <div
         className={clsx(
-          'relative mx-[1rem] w-full max-w-lg rounded-lg bg-white p-6',
+          'relative mx-[1rem] max-h-[50rem] w-full max-w-[30rem] rounded-lg bg-white p-6',
           'shadow-xl transition-transform duration-300'
         )}
         onClick={(e) => e.stopPropagation()}
