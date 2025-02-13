@@ -6,6 +6,8 @@ export interface SignUpDefaultRequest {
   password: string
   phone_number: string
   marketing_allowed: boolean
+  is_receive_email: boolean
+  is_receive_sms: boolean
 }
 
 export interface SignUpOAuthRequest {
