@@ -1,5 +1,5 @@
-import type { Books, ShippingInfo, Terms } from '@/types/book'
-import { initialShippingInfo, initialTerms } from '@/types/book'
+import type { Books, ShippingInfo } from '@/types/book'
+import { initialShippingInfo } from '@/types/book'
 import type { ReactNode } from 'react'
 import { createContext, useContext, useRef, useState } from 'react'
 
@@ -11,8 +11,8 @@ interface ApplyContextType {
   shippingInfo: ShippingInfo
   setShippingInfo: React.Dispatch<React.SetStateAction<ShippingInfo>>
   updateShippingAddress: (addressData: Partial<ShippingInfo>) => void
-  terms: Terms
-  setTerms: (terms: Terms) => void
+  terms: Record<number, boolean>
+  setTerms: React.Dispatch<React.SetStateAction<Record<number, boolean>>>
   ignoreBeforeUnload: React.MutableRefObject<boolean>
 }
 
@@ -23,7 +23,7 @@ export const ApplyProvider = ({ children }: { children: ReactNode }) => {
   const [books, setBooks] = useState<Books[]>([])
   const [shippingInfo, setShippingInfo] =
     useState<ShippingInfo>(initialShippingInfo)
-  const [terms, setTerms] = useState<Terms>(initialTerms)
+  const [terms, setTerms] = useState<Record<number, boolean>>({})
   const ignoreBeforeUnload = useRef<boolean>(false)
 
   const updateShippingAddress = (data: Partial<ShippingInfo>) => {
