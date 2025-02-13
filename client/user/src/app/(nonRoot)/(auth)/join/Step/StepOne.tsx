@@ -44,6 +44,10 @@ const StepOneUI = ({
   setStep,
 }: StepOneUIProps) => {
   const [showVerification, setShowVerification] = useState(false)
+  const [adAgreement, setAdAgreement] = useState(false)
+  const [emailConsent, setEmailConsent] = useState(false)
+  const [smsConsent, setSmsConsent] = useState(false)
+
   const isPhoneValid = stepState.phone.length === 11
 
   const { data: termsData } = useQuery<Term[]>({
@@ -51,11 +55,17 @@ const StepOneUI = ({
     queryFn: () => fetchTerms(TermsType.SIGN_UP),
   })
   const visibleTerms: Term[] =
-    termsData?.filter((term: Term) => term.is_visible) || []
+    termsData?.filter((term: Term) => term.isVisible) || []
 
   const allRequiredAgreed = visibleTerms
-    .filter((term) => term.is_required)
+    .filter((term) => term.isRequired)
     .every((term) => agreement[term.id])
+
+  const isAllChecked =
+    visibleTerms.every((term) => agreement[term.id]) &&
+    adAgreement &&
+    emailConsent &&
+    smsConsent
 
   const isNextButtonEnabled =
     stepState.name.trim() !== '' &&
@@ -72,6 +82,57 @@ const StepOneUI = ({
     const minutes = Math.floor(time / 60)
     const seconds = time % 60
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+  }
+
+  const handleAllAgreementChange = () => {
+    const newState = !isAllChecked
+
+    visibleTerms.forEach((term) => {
+      handlers.handleAgreementChange(term.id, newState)
+    })
+
+    setAdAgreement(newState)
+    setEmailConsent(newState)
+    setSmsConsent(newState)
+  }
+
+  const handleAdAgreementChange = () => {
+    if (adAgreement) {
+      setEmailConsent(false)
+      setSmsConsent(false)
+      setAdAgreement(false)
+    } else {
+      setEmailConsent(true)
+      setSmsConsent(true)
+      setAdAgreement(true)
+    }
+  }
+
+  const handleConsentChange = (type: 'email' | 'sms') => {
+    if (type === 'email') {
+      setEmailConsent((prev) => {
+        const newEmailConsent = !prev
+        const newAdAgreement = newEmailConsent || smsConsent
+
+        setAdAgreement(newAdAgreement)
+        return newEmailConsent
+      })
+    } else {
+      setSmsConsent((prev) => {
+        const newSmsConsent = !prev
+        const newAdAgreement = emailConsent || newSmsConsent
+
+        setAdAgreement(newAdAgreement)
+        return newSmsConsent
+      })
+    }
+  }
+
+  const handleOpenPrivacyPolicy = () => {
+    handlers.openModal(
+      '개인정보 수집 및 이용 동의',
+      '고객 서비스 이용에 관한 안내 및 이용자 식별'
+    )
   }
 
   return (
@@ -173,12 +234,7 @@ const StepOneUI = ({
             visibleTerms.length > 0 &&
             visibleTerms.every((term) => agreement[term.id])
           }
-          onClick={() => {
-            const allAgreed = visibleTerms.every((term) => agreement[term.id])
-            visibleTerms.forEach((term) => {
-              handlers.handleAgreementChange(term.id, !allAgreed)
-            })
-          }}
+          onClick={handleAllAgreementChange}
         />
         <span className="ml-1.5 text-black-600">전체 동의</span>
       </div>
@@ -196,7 +252,7 @@ const StepOneUI = ({
                 onClick={() => {}}
               />
               <span className="ml-1.5 text-black-600">
-                {term.is_required ? '[필수]' : '[선택]'} {term.title}
+                {term.isRequired ? '[필수]' : '[선택]'} {term.title}
               </span>
             </div>
             <button
@@ -207,6 +263,37 @@ const StepOneUI = ({
             </button>
           </div>
         ))}
+      </div>
+
+      <div className="mt-4 flex items-center justify-between">
+        <div className="flex items-center">
+          <CheckButton
+            size="lg"
+            isChecked={adAgreement}
+            onClick={handleAdAgreementChange}
+          />
+          <span className="ml-1.5 text-black-600">
+            [선택] 광고 및 이벤트 목적의 개인정보 수집 및 이용 동의
+          </span>
+        </div>
+        <button className="text-gray-600" onClick={handleOpenPrivacyPolicy}>
+          &gt;
+        </button>
+      </div>
+
+      <div className="mt-2 flex gap-x-4 rounded-md border border-gray-400 p-3">
+        <CheckButton
+          size="lg"
+          isChecked={emailConsent}
+          onClick={() => handleConsentChange('email')}
+        />
+        <span className="text-black-600">E-Mail</span>
+        <CheckButton
+          size="lg"
+          isChecked={smsConsent}
+          onClick={() => handleConsentChange('sms')}
+        />
+        <span className="text-black-600">SMS</span>
       </div>
       <Button
         variant={isNextButtonEnabled ? 'primary' : 'disabled'}

@@ -30,6 +30,9 @@ export const useJoinStore = () => {
 
   // 약관 상태
   const [agreement, setAgreement] = useState<{ [termId: number]: boolean }>({})
+  const [adAgreement, setAdAgreement] = useState(false)
+  const [emailConsent, setEmailConsent] = useState(false)
+  const [smsConsent, setSmsConsent] = useState(false)
 
   const [modal, setModal] = useState({
     isOpen: false,
@@ -48,6 +51,12 @@ export const useJoinStore = () => {
     setVerificationState,
     agreement,
     setAgreement,
+    adAgreement,
+    setAdAgreement,
+    emailConsent,
+    setEmailConsent,
+    smsConsent,
+    setSmsConsent,
     modal,
     setModal,
     idValidationMessage,
@@ -99,6 +108,13 @@ export const useJoinHandlers = (store: {
     React.SetStateAction<{ [termId: number]: boolean }>
   >
 
+  adAgreement: boolean
+  setAdAgreement: React.Dispatch<React.SetStateAction<boolean>>
+  emailConsent: boolean
+  setEmailConsent: React.Dispatch<React.SetStateAction<boolean>>
+  smsConsent: boolean
+  setSmsConsent: React.Dispatch<React.SetStateAction<boolean>>
+
   modal: { isOpen: boolean; content: { title: string; content: string } }
   setModal: React.Dispatch<
     React.SetStateAction<{
@@ -114,8 +130,46 @@ export const useJoinHandlers = (store: {
   const openModal = (title: string, content: string) => {
     store.setModal({ isOpen: true, content: { title, content } })
   }
+  const handleAllAgreementChange = (value?: boolean) => {
+    const newValue =
+      value ?? !(store.adAgreement && store.emailConsent && store.smsConsent)
+
+    store.setAdAgreement(newValue)
+    store.setEmailConsent(newValue)
+    store.setSmsConsent(newValue)
+
+    Object.keys(store.agreement).forEach((termId) => {
+      store.setAgreement((prev) => ({
+        ...prev,
+        [Number(termId)]: newValue,
+      }))
+    })
+  }
 
   return {
+    handleAdAgreementChange: (value?: boolean) => {
+      const newAdAgreement = value ?? !store.adAgreement
+      store.setAdAgreement(newAdAgreement)
+
+      if (newAdAgreement) {
+        store.setEmailConsent(true)
+        store.setSmsConsent(true)
+      } else {
+        store.setEmailConsent(false)
+        store.setSmsConsent(false)
+      }
+    },
+
+    handleConsentChange: (type: 'email' | 'sms') => {
+      if (type === 'email') {
+        store.setEmailConsent((prev) => !prev)
+      } else {
+        store.setSmsConsent((prev) => !prev)
+      }
+
+      store.setAdAgreement(store.emailConsent || store.smsConsent)
+    },
+
     // 인증요청 정보 변화 확인
     handleNameChange: (e: React.ChangeEvent<HTMLInputElement>) => {
       store.setStepState((prev) => ({ ...prev, name: e.target.value }))
@@ -223,26 +277,52 @@ export const useJoinHandlers = (store: {
     },
 
     // 아이디 중복 확인
-    handleIdValidation: async () => {
+    handleIdValidation: async (): Promise<boolean> => {
       store.setIsValidating(true)
+
       if (!store.stepState.id.trim()) {
-        openModal('에러', '아이디를 입력하세요.')
+        store.setModal({
+          isOpen: true,
+          content: { title: '에러', content: '아이디를 입력하세요.' },
+        })
         store.setIsValidating(false)
-        return
+        return false
       }
+
       try {
         const response = await signUpIDCheck(store.stepState.id)
-        if (!response.data.is_valid) {
-          openModal('에러', '이미 사용 중인 아이디입니다.')
+
+        console.log('ID 중복 검사 응답:', response)
+
+        store.setIsValidating(false)
+
+        if (response.data?.is_valid) {
+          store.setModal({
+            isOpen: true,
+            content: { title: '확인', content: '사용 가능한 아이디입니다.' },
+          })
+          return true
         } else {
-          openModal('확인', '사용 가능한 아이디입니다.')
+          store.setModal({
+            isOpen: true,
+            content: { title: '에러', content: '이미 사용 중인 아이디입니다.' },
+          })
+          return false
         }
       } catch (error) {
-        openModal('에러', '아이디 중복 확인에 실패했습니다.')
-      } finally {
+        console.error('아이디 중복 확인 에러:', error)
+        store.setModal({
+          isOpen: true,
+          content: {
+            title: '에러',
+            content: '아이디 중복 확인에 실패했습니다.',
+          },
+        })
         store.setIsValidating(false)
+        return false
       }
     },
+    handleAllAgreementChange,
 
     // 회원가입
     handleSignUp: async () => {
@@ -265,7 +345,9 @@ export const useJoinHandlers = (store: {
           serial_id: store.stepState.id,
           password: store.stepState.password,
           phone_number: store.stepState.phone,
-          marketing_allowed: store.agreement[4] || false,
+          marketing_allowed: store.adAgreement,
+          is_receive_email: store.emailConsent,
+          is_receive_sms: store.smsConsent,
         })
         router.push('/welcome')
       } catch (error: unknown) {

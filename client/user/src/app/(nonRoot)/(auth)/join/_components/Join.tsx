@@ -16,6 +16,12 @@ const Join = () => {
     setVerificationState,
     agreement,
     setAgreement,
+    adAgreement,
+    setAdAgreement,
+    emailConsent,
+    setEmailConsent,
+    smsConsent,
+    setSmsConsent,
     modal,
     setModal,
     isValidating,
@@ -29,6 +35,12 @@ const Join = () => {
     setVerificationState,
     agreement,
     setAgreement,
+    adAgreement,
+    setAdAgreement,
+    emailConsent,
+    setEmailConsent,
+    smsConsent,
+    setSmsConsent,
     modal,
     setModal,
     isValidating,
@@ -58,8 +70,8 @@ const Join = () => {
   return (
     <div className="mb-12 flex w-full flex-col items-center">
       <div className="mx-auto mt-10 w-full max-w-[25rem] px-4 text-left">
-        <div className="font-bold text-blue-primary btn1">회원가입</div>
-        <div className="mt-2 font-bold leading-tight text-black-800 title2">
+        <div className="btn1 font-bold text-blue-primary">회원가입</div>
+        <div className="title2 mt-2 font-bold leading-tight text-black-800">
           툭스캔과 함께해요!
         </div>
       </div>
