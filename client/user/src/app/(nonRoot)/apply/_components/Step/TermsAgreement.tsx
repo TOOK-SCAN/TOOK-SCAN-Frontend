@@ -20,13 +20,10 @@ const TermsAgreement = () => {
   useEffect(() => {
     if (visibleTerms.length > 0) {
       setTerms((prev: Record<number, boolean>) => {
-        const newTerms = visibleTerms.reduce<Record<number, boolean>>(
-          (acc, term) => ({
-            ...acc,
-            [term.id]: prev[term.id] ?? false,
-          }),
-          {} as Record<number, boolean>
-        )
+        const newTerms: Record<number, boolean> = {}
+        for (const term of visibleTerms) {
+          newTerms[term.id] = prev[term.id] ?? false
+        }
         const merged = { ...prev, ...newTerms }
         if (JSON.stringify(prev) === JSON.stringify(merged)) {
           return prev
@@ -43,10 +40,10 @@ const TermsAgreement = () => {
 
   const handleAllAgreementChange = () => {
     const newState = !isAllChecked
-    const updatedTerms = visibleTerms.reduce<Record<number, boolean>>(
-      (acc, term) => ({ ...acc, [term.id]: newState }),
-      {} as Record<number, boolean>
-    )
+    const updatedTerms: Record<number, boolean> = {}
+    for (const term of visibleTerms) {
+      updatedTerms[term.id] = newState
+    }
     setTerms((prev: Record<number, boolean>) => ({
       ...prev,
       ...updatedTerms,
