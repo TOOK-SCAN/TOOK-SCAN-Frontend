@@ -20,13 +20,7 @@ export interface ShippingInfo {
   request: string
 }
 
-export interface Terms {
-  terms1: boolean
-  terms2: boolean
-  terms3: boolean
-  terms4: boolean
-  terms5: boolean
-}
+export type Terms = Record<number, boolean>
 
 export const initialShippingInfo: ShippingInfo = {
   recipient: '',
@@ -43,10 +37,4 @@ export const initialShippingInfo: ShippingInfo = {
   request: '',
 }
 
-export const initialTerms: Terms = {
-  terms1: false,
-  terms2: false,
-  terms3: false,
-  terms4: false,
-  terms5: false,
-}
+export const initialTerms: Terms = {}

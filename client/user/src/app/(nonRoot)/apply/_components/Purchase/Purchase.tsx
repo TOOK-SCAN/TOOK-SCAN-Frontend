@@ -129,18 +129,15 @@ const Purchase = () => {
     if (books.length === 0) return true
 
     // pageIndex === 2인데, 약관 동의 X
-    if (
-      pageIndex === 2 &&
-      !(
-        terms.terms1 &&
-        terms.terms2 &&
-        terms.terms3 &&
-        terms.terms4 &&
-        terms.terms5
+    if (pageIndex === 2) {
+      // 필수 약관 동적 체크
+      const requiredTerms = Object.values(terms).filter(
+        (value) => value === false
       )
-    ) {
-      return true
+
+      if (requiredTerms.length > 0) return true
     }
+
     if (pageIndex === 1) {
       if (hasNonDropBooks(books)) {
         return !(
