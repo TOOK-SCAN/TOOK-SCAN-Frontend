@@ -2,6 +2,7 @@
 
 import { Button } from '@tookscan/components/ui/Button'
 import { InputField } from '@tookscan/components/ui/InputField'
+import { useState } from 'react'
 import StepIndicator from '../_components/StepIndicator'
 
 interface StepTwoUIProps {
@@ -12,7 +13,7 @@ interface StepTwoUIProps {
     handleConfirmPasswordChange: (
       e: React.ChangeEvent<HTMLInputElement>
     ) => void
-    handleIdValidation: () => Promise<void>
+    handleIdValidation: () => Promise<boolean>
     handleSignUp: () => Promise<void>
   }
   idValidationMessage: string
@@ -25,12 +26,28 @@ const StepTwoUI = ({
   idValidationMessage,
   isValidating,
 }: StepTwoUIProps) => {
+  const [isValidId, setIsValidId] = useState(false)
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/
   const isPasswordValid =
     stepState.password.length > 0
       ? passwordRegex.test(stepState.password)
       : undefined
+
+  const handleIdValidation = async () => {
+    try {
+      const isValid = await handlers.handleIdValidation()
+
+      if (isValid) {
+        setIsValidId(true)
+      } else {
+        setIsValidId(false)
+      }
+    } catch (error) {
+      console.error('handleIdValidation 오류:', error)
+      setIsValidId(false)
+    }
+  }
   return (
     <div className="mx-auto mt-6 w-full max-w-[30rem] rounded-lg bg-white p-6 shadow-md">
       <StepIndicator currentStep={2} />
@@ -48,10 +65,8 @@ const StepTwoUI = ({
             variant="primary"
             size="md"
             className="w-full max-w-[6rem]"
-            onClick={handlers.handleIdValidation}
-            disabled={
-              isValidating || idValidationMessage == '사용 가능한 아이디입니다.'
-            }
+            onClick={handleIdValidation}
+            disabled={isValidating || isValidId}
           >
             {isValidating ? '확인 중...' : '중복 확인'}
           </Button>
@@ -90,7 +105,7 @@ const StepTwoUI = ({
           !stepState.password ||
           !stepState.confirmPassword ||
           stepState.password !== stepState.confirmPassword ||
-          idValidationMessage !== '사용 가능한 아이디입니다.'
+          !isValidId
         }
       >
         가입하기

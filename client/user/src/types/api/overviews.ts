@@ -10,7 +10,7 @@ export interface Term {
   type: TermsType
   title: string
   content: string
-  is_required: boolean
-  is_visible: boolean
+  isRequired: boolean
+  isVisible: boolean
 }
 export type TermsResponse = Common<{ terms: Term[] }>
