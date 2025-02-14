@@ -28,7 +28,7 @@ export type EasyPaymentProvider =
 
 export interface Order {
   id: number
-  status: OrderStatus
+  order_status: OrderStatus
   document_description: string
   order_number: number
   order_date: string

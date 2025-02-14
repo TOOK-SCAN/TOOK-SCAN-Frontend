@@ -2,14 +2,43 @@
 
 import { PaymentLabel } from '@/app/(nonRoot)/profile/order/_components/PaymentLabel'
 import type { Order } from '@/types'
+import { Button } from '@tookscan/components'
 import { useModal } from '@tookscan/hooks'
 import React from 'react'
 import { orderInfo, steps } from '../_utils/order'
 
 export const OrderCard = ({ data }: { data: Order }) => {
   const { openModal } = useModal()
-  const statusOrder = steps.map((step) => step.value)
-  const currentStepIndex = statusOrder.indexOf(data.status)
+  const currentStatus = data.order_status
+    ? data.order_status.trim().toUpperCase()
+    : ''
+  const currentStepIndex = Math.max(
+    steps.findIndex(
+      (step) => step.value.trim().toUpperCase() === currentStatus
+    ),
+    0
+  )
+
+  const getVariant = () => {
+    if (
+      data.order_status === 'COMPANY_ARRIVED' ||
+      data.order_status === 'PAYMENT_COMPLETED'
+    ) {
+      return 'primary'
+    } else if (data.order_status === 'ALL_COMPLETED') {
+      return 'secondary'
+    } else if (data.order_status === 'SCAN_IN_PROGRESS') {
+      return 'disabled'
+    }
+    return 'disabled'
+  }
+
+  const interaction = (data: Order) => [
+    { label: '주문 상품', value: data.document_description },
+    { label: '주문 번호', value: data.order_number.toString() },
+    { label: '배송 정보', value: data.address },
+    { label: '결제 수단', value: data.payment_method },
+  ]
 
   return (
     <>
@@ -84,16 +113,22 @@ export const OrderCard = ({ data }: { data: Order }) => {
           </div>
 
           {/* 버튼 그룹 (가로 정렬 유지) */}
-          <div className="flex w-full flex-row justify-center space-x-2">
-            <button className="border-1 h-[38px] w-full max-w-[13rem] rounded border border-blue-500 px-4 py-2 text-blue-500 transition hover:bg-blue-50">
-              배송조회
-            </button>
-            <button
-              className="border-1 h-[38px] w-full max-w-[13rem] rounded border border-blue-500 px-4 py-2 text-blue-500 transition hover:bg-blue-50"
+          <div className="flex w-full flex-row justify-center gap-3">
+            <Button
+              variant="secondary"
+              size="md"
+              className="flex-1"
               onClick={() => openModal(<></>)}
             >
               주문 상세
-            </button>
+            </Button>
+            <Button
+              variant={getVariant() as 'primary' | 'tertiary' | 'disabled'}
+              size="md"
+              className="flex-1"
+            >
+              {data.order_status}
+            </Button>
           </div>
         </div>
       </div>
