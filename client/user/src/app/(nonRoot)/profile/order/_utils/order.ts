@@ -22,7 +22,7 @@ export const PaymentMapping = {
 export const steps = [
   { label: '신청 완료', value: 'APPLY_COMPLETED' },
   { label: '업체 도착', value: 'COMPANY_ARRIVED' },
-  { label: '결제 대기', value: 'PAYMENT_COMPLETED' },
+  { label: '결제 완료', value: 'PAYMENT_COMPLETED' },
   { label: '스캔 중', value: 'SCAN_IN_PROGRESS' },
   { label: '작업 완료', value: 'ALL_COMPLETED' },
 ]
