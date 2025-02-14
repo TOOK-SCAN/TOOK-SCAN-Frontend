@@ -2,29 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Pretendard CDN */
+@import url('https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css');
+
+/* 로컬 폰트 경로 수정 및 Safari 대응 */
 @font-face {
   font-family: 'Pretendard';
-  src:
-    url('../assets/fonts//PretendardVariable.ttf') format('woff2'),
-    url('../assets/fonts//PretendardVariable.ttf') format('woff');
+  src: url('../assets/fonts/PretendardVariable.woff2') format('woff2');
+
   font-weight: 400;
   font-style: normal;
+  font-synthesis: none; /* Safari에서 폰트 스타일 강제 적용 */
+  unicode-range: U+000-5FF, U+2000-206F, U+2E00-2E7F; /* 기본 유니코드 범위 */
 }
 
 @font-face {
   font-family: 'Pretendard';
-  src:
-    url('../assets/fonts//PretendardVariable.ttf') format('woff2'),
-    url('../assets/fonts//PretendardVariable.ttf') format('woff');
+  src: url('/assets/fonts/PretendardVariable.woff2') format('woff2');
+
   font-weight: 700;
   font-style: normal;
+  font-synthesis: none;
+  unicode-range: U+000-5FF, U+2000-206F, U+2E00-2E7F;
 }
 
-/* 기본 글꼴 설정 */
+/* ✅ 모든 브라우저에서 기본 글꼴 적용 */
 html {
-  font-family: 'Pretendard', sans-serif;
+  font-family: 'Pretendard', sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* ✅ Tailwind 전역 폰트 설정 */
+body {
+  @apply font-sans;
+}
+
+/* 스크롤바 숨기기 */
 .hide-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;

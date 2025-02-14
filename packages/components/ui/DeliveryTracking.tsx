@@ -1,7 +1,8 @@
 'use client'
 
+import clsx from 'clsx'
 import { Button } from '..'
-
+import { useModal } from '../../hooks'
 import { CheckButton } from './CheckButton'
 
 interface DeliveryTrackingProps {
@@ -17,6 +18,7 @@ export const DeliveryTracking = ({ trackingNumber }: DeliveryTrackingProps) => {
     '배송완료',
   ]
   const currentStatus = '배송중' // 초기 상태를 '배송중'으로 설정
+  const { closeModal } = useModal()
 
   return (
     <div>
@@ -30,7 +32,6 @@ export const DeliveryTracking = ({ trackingNumber }: DeliveryTrackingProps) => {
           <span className="caption1">한진택배</span>
         </div>
       </div>
-
       {/* 현재 상태 */}
       <div className="mt-4 flex items-center justify-between">
         <span className="btn1">현재상태</span>
@@ -39,20 +40,34 @@ export const DeliveryTracking = ({ trackingNumber }: DeliveryTrackingProps) => {
         </span>
       </div>
 
-      {/* 진행 상태 표시 */} {/* Todo 동그라미 사이에 아이콘*/}
-      <div className="mt-4 flex items-center justify-between">
+      {/* 원 사이에 아이콘 넣은거*/}
+      <div className="mt-4 flex w-full items-center justify-between">
         {statuses.map((status, index) => (
-          <div key={index} className="flex flex-col items-center">
-            <div
-              className={`flex h-12 w-12 items-center justify-center rounded-full ${
-                status === currentStatus ? 'bg-blue-500' : 'bg-gray-100'
-              }`}
-            />
-            <span className="mt-1 text-xs text-gray-600">{status}</span>
+          <div
+            key={index}
+            className={clsx(
+              'flex flex-row items-center justify-between',
+              index === statuses.length - 1 ? '' : 'flex-1'
+            )}
+          >
+            <div className="flex flex-col items-center justify-center">
+              <div
+                className={`flex h-12 w-12 items-center justify-center rounded-full ${
+                  status === currentStatus ? 'bg-blue-500' : 'bg-gray-100'
+                }`}
+              />
+              <span className="caption2 mt-1 text-gray-600">{status}</span>
+            </div>
+
+            {index < statuses.length - 1 && (
+              <span className="flex w-full flex-row justify-center text-gray-500">
+                {' '}
+                &gt;{' '}
+              </span>
+            )}
           </div>
         ))}
       </div>
-
       {/* 배송 과정 타임라인 */}
       <div className="mt-6 space-y-4 border-t pt-4">
         {[
@@ -108,11 +123,16 @@ export const DeliveryTracking = ({ trackingNumber }: DeliveryTrackingProps) => {
         })}
       </div>
       {/* 닫기 버튼 */}
-      <div className="mt-6">
-        <Button className="flex-1" variant="primary" size="sm">
+      <div className="mt-6 w-full">
+        <Button
+          variant="primary"
+          size="md"
+          onClick={() => {
+            closeModal()
+          }}
+        >
           닫기
         </Button>
-        {/* Todo 모달 닫기 아직 구현 못함*/}
       </div>
     </div>
   )
