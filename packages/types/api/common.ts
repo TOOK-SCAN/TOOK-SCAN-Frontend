@@ -15,3 +15,10 @@ export interface ErrorRes {
     code: number
   }
 }
+
+export interface PageInfo {
+  current_page: number
+  page_size: number
+  total_page: number
+  total_item: number
+}

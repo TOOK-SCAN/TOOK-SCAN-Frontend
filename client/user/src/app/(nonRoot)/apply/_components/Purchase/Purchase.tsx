@@ -13,7 +13,7 @@ import {
   calculateTotalPrice,
   hasNonDropBooks,
 } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
-import type { OrderRequest, OrderResponse } from '@/types/api/apply/order'
+import type { OrderRequest, OrderResponse } from '@/types/api/order'
 
 import { Button } from '@tookscan/components'
 import { useAuth, useModal } from '@tookscan/hooks'
@@ -215,7 +215,7 @@ const Purchase = () => {
       >
         <h2 className="h3">예상 총 금액</h2>
         <div className="flex items-center gap-2">
-          <p className="h2 text-blue-primary">
+          <p className="text-blue-primary h2">
             {calculateTotalPrice({ books }).toLocaleString()}원
           </p>
           {/* 모바일: 책 목록 펼침/접힘 토글 */}
@@ -262,13 +262,13 @@ const Purchase = () => {
           ))}
         </ul>
         <div className="flex items-center justify-between px-2 pt-6">
-          <p className="btn2 font-semibold">배송비</p>
+          <p className="font-semibold btn2">배송비</p>
           <p>
             {hasNonDropBooks(books) ? (
               '2,500원'
             ) : (
-              <span className="caption1 text-blue-primary">
-                <del className="caption1 text-black">2,500원</del> 0원
+              <span className="text-blue-primary caption1">
+                <del className="text-black caption1">2,500원</del> 0원
               </span>
             )}
           </p>
