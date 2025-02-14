@@ -33,7 +33,7 @@ const createApiClient = (
               statusText: res.statusText,
               body: responseData,
             })
-            throw responseData
+            throw { ...responseData, status: res.status }
           }
 
           devConsole.log('[Response Data]:', responseData)
