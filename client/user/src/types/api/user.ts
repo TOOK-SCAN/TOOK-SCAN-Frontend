@@ -32,10 +32,12 @@ export type UserDetailRes = Common<{
     longitude: number
     latitude: number
   }
+  is_receive_email: boolean
+  is_receive_sms: boolean
 }>
 
 export interface UserDetailFetchRequest {
-  phone: string
+  phone_number: string
   email?: string
   address?: {
     address_name: string
@@ -47,6 +49,8 @@ export interface UserDetailFetchRequest {
     longitude: number
     latitude: number
   }
+  is_receive_email: boolean
+  is_receive_sms: boolean
 }
 
 export type UserDetailFetchRes = Common<null>
