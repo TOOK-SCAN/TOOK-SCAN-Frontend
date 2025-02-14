@@ -54,7 +54,10 @@ async function proxyRequest(
     })
   } catch (error: any) {
     devConsole.error('🚨 API 요청 중 네트워크 오류 발생:', error)
-    if (
+    if (error) {
+      backendResponse = error.response
+      return NextResponse.json(error, { status: error.status })
+    } else if (
       (error.error?.code === 40101 || error.error?.code === 40103) &&
       refreshToken
     ) {
