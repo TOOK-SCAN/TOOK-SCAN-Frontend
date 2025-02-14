@@ -21,7 +21,7 @@ const createApiClient = (
         },
       ],
       afterResponse: [
-        async (_req, _options, res) => {
+        async (req, _options, res) => {
           const responseData = await res
             .clone()
             .json()
@@ -29,6 +29,7 @@ const createApiClient = (
 
           if (!res.ok) {
             devConsole.error('[Response Error]:', {
+              url: req.url,
               status: res.status,
               statusText: res.statusText,
               body: responseData,
