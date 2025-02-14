@@ -12,6 +12,14 @@ import {
 import { useModal, useToast } from '@tookscan/hooks'
 import { useEffect, useState } from 'react'
 
+const formatPhone = (phone: string) => {
+  const raw = phone.replace(/\D/g, '')
+  if (raw.length === 11) {
+    return raw.replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3')
+  }
+  return raw
+}
+
 const EditInfoPage = () => {
   const [formInfo, setFormInfo] = useState({
     recipient: '',
@@ -32,7 +40,9 @@ const EditInfoPage = () => {
     isVerificationValid: false,
     isPhoneValid: false,
     isUpdating: false,
+    isSendingAuthCode: false,
     isValidating: false,
+    isVerifyingAuth: false,
   })
 
   const updateState = <K extends keyof typeof state>(
@@ -52,15 +62,19 @@ const EditInfoPage = () => {
         setFormInfo({
           recipient: data.name || '',
           id: data.serial_id || '',
-          phone: data.phone_number || '',
+          phone: formatPhone(data.phone_number || ''),
           email: data.email || '',
           address: data.address?.address_name || '',
           addressDetail: data.address?.address_detail || '',
-          emailConsent: false,
-          smsConsent: false,
+          emailConsent: data.is_receive_email,
+          smsConsent: data.is_receive_sms,
         })
         updateState('isIdChecked', true)
         updateState('isVerified', true)
+        updateState(
+          'isPhoneValid',
+          data.phone_number?.replace(/\D/g, '').length === 11 || false
+        )
       }
     }
     fetchUserData()
@@ -103,6 +117,7 @@ const EditInfoPage = () => {
 
   // 인증번호 전송
   const handleSendAuthCode = async () => {
+    updateState('isSendingAuthCode', true)
     await sendAuthCode(formInfo.recipient, formInfo.phone)
     showToast('인증번호가 전송되었습니다.', 'success')
     updateState('showVerificationInput', true)
@@ -113,6 +128,7 @@ const EditInfoPage = () => {
     try {
       await verifyAuthCode(formInfo.phone, state.verificationCode)
       updateState('isVerified', true)
+      updateState('isVerificationValid', false)
       showToast('휴대폰 인증이 완료되었습니다.', 'success')
     } catch (error) {
       showToast('인증번호가 올바르지 않습니다.', 'error')
@@ -137,7 +153,7 @@ const EditInfoPage = () => {
       return
     }
     await updateUserDetail({
-      phone: formInfo.phone,
+      phone_number: formInfo.phone,
       email: formInfo.email,
       address: {
         address_name: formInfo.address,
@@ -148,6 +164,8 @@ const EditInfoPage = () => {
         longitude: 0,
         latitude: 0,
       },
+      is_receive_email: formInfo.emailConsent,
+      is_receive_sms: formInfo.smsConsent,
     })
     showToast('정보가 업데이트되었습니다.', 'success')
     updateState('isUpdating', false)
@@ -158,13 +176,16 @@ const EditInfoPage = () => {
       {/* 이름 */}
       <Section>
         <TitleLabel size="lg" type="required" title="이름" />
-        <InputField
-          type="simple"
-          name="recipient"
-          value={formInfo.recipient}
-          onChange={(e) => handleInputChange('recipient', e.target.value)}
-          placeholder="이지은"
-        />
+        <div className="cursor-not-allowed opacity-50">
+          <InputField
+            type="simple"
+            name="recipient"
+            value={formInfo.recipient}
+            disabled={true}
+            onChange={() => {}}
+            placeholder="이지은"
+          />
+        </div>
       </Section>
       {/* 아이디 */}
       <Section>
@@ -199,25 +220,28 @@ const EditInfoPage = () => {
             value={formInfo.phone}
             onChange={(e) => {
               const input = e.target as HTMLInputElement
-              const rawValue = input.value.replace(/\D/g, '')
+              let rawValue = input.value.replace(/\D/g, '')
               if (rawValue.length > 11) {
                 input.value = rawValue.slice(0, 11)
+                rawValue = rawValue.slice(0, 11)
               }
-              const formattedValue = rawValue
-                .slice(0, 11)
-                .replace(/^(\d{3})(\d{1,4})?(\d{1,4})?$/, (_, p1, p2, p3) =>
-                  [p1, p2, p3].filter(Boolean).join('-')
-                )
+              const formattedValue =
+                rawValue.length === 11
+                  ? rawValue.replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3')
+                  : rawValue
               input.value = formattedValue
               handleInputChange('phone', rawValue.slice(0, 11))
               updateState('isVerified', false)
+              updateState('isPhoneValid', rawValue.length === 11)
             }}
             placeholder="010-1234-5678"
           />
           <Button
             size="md"
             onClick={handleSendAuthCode}
-            disabled={!state.isVerificationValid}
+            disabled={
+              !state.isPhoneValid || state.isSendingAuthCode || state.isVerified
+            }
           >
             인증받기
           </Button>
@@ -240,6 +264,7 @@ const EditInfoPage = () => {
                   }))
                 }
                 placeholder="인증번호"
+                disabled={!state.isVerificationValid}
               />
               <Button
                 size="md"

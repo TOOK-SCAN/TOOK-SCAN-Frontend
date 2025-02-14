@@ -17,7 +17,7 @@ export const getUserSummaries = async (): Promise<
 export const getUserDetail = async (): Promise<
   UserDetailRes['data'] | null
 > => {
-  const response = await httpInstance.get('users/detail')
+  const response = await httpInstance.get('users/details')
   const result: UserDetailRes = await response.json()
   return result?.data ?? null
 }
