@@ -1,10 +1,10 @@
 'use client'
 
+import { Button } from '@tookscan/components'
+import DeliveryTracking from '@tookscan/components/ui/DeliveryTracking'
+import { useModal } from '@tookscan/hooks'
 import html2canvas from 'html2canvas'
 import React from 'react'
-import { Button } from '../../components'
-import { useModal } from '../../hooks'
-import DeliveryTracking from '../ui/DeliveryTracking'
 
 interface DetailBoxProps {
   currentStatus?: string
@@ -69,12 +69,12 @@ export const OrderDetailBox = ({
   const content = (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="h2 font-bold">주문번호</h2>
-        <span className="text-blue-primary h2 font-bold">20204121721330</span>
+        <h2 className="font-bold h2">주문번호</h2>
+        <span className="font-bold text-blue-primary h2">20204121721330</span>
       </div>
       <div className="detail-box mt-6 rounded-lg border border-gray-300 bg-white p-6">
         <div className="mb-6 flex items-center">
-          <div className="btn2 flex items-center space-x-2">
+          <div className="flex items-center space-x-2 btn2">
             <span className={getStatusClass('발송완료')}>발송완료</span>
             <span className="text-black">&gt;</span>
             <span className={getStatusClass('업체도착')}>업체도착</span>
@@ -85,21 +85,21 @@ export const OrderDetailBox = ({
           </div>
         </div>
         <div className="mb-6 flex items-center gap-4">
-          <strong className="bg-blue-secondary text-blue-primary btn2 rounded-xl px-2 py-1">
+          <strong className="rounded-xl bg-blue-secondary px-2 py-1 text-blue-primary btn2">
             {' '}
             주문 일시
           </strong>
           <p className="body2">{orderDate}</p>
         </div>
         <div className="mb-6 flex items-center gap-4">
-          <strong className="bg-blue-secondary text-blue-primary btn2 rounded-xl px-2 py-1">
+          <strong className="rounded-xl bg-blue-secondary px-2 py-1 text-blue-primary btn2">
             {' '}
             주문자
           </strong>
           <p className="body2">{customer}</p>
         </div>
         <div className="mb-6 flex items-center gap-4">
-          <strong className="bg-blue-secondary text-blue-primary btn2 rounded-xl px-2 py-1">
+          <strong className="rounded-xl bg-blue-secondary px-2 py-1 text-blue-primary btn2">
             {' '}
             배송 정보
           </strong>
@@ -115,38 +115,38 @@ export const OrderDetailBox = ({
           </div>
         </div>
         <div className="mb-6 flex items-center gap-4">
-          <strong className="bg-blue-secondary text-blue-primary btn2 rounded-xl px-2 py-1">
+          <strong className="rounded-xl bg-blue-secondary px-2 py-1 text-blue-primary btn2">
             {' '}
             주문 상품
           </strong>
           <p className="body2">{productDetails}</p>
         </div>
         <div>
-          <strong className="bg-blue-secondary text-blue-primary btn2 rounded-xl px-2 py-1">
+          <strong className="rounded-xl bg-blue-secondary px-2 py-1 text-blue-primary btn2">
             상세 정보
           </strong>
-          <div className="bg-blue-secondary mt-4 w-full rounded-lg p-6">
+          <div className="mt-4 w-full rounded-lg bg-blue-secondary p-6">
             <div className="mb-2 flex justify-between">
               <p className="caption1">1. 노인과 바다 / 200page / 스프링</p>
-              <p className="caption1 text-blue-primary">16000원</p>
+              <p className="text-blue-primary caption1">16000원</p>
             </div>
             <div className="mb-2 flex justify-between">
               <p className="caption1">2. 노인과 바다 / 200page / 스프링</p>
-              <p className="caption1 text-blue-primary">16000원</p>
+              <p className="text-blue-primary caption1">16000원</p>
             </div>
             <div className="flex justify-between">
               <p className="caption1">3. 노인과 바다 / 200page / 스프링</p>
-              <p className="caption1 text-blue-primary">16000원</p>
+              <p className="text-blue-primary caption1">16000원</p>
             </div>
           </div>
 
           <div className="mt-4 flex justify-end gap-4">
             <span className="btn1">결제 금액</span>
-            <strong className="h3 text-blue-primary">{paymentAmount}</strong>
+            <strong className="text-blue-primary h3">{paymentAmount}</strong>
           </div>
           <div className="mt-4 flex justify-end gap-4">
             <span className="btn1">결제 수단</span>
-            <span className="h3 text-blue-primary">{paymentMethod}</span>
+            <span className="text-blue-primary h3">{paymentMethod}</span>
           </div>
         </div>
         <div className="mt-6 flex space-x-4">

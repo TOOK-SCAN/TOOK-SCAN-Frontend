@@ -1,60 +1,22 @@
-'use client' // Next.js 13+ (App Router)에서 클라이언트 컴포넌트일 경우 선언
+'use client'
 
-import type { OrderInfo } from '@tookscan/components'
-import { OrderCard } from '@tookscan/components'
+import { getOrderList } from '@/api'
+import { OrderCard } from '@/components'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
 const OrderHistory = () => {
-  // 주문 리스트 (예시)
-  const [orders] = useState<OrderInfo[]>([
-    {
-      userName: '민경훈',
-      dateTime: '2024.12.15 (12시 45분)',
-      productName: '노인과 바다 외 2건',
-      orderNumber: '20241215010203',
-      address: '경기도 시흥시 산기대학로 237 TIP, 1203호',
-      payment: '간편결제/토스페이',
-      price: 47600,
-      currentStatus: '업체도착',
-    },
-    {
-      userName: '민경훈',
-      dateTime: '2024.12.15 (12시 45분)',
-      productName: '노인과 바다 외 2건',
-      orderNumber: '20241215010203',
-      address: '경기도 시흥시 산기대학로 237 TIP, 1203호',
-      payment: '무통장입금',
-      price: 47600,
-      currentStatus: '작업완료',
-    },
-    {
-      userName: '민경훈',
-      dateTime: '2024.12.15 (12시 45분)',
-      productName: '노인과 바다 외 2건',
-      orderNumber: '20241215010203',
-      address: '경기도 시흥시 산기대학로 237 TIP, 1203호',
-      payment: '카드결제',
-      price: 47600,
-      currentStatus: '업체도착',
-    },
-    {
-      userName: '민경훈',
-      dateTime: '2024.12.15 (12시 45분)',
-      productName: '노인과 바다 외 2건',
-      orderNumber: '20241215010203',
-      address: '경기도 시흥시 산기대학로 237 TIP, 1203호',
-      payment: 'TOSS/무통장 입금',
-      price: 47600,
-      currentStatus: '업체도착',
-    },
-  ])
-
   // 정렬 옵션
-  const [sortOption, setSortOption] = useState('latest')
-  // 페이지네이션: 간단히 1~4 / 5~8 두 구간(chunk)만 예시
+  const [sortOption, setSortOption] = useState<'desc' | 'asc'>('desc')
   const [pageChunk, setPageChunk] = useState(1)
-  // 현재 선택된 페이지
   const [currentPage, setCurrentPage] = useState(1)
+  const keyword = ''
+
+  const { data: orders } = useQuery({
+    queryKey: ['orderList', sortOption, currentPage],
+    queryFn: () =>
+      getOrderList(currentPage, 12, keyword, 'createdAt', sortOption),
+  })
 
   // chunk별 페이지 목록(1,2,3,4 → 5,6,7,8)
   const getPagesForChunk = (chunk: number) => {
@@ -84,20 +46,20 @@ const OrderHistory = () => {
         <select
           className="bg-transparent px-4 text-sm text-blue-primary focus:border-blue-400 focus:outline-none"
           value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
+          onChange={(e) => setSortOption(e.target.value as 'desc' | 'asc')}
         >
           {/* 옵션은 bg-white로 지정 (열렸을 때 배경색) */}
-          <option className="bg-white text-black" value="latest">
+          <option className="bg-white text-black" value="desc">
             최신순
           </option>
-          <option className="bg-white text-black" value="oldest">
+          <option className="bg-white text-black" value="asc">
             오래된순
           </option>
         </select>
       </div>
 
       {/* 주문 카드들 */}
-      {orders.map((order, idx) => (
+      {orders?.data.orders.map((order, idx) => (
         <OrderCard key={idx} data={order} />
       ))}
 
