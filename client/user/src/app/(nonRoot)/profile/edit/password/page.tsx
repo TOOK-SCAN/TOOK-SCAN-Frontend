@@ -71,6 +71,7 @@ const PasswordManagement: React.FC = () => {
     try {
       await updatePW(current, newPassword)
 
+      setPasswordInfo({ current: '', new: '', confirm: '' })
       openModal(
         <div className="flex flex-col">
           <div className="pt-6 text-center text-lg font-bold text-black">
