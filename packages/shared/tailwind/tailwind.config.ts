@@ -11,18 +11,23 @@ const sharedConfig: Config = {
     extend: {
       colors,
       fontFamily: {
-        sans: [
-          'Pretendard',
-          'ui-sans-serif',
-          'system-ui',
-          'Arial',
-          'sans-serif',
-        ],
+        sans: ['Pretendard', 'Arial', 'sans-serif'],
         pretendard: ['Pretendard', 'sans-serif'],
       },
     },
   },
   plugins: [
+    plugin(function ({ addBase }) {
+      addBase({
+        '@import':
+          "url('https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css')",
+        'html, body': {
+          '@apply font-sans': '',
+          '-webkit-font-smoothing': 'antialiased',
+          '-moz-osx-font-smoothing': 'grayscale',
+        },
+      })
+    }),
     plugin(function ({ addUtilities }) {
       const newUtilities = {
         '.title1': {
