@@ -1,11 +1,11 @@
 'use client'
 
+import scanLoadingImage from '@/assets/images/scanLoading.svg'
+import scanAnimation from '@/assets/Loading.json'
 import { Button } from '@tookscan/components'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
-import scanLoadingImage from '../../../../assets/images/scanLoading.svg'
-import scanAnimation from '../../../../assets/Loading.json'
 
 const Lottie = dynamic(() => import('lottie-react'), { ssr: false })
 
