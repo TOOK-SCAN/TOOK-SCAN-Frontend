@@ -65,6 +65,18 @@ export const ClientHeader = () => {
             height={isMobile ? 24 : 36}
           />
         </Link>
+        <div className="text-ssemibold flex gap-4 text-[0.875rem]">
+          <Link href="/login" className="text-black hover:underline">
+            가격안내
+          </Link>
+
+          <Link href="/apply" className="text-black hover:underline">
+            스캔하기
+          </Link>
+          <Link href="/profile/order" className="text-black hover:underline">
+            주문조회
+          </Link>
+        </div>
 
         {/* 텍스트 */}
         <div className={`flex items-center gap-4 ${textSize}`}>

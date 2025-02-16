@@ -7,101 +7,88 @@
     <style>
       body {
         margin: 0;
-        padding: 0;
+        padding: 64px;
         font-family: Arial, sans-serif;
-        background-color: #f7f9fc;
+        background-color: #ffffff;
       }
       .container {
         width: 100%;
         max-width: 600px;
-        height: 100%;
         margin: 0 auto;
-        background: #ffffff;
-        padding: 20px;
+        background: #f2f7ff;
+        padding: 3.125rem;
         box-sizing: border-box;
+        border-radius: 1.5rem;
       }
-      .banner {
-        width: 100%;
-        height: 6rem;
-        text-align: end;
-        background: #4a90e2;
+      /* 파란색 얇은 직사각형 바 */
+      .blue-bar {
+        width: 100%; /* 전체 컨테이너 폭의 80% */
+        height: 3px; /* 얇은 바의 높이 */
+        background-color: #5592fc;
       }
-      .banner img {
-        width: 10rem;
-        height: 6rem;
-      }
+
       .title-section {
         text-align: center;
-        padding: 20px;
+        padding: 3.25rem;
+        margin-top: 5rem;
       }
       .title-section h1 {
-        font-size: 20px;
-        text-align: start;
-        color: #4a90e2;
+        font-size: 2rem;
+        color: #5592fc;
         margin: 0;
+        text-align: center;
       }
       .title-section p {
-        font-size: 14px;
-        text-align: start;
+        font-size: 1.25rem;
         color: #777777;
-      }
-      .content {
         text-align: center;
-        padding: 20px;
-      }
-      .content img {
-        max-width: 250px;
-        height: auto;
+        margin-top: 8px;
       }
       .img {
         text-align: center;
       }
+      .img img {
+        max-width: 250px;
+        height: auto;
+      }
       .message-section {
         padding: 20px;
-        font-size: 16px;
+        font-size: 1.25rem;
         color: #333;
         text-align: start;
-      }
-      .footer {
-        text-align: start;
-        font-size: 12px;
-        color: #777;
-        padding: 20px;
-        border-top: 1px solid #ccc;
+        margin-top: 3.125rem;
+        margin-bottom: 5rem;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="banner">
-        <a href="https://imgbb.com/"
-          ><img src="https://i.ibb.co/q34VGcvc/mailimg.png" alt="mailimg"
-        /></a>
-      </div>
+      <!-- 상단 얇은 파란색 바 -->
+      <div class="blue-bar"></div>
+
       <div class="title-section">
         <h1>테스트 이메일이 도착했어요!</h1>
         <p>가장 합리적인 비대면 셀프 스캔, 한방에 툭스캔!</p>
       </div>
+
       <div class="img">
-        <a href="https://imgbb.com/"
-          ><img src="https://i.ibb.co/HTS5jm9m/testmail.png" alt="testmail"
-        /></a>
+        <a href="https://imgbb.com/">
+          <img src="https://i.ibb.co/HTS5jm9m/testmail.png" alt="testmail" />
+        </a>
       </div>
+
       <div class="message-section">
         <p>
-          안녕하세요, 요청하신 테스트 이메일을 발송드렸습니다.<br /><br/>
+          안녕하세요, 요청하신 테스트 이메일을 발송드렸습니다.<br /><br />
           이메일 주소를 확인하셨다면,<br />
           마지막 단계까지 신청서를 작성하여 서비스 신청을 완료해보세요!<br /><br />
           툭스캔과 함께 더 편리한 서비스를 경험하실 수 있도록<br />
           항상 노력하겠습니다 :)
         </p>
       </div>
-      <div class="footer">
-        <p><strong>가장 합리적인 비대면 셀프 스캔, 한방에 툭스캔!</strong></p>
-        <p>인천시 서구 청라한울로96 321동 101호 (실제 배송지와 달라요)</p>
-        <p>대표자 {{representative_name}} | {{support_email}} | {{support_phone}}</p>
-        <p>© 툭스캔. All rights reserved</p>
-      </div>
+
+      <!-- 하단 얇은 파란색 바 -->
+      <div class="blue-bar"></div>
     </div>
   </body>
 </html>

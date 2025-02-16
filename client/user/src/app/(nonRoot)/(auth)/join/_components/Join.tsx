@@ -75,7 +75,7 @@ const Join = () => {
           툭스캔과 함께해요!
         </div>
       </div>
-      <div className="w-full max-w-[30rem] px-4">
+      <div className="w-full max-w-[30rem]">
         {step === 1 ? (
           <StepOneUI
             stepState={stepState}

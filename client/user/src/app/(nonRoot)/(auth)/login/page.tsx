@@ -4,9 +4,9 @@ import { LoginForm } from './_components/LoginForm'
 
 const LoginPage = () => {
   return (
-    <div className="mx-auto flex w-full max-w-[67.5rem] flex-col items-center bg-blue-secondary py-2 pb-12">
+    <div>
       {/* 타이틀 영역 */}
-      <header className="w-full max-w-[30rem] py-8 text-left">
+      <header className="w-full max-w-[30rem] p-8 text-left">
         <h2 className="text-lg font-bold text-blue-primary">
           툭스캔과 함께해요!
         </h2>
@@ -17,6 +17,7 @@ const LoginPage = () => {
         </h1>
       </header>
       {/* 로그인 폼: 클라이언트 컴포넌트 */}
+
       <LoginForm />
     </div>
   )

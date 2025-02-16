@@ -5,7 +5,7 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="flex flex-col items-center">
       <Banner type={1} />
-      {children}
+      <div className="flex p-4">{children}</div>
     </div>
   )
 }
