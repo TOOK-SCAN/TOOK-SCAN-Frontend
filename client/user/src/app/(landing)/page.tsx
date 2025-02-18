@@ -3,10 +3,21 @@ import { Button } from '@tookscan/components'
 import Image from 'next/image'
 import BookBg from './components/image/bookBg.svg'
 import Box from './components/image/boxes.svg'
+import DesktopMock from './components/image/DesktopMock.svg'
 import Document from './components/image/documents.svg'
+import Feature1Img from './components/image/Feature1Img.svg'
+import Feature2Img from './components/image/Feature2Img.svg'
+import Feature3Img from './components/image/Feature3Img.svg'
+import Feature4Img from './components/image/Feature4Img.svg'
+import HeavyBag from './components/image/HeavyBag.svg'
+import LongTime from './components/image/LongTime.svg'
+import MemojiThinking from './components/image/MemojiThinking.svg'
+import MobileMock from './components/image/MobileMock.svg'
 import Picture from './components/image/picture.svg'
 import Selcect from './components/image/selectBook.svg'
+import TabletMock from './components/image/TabletMock.svg'
 import TookBg from './components/image/tookbg.svg'
+
 const LandingPage = () => {
   return (
     <div>
@@ -204,13 +215,12 @@ const LandingPage = () => {
                 매일 2~3권 수업... 모든 책들 들고 다니기엔 가방이 너무 무거워요!
               </p>
               <div className="relative h-40 w-full">
-                {/* 예시 이미지 자리 */}
-                {/* <Image
-                src={HeavyBag}
-                alt="무거운 가방"
-                fill
-                className="object-contain"
-              /> */}
+                <Image
+                  src={HeavyBag}
+                  alt="무거운 가방"
+                  fill
+                  className="object-contain"
+                />
               </div>
             </div>
 
@@ -222,13 +232,12 @@ const LandingPage = () => {
                 1시간이나 써버렸어요!
               </p>
               <div className="relative h-40 w-full">
-                {/* 예시 이미지 자리 */}
-                {/* <Image
-                src={LongTime}
-                alt="오래 걸리는 작업"
-                fill
-                className="object-contain"
-              /> */}
+                <Image
+                  src={LongTime}
+                  alt="오래 걸리는 작업"
+                  fill
+                  className="object-contain"
+                />
               </div>
             </div>
 
@@ -242,13 +251,12 @@ const LandingPage = () => {
                 가격도, 품질도 만족스러운 곳... 정말 없을까요?
               </p>
               <div className="relative h-40 w-full">
-                {/* 예시 이미지 자리 */}
-                {/* <Image
-                src={MemojiThinking}
-                alt="고민하는 사람"
-                fill
-                className="object-contain"
-              /> */}
+                <Image
+                  src={MemojiThinking}
+                  alt="고민하는 사람"
+                  fill
+                  className="object-contain"
+                />
               </div>
             </div>
           </div>
@@ -281,14 +289,12 @@ const LandingPage = () => {
                 신청은 간단하게, 결과물은 완벽하도록 책임질게요
               </p>
               <div className="relative h-40 w-full">
-                {/* 예시로, feature1 이미지 삽입:
                 <Image
                   src={Feature1Img}
                   alt="간단한 신청"
                   fill
                   className="object-contain"
                 />
-              */}
               </div>
             </div>
 
@@ -303,14 +309,12 @@ const LandingPage = () => {
                 카카오톡 알림을 통해 확인할 수 있어요
               </p>
               <div className="relative h-40 w-full">
-                {/* 예시로, feature2 이미지 삽입:
                 <Image
                   src={Feature2Img}
                   alt="카카오톡 연동"
                   fill
                   className="object-contain"
                 />
-              */}
               </div>
             </div>
 
@@ -324,14 +328,33 @@ const LandingPage = () => {
                 품질도 만족스럽게… 믿겨지시나요?
               </p>
               <div className="relative h-40 w-full">
-                {/* 예시로, feature3 이미지 삽입:
                 <Image
                   src={Feature3Img}
                   alt="저렴한 가격"
                   fill
                   className="object-contain"
                 />
-              */}
+              </div>
+            </div>
+
+            {/* 피그마에서 보니까 카드가 하나 더 있더라구요. 이름도 똑같이 Feature4Img로 넣어놨습니당 */}
+            {/* 카드 4 */}
+            <div className="rounded-xl bg-blue-50 p-6 shadow-sm">
+              <h3 className="mb-2 text-lg font-semibold text-black">
+                신속하게 전달해요!
+              </h3>
+              <p className="mb-4 text-sm text-gray-700">
+                월요일에 책을 보내주면 <br />
+                PDF는 수요일에 도착해요! <br />
+                (영업일 1~3일 이내)
+              </p>
+              <div className="relative h-40 w-full">
+                <Image
+                  src={Feature4Img}
+                  alt="신속한 서비스"
+                  fill
+                  className="object-contain"
+                />
               </div>
             </div>
           </div>
@@ -358,41 +381,42 @@ const LandingPage = () => {
           <div className="relative flex w-full items-center justify-center md:w-1/2">
             {/* PC 화면 (기본, 배경) */}
             <div className="relative h-[220px] w-[140px] sm:h-[300px] sm:w-[220px] md:h-[360px] md:w-[280px] lg:h-[420px] lg:w-[320px]">
-              {/* <Image
-              src={DesktopMock}
-              alt="데스크탑 화면"
-              fill
-              className="object-contain"
-            /> */}
-              <div className="flex h-full w-full items-center justify-center rounded-md bg-blue-100 text-sm text-gray-500">
+              <Image
+                src={DesktopMock}
+                alt="데스크탑 화면"
+                fill
+                className="object-contain"
+              />
+              {/* 주석 처리된 <div> 부분들은 배경으로 필요 없어진 듯 한데 혹시 몰라서 남겨둘게용 */}
+              {/* <div className="flex h-full w-full items-center justify-center rounded-md bg-blue-100 text-sm text-gray-500">
                 PC Mock
-              </div>
+              </div> */}
             </div>
 
             {/* 태블릿 화면 (겹치게) */}
             <div className="absolute left-[30%] top-[50%] z-10 h-[140px] w-[90px] sm:h-[190px] sm:w-[130px] md:h-[230px] md:w-[160px] lg:h-[280px] lg:w-[200px]">
-              {/* <Image
-              src={TabletMock}
-              alt="태블릿 화면"
-              fill
-              className="object-contain"
-            /> */}
-              <div className="flex h-full w-full items-center justify-center rounded-md bg-blue-200 text-sm text-gray-500">
+              <Image
+                src={TabletMock}
+                alt="태블릿 화면"
+                fill
+                className="object-contain"
+              />
+              {/* <div className="flex h-full w-full items-center justify-center rounded-md bg-blue-200 text-sm text-gray-500">
                 Tablet Mock
-              </div>
+              </div> */}
             </div>
 
             {/* 모바일 화면 (겹치게) */}
             <div className="absolute bottom-[-10%] right-0 z-20 h-[130px] w-[65px] sm:h-[170px] sm:w-[85px] md:h-[200px] md:w-[100px] lg:h-[240px] lg:w-[120px]">
-              {/* <Image
-              src={MobileMock}
-              alt="모바일 화면"
-              fill
-              className="object-contain"
-            /> */}
-              <div className="flex h-full w-full items-center justify-center rounded-md bg-blue-300 text-sm text-gray-500">
+              <Image
+                src={MobileMock}
+                alt="모바일 화면"
+                fill
+                className="object-contain"
+              />
+              {/* <div className="flex h-full w-full items-center justify-center rounded-md bg-blue-300 text-sm text-gray-500">
                 Mobile Mock
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
