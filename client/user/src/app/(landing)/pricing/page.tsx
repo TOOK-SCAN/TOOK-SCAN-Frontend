@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image'
+import ScannerImg from '../components/image/ScannerImg.svg'
 import TookBg from '../components/image/tookbg.svg'
 
 const Pricing = () => {
@@ -110,17 +111,12 @@ const Pricing = () => {
 
             {/* 스캐너 일러스트 (선택사항) */}
             <div className="relative mt-6 h-48 w-48 sm:h-52 sm:w-52">
-              {/* 
-            <Image
-              src={ScannerImg}
-              alt="스캐너 일러스트"
-              fill
-              className="object-contain"
-            />
-            */}
-              <div className="flex h-full w-full items-center justify-center rounded-lg bg-blue-100 text-sm text-gray-400">
-                Scanner Image
-              </div>
+              <Image
+                src={ScannerImg}
+                alt="스캐너 일러스트"
+                fill
+                className="object-contain"
+              />
             </div>
           </div>
 

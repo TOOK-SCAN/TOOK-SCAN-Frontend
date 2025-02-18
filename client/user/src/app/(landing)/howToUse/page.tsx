@@ -1,5 +1,8 @@
 'use client'
 import Image from 'next/image'
+import MobileMock from '../components/image/HTUMobileMock.svg'
+import Step1Mock from '../components/image/Step1Mock.svg'
+import Step2Mock from '../components/image/Step2Mock.svg'
 import TookBg from '../components/image/tookbg.svg'
 
 const HowToUse = () => {
@@ -36,16 +39,18 @@ const HowToUse = () => {
           {/* 왼쪽: 모바일 화면 mockup */}
           <div className="flex justify-center md:w-1/2">
             <div className="relative h-[480px] w-[240px] sm:h-[550px] sm:w-[275px]">
-              {/* <Image
-              src={MobileMock}
-              alt="모바일 화면"
-              fill
-              className="object-contain"
-            /> */}
+              {/* 사진이름은 MobileMock와 구분하기 위해 HTUMobileMock으로 이름 지어놨습니다(How To Use) */}
+              <Image
+                src={MobileMock}
+                alt="모바일 화면"
+                fill
+                className="object-contain"
+              />
               {/* 임시 배경(이미지 미사용 시) */}
-              <div className="flex h-full w-full items-center justify-center rounded-md bg-gray-700 text-sm text-gray-300">
+              {/* 이 코드도 주석처리만 해둘게여 */}
+              {/* <div className="flex h-full w-full items-center justify-center rounded-md bg-gray-700 text-sm text-gray-300">
                 Mobile Mock
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -97,12 +102,12 @@ const HowToUse = () => {
                 톡스캔으로 책을 보내주세요
               </p>
               <div className="relative h-44 w-full">
-                {/* <Image
-                src={Step1Mock}
-                alt="신청하기 단계"
-                fill
-                className="object-contain"
-              /> */}
+                <Image
+                  src={Step1Mock}
+                  alt="신청하기 단계"
+                  fill
+                  className="object-contain"
+                />
                 <div className="flex h-full w-full items-center justify-center rounded-md bg-white text-sm text-gray-400">
                   Step1 이미지
                 </div>
@@ -120,12 +125,12 @@ const HowToUse = () => {
                 결제 완료 후, 스캔하기 버튼을 눌러 셀프 스캔을 시작해주세요
               </p>
               <div className="relative h-44 w-full">
-                {/* <Image
-                src={Step2Mock}
-                alt="결제하고 스캐하기 단계"
-                fill
-                className="object-contain"
-              /> */}
+                <Image
+                  src={Step2Mock}
+                  alt="결제하고 스캐하기 단계"
+                  fill
+                  className="object-contain"
+                />
                 <div className="flex h-full w-full items-center justify-center rounded-md bg-white text-sm text-gray-400">
                   Step2 이미지
                 </div>
@@ -143,6 +148,7 @@ const HowToUse = () => {
                 안전하게 받아보세요!
               </p>
               <div className="relative h-44 w-full">
+                {/* 피그마에서 사진을 확인할 수가 없어서 못넣었습니당.. */}
                 {/* <Image
                 src={Step3Mock}
                 alt="결과받기 단계"
