@@ -25,21 +25,22 @@ export const OrderCard = ({ data }: { data: Order }) => {
       data.order_status === 'PAYMENT_COMPLETED'
     ) {
       return 'primary'
-    } else if (data.order_status === 'ALL_COMPLETED') {
-      return 'secondary'
+    } else if (
+      data.order_status === 'ALL_COMPLETED' ||
+      data.order_status === 'APPLY_COMPLETED'
+    ) {
+      return 'tertiary'
     } else if (data.order_status === 'SCAN_IN_PROGRESS') {
       return 'disabled'
     }
     return 'disabled'
   }
 
-  const interaction = (data: Order) => [
-    { label: '주문 상품', value: data.document_description },
-    { label: '주문 번호', value: data.order_number.toString() },
-    { label: '배송 정보', value: data.address },
-    { label: '결제 수단', value: data.payment_method },
-  ]
-
+  const stepForButton = steps.find(
+    (step) =>
+      step.value.trim().toUpperCase() ===
+      data.order_status?.trim().toUpperCase()
+  )
   return (
     <>
       <div className="mx-auto mt-[12px] w-full max-w-[500px] rounded-[2rem] bg-white p-[24px] shadow md:p-[32px]">
@@ -127,7 +128,7 @@ export const OrderCard = ({ data }: { data: Order }) => {
               size="md"
               className="flex-1"
             >
-              {data.order_status}
+              {stepForButton ? stepForButton.cta : data.order_status}
             </Button>
           </div>
         </div>
