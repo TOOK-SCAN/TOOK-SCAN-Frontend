@@ -20,11 +20,11 @@ export const PaymentMapping = {
 }
 
 export const steps = [
-  { label: '신청 완료', value: 'APPLY_COMPLETED' },
-  { label: '업체 도착', value: 'COMPANY_ARRIVED' },
-  { label: '결제 완료', value: 'PAYMENT_COMPLETED' },
-  { label: '스캔 중', value: 'SCAN_IN_PROGRESS' },
-  { label: '작업 완료', value: 'ALL_COMPLETED' },
+  { label: '신청 완료', value: 'APPLY_COMPLETED', cta: '주소 작성' },
+  { label: '업체 도착', value: 'COMPANY_ARRIVED', cta: '결제' },
+  { label: '결제 완료', value: 'PAYMENT_COMPLETED', cta: '스캔' },
+  { label: '스캔 중', value: 'SCAN_IN_PROGRESS', cta: '스캔 중' },
+  { label: '작업 완료', value: 'ALL_COMPLETED', cta: '배송 조회' },
 ]
 
 export const orderInfo = (data: {
