@@ -197,9 +197,6 @@ const StepOneUI = ({
                 isSuccess={verificationState.isVerified}
               />
             </div>
-            <span className="whitespace-nowrap px-4 text-xs text-red-500">
-              {formatTime(verificationState.timeLeft)}
-            </span>
             <Button
               variant="primary"
               size="md"
@@ -214,17 +211,15 @@ const StepOneUI = ({
             </Button>
           </div>
         )}
-        {verificationState.verificationMessage && (
-          <p
-            className={`text-sm ${
-              verificationState.verificationMessage === '인증되었습니다.'
-                ? 'text-green-500'
-                : 'text-red-500'
-            }`}
-          >
-            {verificationState.verificationMessage}
-          </p>
-        )}
+        <span className="whitespace-nowrap px-4 text-xs">
+          {verificationState.isVerified ? (
+            <span className="text-green-500">인증되었습니다</span>
+          ) : (
+            <span className="text-red-500">
+              {formatTime(verificationState.timeLeft)}
+            </span>
+          )}
+        </span>
       </div>
       {/*약관동의*/}
       <div className="mt-4 flex items-center">
@@ -282,18 +277,22 @@ const StepOneUI = ({
       </div>
 
       <div className="mt-2 flex gap-x-4 rounded-md border border-gray-400 p-3">
-        <CheckButton
-          size="lg"
-          isChecked={emailConsent}
-          onClick={() => handleConsentChange('email')}
-        />
-        <span className="text-black-600">E-Mail</span>
-        <CheckButton
-          size="lg"
-          isChecked={smsConsent}
-          onClick={() => handleConsentChange('sms')}
-        />
-        <span className="text-black-600">SMS</span>
+        <div className="flex items-center gap-x-2">
+          <CheckButton
+            size="lg"
+            isChecked={emailConsent}
+            onClick={() => handleConsentChange('email')}
+          />
+          <span className="text-black-600">E-Mail</span>
+        </div>
+        <div className="flex items-center gap-x-2">
+          <CheckButton
+            size="lg"
+            isChecked={smsConsent}
+            onClick={() => handleConsentChange('sms')}
+          />
+          <span className="text-black-600">SMS</span>
+        </div>
       </div>
       <Button
         variant={isNextButtonEnabled ? 'primary' : 'disabled'}
