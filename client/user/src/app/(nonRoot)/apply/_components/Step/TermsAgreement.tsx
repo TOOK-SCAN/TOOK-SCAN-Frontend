@@ -20,14 +20,21 @@ const TermsAgreement = () => {
   useEffect(() => {
     if (visibleTerms.length > 0) {
       setTerms((prev: Record<number, boolean>) => {
-        const newTerms: Record<number, boolean> = {}
+        let hasChanged = false
+        const newTerms: Record<number, boolean> = { ...prev }
+
         for (const term of visibleTerms) {
-          newTerms[term.id] = prev[term.id] ?? false
+          if (!(term.id in newTerms)) {
+            newTerms[term.id] = false
+            hasChanged = true
+          }
         }
-        return newTerms
+
+        return hasChanged ? newTerms : prev
       })
     }
   }, [visibleTerms, setTerms])
+
   if (visibleTerms.length === 0) return null
 
   const isAllChecked = visibleTerms.every(

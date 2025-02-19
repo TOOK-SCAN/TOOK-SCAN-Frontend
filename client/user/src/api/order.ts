@@ -16,7 +16,6 @@ export const postOrder = async (
 
     return response.json()
   } catch (error) {
-    console.error('주문 요청 실패', error)
     throw error
   }
 }

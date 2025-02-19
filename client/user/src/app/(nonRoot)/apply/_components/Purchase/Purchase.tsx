@@ -50,21 +50,43 @@ const Purchase = () => {
       }
     },
     onError: (error) => {
-      console.error('신청 실패:', error)
       closeModal()
 
-      let errorMessage = '알 수 없는 오류가 발생했습니다.'
+      let errorMessage: string = '알 수 없는 오류가 발생했습니다.'
+
       if (error instanceof Error) {
         errorMessage = error.message
       } else if (
         typeof error === 'object' &&
         error !== null &&
-        'message' in error &&
-        typeof (error as { message: string }).message === 'string'
+        'error' in error &&
+        typeof error.error === 'object' &&
+        error.error !== null
       ) {
-        errorMessage = (error as { message: string }).message
-      } else {
-        errorMessage = JSON.stringify(error)
+        const { error: errObj } = error
+
+        if (
+          'fields' in errObj &&
+          typeof errObj.fields === 'object' &&
+          errObj.fields !== null
+        ) {
+          const fieldMessages = Object.values(errObj.fields)
+            .flat()
+            .filter((msg) => typeof msg === 'string') as string[]
+
+          if (fieldMessages.length > 0) {
+            errorMessage = fieldMessages[0]
+          }
+        }
+
+        if (
+          !errorMessage ||
+          errorMessage === '알 수 없는 오류가 발생했습니다.'
+        ) {
+          if ('message' in errObj && typeof errObj.message === 'string') {
+            errorMessage = errObj.message
+          }
+        }
       }
 
       openModal(
@@ -215,7 +237,7 @@ const Purchase = () => {
       >
         <h2 className="h3">예상 총 금액</h2>
         <div className="flex items-center gap-2">
-          <p className="h2 text-blue-primary">
+          <p className="text-blue-primary h2">
             {calculateTotalPrice({ books }).toLocaleString()}원
           </p>
           {/* 모바일: 책 목록 펼침/접힘 토글 */}
@@ -262,13 +284,13 @@ const Purchase = () => {
           ))}
         </ul>
         <div className="flex items-center justify-between px-2 pt-6">
-          <p className="btn2 font-semibold">배송비</p>
+          <p className="font-semibold btn2">배송비</p>
           <p>
             {hasNonDropBooks(books) ? (
               '2,500원'
             ) : (
-              <span className="caption1 text-blue-primary">
-                <del className="caption1 text-black">2,500원</del> 0원
+              <span className="text-blue-primary caption1">
+                <del className="text-black caption1">2,500원</del> 0원
               </span>
             )}
           </p>

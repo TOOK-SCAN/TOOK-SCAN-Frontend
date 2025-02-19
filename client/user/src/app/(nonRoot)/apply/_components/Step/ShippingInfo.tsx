@@ -57,6 +57,19 @@ const ShippingInfo = React.memo(() => {
     }
   }, [data])
 
+  useEffect(() => {
+    if (data) {
+      const isSame =
+        shippingInfo.recipient === (data.name || '') &&
+        shippingInfo.phone === (data.phone_number || '') &&
+        shippingInfo.email === (data.email || '') &&
+        shippingInfo.address === (data.address?.address_name || '') &&
+        shippingInfo.addressDetail === (data.address?.address_detail || '')
+
+      setIsSameAsDefault(isSame)
+    }
+  }, [shippingInfo, data])
+
   // 타이머
   useEffect(() => {
     if (showVerificationInput && !isVerified && timeLeft > 0) {
@@ -123,15 +136,33 @@ const ShippingInfo = React.memo(() => {
       setIsVerifyingAuth(false)
     }
   }
+  useEffect(() => {
+    setIsPhoneValid(shippingInfo.phone.replace(/\D/g, '').length === 11)
+  }, [shippingInfo.phone])
+
   const handleInputChange = (
     key: keyof typeof shippingInfo,
     value: string | number
   ) => {
     setShippingInfo((prev) => ({ ...prev, [key]: value }))
-    setIsSameAsDefault(false)
 
-    if (key === 'phone' && isVerified) {
-      setIsVerified(false) // 인증 초기화
+    if (isSameAsDefault) {
+      setIsSameAsDefault(false)
+    }
+
+    if (key === 'phone') {
+      const onlyNumbers = String(value).replace(/\D/g, '')
+      const isValid = onlyNumbers.length === 11
+
+      setIsPhoneValid(isValid)
+
+      // 전화번호 변경 시 인증 취소 및 인증 버튼 표시
+      if (isVerified || showVerificationInput) {
+        setIsVerified(false)
+        setShowVerificationInput(true)
+        setVerificationCode('') // 입력했던 인증번호도 초기화
+        setIsVerificationValid(false)
+      }
     }
   }
 
@@ -219,7 +250,12 @@ const ShippingInfo = React.memo(() => {
       {/*전화번호 입력 및 인증*/}
       <Section>
         <TitleLabel size="lg" type="required" title="전화번호" />
-        <div className={clsx('flex gap-2', isVerified && 'opacity-50')}>
+        <div
+          className={clsx(
+            'flex gap-2',
+            isVerified ? 'opacity-50' : 'text-black opacity-100'
+          )}
+        >
           <InputField
             type="simple"
             value={shippingInfo.phone}
@@ -240,26 +276,28 @@ const ShippingInfo = React.memo(() => {
                 )
 
               setShippingInfo((prev) => ({ ...prev, phone: formattedValue }))
+
+              if (isVerified) {
+                setIsVerified(false)
+              }
             }}
             placeholder="010-1234-5678"
-            disabled={isVerified}
           />
-          {!isLogin && (
-            <Button
-              size="md"
-              onClick={handleSendAuthCode}
-              disabled={
-                !isPhoneValid ||
-                isSendingAuthCode ||
-                shippingInfo.recipient.trim() === '' ||
-                (showVerificationInput && timeLeft > 0) ||
-                isVerified
-              }
-              className="px-6 py-3"
-            >
-              인증받기
-            </Button>
-          )}
+
+          <Button
+            size="md"
+            onClick={handleSendAuthCode}
+            disabled={
+              !isPhoneValid ||
+              isSendingAuthCode ||
+              shippingInfo.recipient.trim() === '' ||
+              (showVerificationInput && timeLeft > 0) ||
+              isVerified
+            }
+            className="px-6 py-3"
+          >
+            인증받기
+          </Button>
         </div>
       </Section>
       {/*비회원일 때 인증번호 입력 필드 표시*/}
@@ -293,7 +331,9 @@ const ShippingInfo = React.memo(() => {
               인증하기
             </Button>
           </div>
-          <span className="text-sm text-error">{formattedTime}</span>
+          {!isVerified && (
+            <span className="text-sm text-error">{formattedTime}</span>
+          )}
         </Section>
       )}
       <Section>
