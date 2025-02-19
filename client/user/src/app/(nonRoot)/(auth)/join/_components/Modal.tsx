@@ -54,7 +54,7 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="w-full rounded-md bg-gray-200 py-2 text-sm font-medium text-gray-600 hover:bg-gray-300"
+          className="w-full rounded-md bg-gray-200 py-2 text-sm font-medium text-gray-600 hover:bg-blue-primary"
         >
           닫기
         </button>

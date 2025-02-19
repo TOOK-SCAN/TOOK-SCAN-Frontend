@@ -44,7 +44,6 @@ const StepTwoUI = ({
         setIsValidId(false)
       }
     } catch (error) {
-      console.error('handleIdValidation 오류:', error)
       setIsValidId(false)
     }
   }

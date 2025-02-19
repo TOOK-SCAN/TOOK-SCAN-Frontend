@@ -1,5 +1,5 @@
 'use client'
-import { getUserDetail, signUpIDCheck, updateUserDetail } from '@/api'
+import { getUserDetail, updateUserDetail } from '@/api'
 import { Section } from '@/app/(nonRoot)/apply/_components'
 import { sendAuthCode, verifyAuthCode } from '@tookscan/api'
 import {
@@ -93,28 +93,6 @@ const EditInfoPage = () => {
     }
   }
 
-  const handleIdCheck = async () => {
-    if (!formInfo.id.trim()) {
-      showToast('아이디를 입력하세요.', 'error')
-      return
-    }
-    updateState('isValidating', true)
-    try {
-      const response = await signUpIDCheck(formInfo.id)
-      if (!response.data.is_valid) {
-        showToast('이미 사용 중인 아이디입니다.', 'error')
-        updateState('isIdChecked', false)
-      } else {
-        showToast('사용 가능한 아이디입니다.', 'success')
-        updateState('isIdChecked', true)
-      }
-    } catch (error) {
-      showToast('아이디 중복 확인에 실패했습니다.', 'error')
-    } finally {
-      updateState('isValidating', false)
-    }
-  }
-
   // 인증번호 전송
   const handleSendAuthCode = async () => {
     updateState('isSendingAuthCode', true)
@@ -190,24 +168,15 @@ const EditInfoPage = () => {
       {/* 아이디 */}
       <Section>
         <TitleLabel size="lg" type="required" title="아이디" />
-        <div className="flex gap-2">
+        <div className="cursor-not-allowed opacity-50">
           <InputField
             type="simple"
             name="id"
             value={formInfo.id}
-            onChange={(e) => {
-              handleInputChange('id', e.target.value)
-              updateState('isIdChecked', false)
-            }}
+            disabled={true}
+            onChange={() => {}}
             placeholder="아이디값"
           />
-          <Button
-            size="md"
-            onClick={handleIdCheck}
-            disabled={state.isIdChecked}
-          >
-            중복 확인
-          </Button>
         </div>
       </Section>
       {/* 전화번호 */}
