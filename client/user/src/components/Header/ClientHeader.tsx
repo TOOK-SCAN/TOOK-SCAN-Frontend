@@ -25,7 +25,7 @@ export const ClientHeader = () => {
   })
 
   return (
-    <div className="flex">
+    <div className="z-50 flex">
       <title>Took Scan</title>
       <meta
         name="description"
