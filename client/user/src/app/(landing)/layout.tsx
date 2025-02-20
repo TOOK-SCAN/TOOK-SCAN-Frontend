@@ -1,11 +1,14 @@
+'use client'
 import type { LayoutProps } from '@/types/common'
 import { Button } from '@tookscan/components'
 import Image from 'next/image'
 import Link from 'next/link'
-import Took from './components/image/eyes.svg'
-import Background from './components/image/mainbg.svg'
+import { useRouter } from 'next/navigation'
+import Took from './_assets/image/eyes.svg'
+import Background from './_assets/image/mainbg.svg'
 
 const Layout = ({ children }: LayoutProps) => {
+  const router = useRouter()
   return (
     <div>
       <div className="relative z-0 h-screen w-full">
@@ -34,7 +37,12 @@ const Layout = ({ children }: LayoutProps) => {
                 툭스캔으로 시작하자!
               </div>
             </div>
-            <Button className="z-10 flex-1" variant="primary" size="md">
+            <Button
+              className="z-10 flex-1"
+              variant="primary"
+              size="md"
+              onClick={() => router.push('/apply')}
+            >
               신청하러가기
             </Button>
           </div>
