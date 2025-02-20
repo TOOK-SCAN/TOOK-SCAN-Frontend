@@ -2,9 +2,10 @@
 
 import { signUpDefault, signUpIDCheck } from '@/api'
 import { sendAuthCode, verifyAuthCode } from '@tookscan/api'
-import { useModal } from '@tookscan/hooks'
+import { useModal, useToast } from '@tookscan/hooks'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+
 export const useJoinStore = () => {
   const [step, setStep] = useState<number>(1)
   const { openModal, closeModal } = useModal()
@@ -112,10 +113,13 @@ export const useJoinHandlers = (store: {
   setSmsConsent: React.Dispatch<React.SetStateAction<boolean>>
   isValidating: boolean
   setIsValidating: React.Dispatch<React.SetStateAction<boolean>>
+  idValidationMessage: string
+  setIdValidationMessage: React.Dispatch<React.SetStateAction<string>>
   openModal: (title: string, content: string) => void
   closeModal: () => void
 }) => {
   const router = useRouter()
+  const { showToast } = useToast()
   const handleAllAgreementChange = (value?: boolean) => {
     const newValue =
       value ?? !(store.adAgreement && store.emailConsent && store.smsConsent)
@@ -177,6 +181,8 @@ export const useJoinHandlers = (store: {
       const value = e.target.value.trim()
       if (value.length > 20) return
 
+      store.setIsValidating(false)
+      store.setIdValidationMessage('')
       store.setStepState((prev) => ({ ...prev, id: value }))
     },
     handlePasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -213,6 +219,7 @@ export const useJoinHandlers = (store: {
           timeLeft: 90,
           verificationMessage: '',
         }))
+        showToast('인증 요청에 성공했습니다.', 'success', 'mail-heart')
       } catch (error) {
         const errorMessage =
           error instanceof Error
@@ -223,7 +230,7 @@ export const useJoinHandlers = (store: {
           isSendingAuthCode: false,
           verificationMessage: errorMessage,
         }))
-        store.openModal('인증 실패', errorMessage)
+        showToast('인증 실패했습니다.', 'error', 'mail-heart')
       }
     },
     // 인증 확인
@@ -237,7 +244,7 @@ export const useJoinHandlers = (store: {
           store.verificationState.verificationCode
         )
 
-        store.openModal('인증 성공', '휴대폰 인증이 완료되었습니다.')
+        showToast('휴대폰 인증에 성공했습니다.', 'success', 'mail-heart')
 
         store.setVerificationState((prev) => ({
           ...prev,
@@ -246,10 +253,7 @@ export const useJoinHandlers = (store: {
           verificationMessage: '인증되었습니다.',
         }))
       } catch (error) {
-        store.openModal(
-          '인증 실패',
-          '인증번호가 올바르지 않습니다. 다시 입력해 주세요.'
-        )
+        showToast('인증번호가 올바르지 않습니다.', 'error', 'mail-heart')
 
         store.setVerificationState((prev) => ({
           ...prev,
@@ -278,7 +282,7 @@ export const useJoinHandlers = (store: {
       store.setIsValidating(true)
 
       if (!store.stepState.id.trim()) {
-        store.openModal('에러', '아이디를 입력하세요.')
+        showToast('아이디를 확인해주세요.', 'error', 'mail-heart')
         store.setIsValidating(false)
         return false
       }
@@ -286,20 +290,17 @@ export const useJoinHandlers = (store: {
       try {
         const response = await signUpIDCheck(store.stepState.id)
 
-        console.log('ID 중복 검사 응답:', response)
-
         store.setIsValidating(false)
 
         if (response.data?.is_valid) {
-          store.openModal('확인', '사용 가능한 아이디입니다.')
+          showToast('사용 가능한 아이디입니다.', 'success', 'mail-heart')
           return true
         } else {
-          store.openModal('에러', '이미 사용 중인 아이디입니다.')
+          showToast('이미 사용 중인 아이디입니다.', 'error', 'mail-heart')
           return false
         }
       } catch (error) {
-        console.error('아이디 중복 확인 에러:', error)
-        store.openModal('에러', '아이디 중복 확인에 실패했습니다.')
+        showToast('아이디 중복 확인에 실패했습니다.', 'error', 'mail-heart')
         store.setIsValidating(false)
         return false
       }
@@ -311,14 +312,15 @@ export const useJoinHandlers = (store: {
       const passwordRegex =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/
       if (!passwordRegex.test(store.stepState.password)) {
-        store.openModal(
-          '비밀번호 오류',
-          '비밀번호는 8자 이상, 20자 이하이며, 영문, 숫자, 특수문자를 포함해야 합니다.'
+        showToast(
+          '비밀번호는 8자 이상, 20자 이하이며, 영문, 숫자, 특수문자를 포함해야 합니다.',
+          'error',
+          'mail-heart'
         )
         return
       }
       if (store.stepState.password !== store.stepState.confirmPassword) {
-        store.openModal('비밀번호 오류', '비밀번호와 확인이 일치하지 않습니다.')
+        showToast('비밀번호와 확인이 일치하지 않습니다.', 'error', 'mail-heart')
         return
       }
       try {
@@ -333,16 +335,7 @@ export const useJoinHandlers = (store: {
         })
         router.push('/welcome')
       } catch (error: unknown) {
-        let errorMessage = '회원가입에 실패했습니다. 다시 시도해주세요.'
-
-        if (typeof error === 'object' && error !== null) {
-          const err = error as {
-            error?: { message?: string }
-            message?: string
-          }
-          errorMessage = err.error?.message || err.message || errorMessage
-        }
-        store.openModal('회원가입 실패', errorMessage)
+        showToast('회원가입 실패.', 'error', 'mail-heart')
       }
     },
   }

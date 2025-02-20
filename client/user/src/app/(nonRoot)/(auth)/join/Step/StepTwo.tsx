@@ -56,7 +56,10 @@ const StepTwoUI = ({
             type="simple"
             placeholder="아이디"
             value={stepState.id}
-            onChange={handlers.handleIdChange}
+            onChange={(e) => {
+              handlers.handleIdChange(e)
+              setIsValidId(false)
+            }}
             aria-label="아이디 입력"
             aria-describedby="id-validation-message"
           />
@@ -67,7 +70,11 @@ const StepTwoUI = ({
             onClick={handleIdValidation}
             disabled={isValidating || isValidId}
           >
-            {isValidating ? '확인 중...' : '중복 확인'}
+            {isValidating
+              ? '확인 중...'
+              : isValidId
+                ? '사용 가능'
+                : '중복 확인'}
           </Button>
         </div>
         {idValidationMessage && (
