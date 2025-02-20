@@ -1,8 +1,8 @@
 'use client'
 import Image from 'next/image'
-import PriceDocument from '../components/image/priceDocument.svg'
-import ScannerImg from '../components/image/ScannerImg.svg'
-import TookBg from '../components/image/tookbg.svg'
+import PriceDocument from '../_assets/image/priceDocument.svg'
+import ScannerImg from '../_assets/image/ScannerImg.svg'
+import TookBg from '../_assets/image/tookbg.svg'
 
 const Pricing = () => {
   return (
@@ -61,7 +61,7 @@ const Pricing = () => {
               </div>
 
               {/* 오른쪽: 6개의 div 박스 */}
-              <div className="flex w-full max-w-[35rem] flex-col justify-center gap-4 p-[2rem]">
+              <div className="flex w-full max-w-[35rem] flex-col justify-center gap-2 p-[2rem]">
                 {/* 박스 1 */}
                 <div className="flex items-center justify-between rounded-lg bg-blue-secondary px-4 py-3">
                   <span className="text-[1.5rem] font-medium text-gray-600">

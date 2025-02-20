@@ -3,22 +3,24 @@ import { Button, Icon } from '@tookscan/components'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import BookBg from './components/image/bookBg.svg'
-import Box from './components/image/boxes.svg'
 
-import Document from './components/image/documents.svg'
-import EngBg from './components/image/engBg.svg'
-import Feature1Img from './components/image/Feature1Img.svg'
-import Feature2Img from './components/image/Feature2Img.svg'
-import Feature3Img from './components/image/Feature3Img.svg'
-import Feature4Img from './components/image/Feature4Img.svg'
-import HeavyBag from './components/image/HeavyBag.svg'
-import LongTime from './components/image/LongTime.svg'
-import MemojiThinking from './components/image/MemojiThinking.svg'
-import MobileGroup from './components/image/mobileGroup.svg'
-import Picture from './components/image/picture.svg'
-import Selcect from './components/image/selectBook.svg'
-import TookBg from './components/image/tookbg.svg'
+import BookBg from './_assets/image/bookBg.svg'
+import Box from './_assets/image/boxes.svg'
+import Document from './_assets/image/documents.svg'
+import EngBg from './_assets/image/engBg.svg'
+import Feature1Img from './_assets/image/Feature1Img.svg'
+import Feature2Img from './_assets/image/Feature2Img.svg'
+import Feature3Img from './_assets/image/Feature3Img.svg'
+import Feature4Img from './_assets/image/Feature4Img.svg'
+import HeavyBag from './_assets/image/HeavyBag.svg'
+import LongTime from './_assets/image/LongTime.svg'
+import MemojiThinking from './_assets/image/MemojiThinking.svg'
+import MinPrice from './_assets/image/minPrice.svg'
+import MobileGroup from './_assets/image/mobileGroup.svg'
+import Picture from './_assets/image/picture.svg'
+import Selcect from './_assets/image/selectBook.svg'
+import Speed from './_assets/image/speed.svg'
+import TookBg from './_assets/image/tookbg.svg'
 
 const features = [
   {
@@ -31,13 +33,13 @@ const features = [
     id: 1,
     title: '업계 최저가 도전',
     desc: '1페이지에 단, 10원! 믿겨지시나요? \n 업계 최저가로 툭스캔을 만나보세요',
-    image: Document,
+    image: MinPrice,
   },
   {
     id: 2,
     title: '빠른신청 & 간편한 결제',
     desc: '시간을 아끼고, 더 큰 가치를 만드세요! \n소중한 시간을 절약하세요',
-    image: Document,
+    image: Speed,
   },
 ]
 const features2 = [
@@ -170,49 +172,49 @@ const LandingPage = () => {
             툭스캔에 맡기는 시간은 단 2분!
           </div>
           <div className="mt-[5rem] flex w-full flex-row items-end justify-center gap-[1rem]">
-            <div className="max-h-[20rem] max-w-[32rem] rounded-[1.5rem] bg-[#838A94] px-[1rem] pt-[1rem] opacity-60">
-              <div className="text-[1.5rem] font-semibold text-white">
-                직접 촬영
+            <div className="max-h-[20rem] max-w-[32rem] rounded-[1.5rem] bg-[#838A94] pr-[1rem] opacity-60">
+              <div className="p-[2rem]">
+                <div className="text-[1.5rem] font-semibold text-white">
+                  직접 촬영
+                </div>
+                <div className="text-white body2">
+                  60분 소요 + 10,030원 시간 비용 + 낮은 품질
+                </div>
               </div>
-              <div className="text-white body2">
-                60분 소요 + 10,030원 시간 비용 + 낮은 품질
-              </div>
-              <Image
-                src={Picture}
-                alt="툭스캔"
-                width={500}
-                height={400}
-                className="mt-[1rem]"
-              />
+              <Image src={Picture} alt="툭스캔" width={400} height={300} />
             </div>
-            <div className="h-[32rem] w-[32rem] rounded-[2rem] bg-blue-primary p-[2rem]">
-              <div className="text-white title2">최고의 선택, 툭스캔</div>
-              <div className="text-white body2">
-                2분 신청 + 페이지당 10원! + 최고 품질
+            <div className="h-[30rem] w-[32rem] overflow-hidden rounded-[2rem] bg-blue-primary">
+              <div className="p-[2rem]">
+                <div className="text-white title2">최고의 선택, 툭스캔</div>
+                <div className="text-white body2">
+                  2분 신청 + 페이지당 10원! + 최고 품질
+                </div>
               </div>
-              <Image
-                src={Selcect}
-                alt="툭스캔"
-                width={500}
-                height={500}
-                className=""
-              />
+              <div className="relative mt-[60%] flex h-40 items-end justify-center">
+                <Image
+                  src={Selcect}
+                  alt="툭스캔"
+                  width={700}
+                  height={700}
+                  className=""
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
       <section
         id="section4"
-        className="flex bg-[#262932] px-[3rem] lg:px-[9rem] lg:pt-[5rem]"
+        className="flex items-center justify-center bg-[#262932] px-[9rem] pt-[5rem]"
       >
-        <div className="mx-auto flex flex-col px-4 pt-[12rem]">
+        <div className="flex flex-col pt-[12rem]">
           {/* 히어로 영역 */}
           <div className="mb-16 text-start">
-            <div className="text-[#ADB3BE] h1">톡스캔을 이용하면,</div>
+            <div className="text-black-400 h1">톡스캔을 이용하면,</div>
             <div className="text-blue-primary title1">
               더 나은 품질과 시간 절약까지!
             </div>
-            <div className="mt-2 text-base text-[#ADB3BE] body1">
+            <div className="mt-2 text-black-400 body1">
               잠깐! 500페이지 스캔, 정말 한장씩 직접 찍으시려구요...? <br />{' '}
               툭스캔을 사용하는게 훨씬 합리적이에요!
               <br /> 그 이유는 바로,
@@ -220,46 +222,48 @@ const LandingPage = () => {
           </div>
 
           {/* 버튼 및 설명 영역 */}
-          <div className="w-full rounded-t-xl bg-white px-[2rem] pt-[3rem]">
-            <div className="flex justify-between">
-              {features.map((feature, index) => {
-                const isActive = selectedIndex === index
-                return (
-                  <button
-                    key={feature.id}
-                    onClick={() => setSelectedIndex(index)}
-                    className={`flex flex-col gap-2 p-6 text-start transition-colors ${
-                      isActive ? 'text-blue-primary' : 'text-gray-500'
-                    }`}
-                  >
-                    <div className="flex flex-row gap-2 text-xl btn1">
-                      <Icon
-                        id="group"
-                        width={22}
-                        height={22}
-                        className={`${
-                          isActive ? 'text-blue-primary' : 'text-gray-300'
-                        }`}
-                      />
-                      {feature.title}
-                    </div>
-                    <p className="whitespace-pre-line leading-relaxed body2">
-                      {feature.desc}
-                    </p>
-                  </button>
-                )
-              })}
-            </div>
+          <div className="flex w-full items-center justify-center">
+            <div className="flex w-full min-w-[70rem] flex-col rounded-t-xl bg-white px-[2rem] pt-[3rem]">
+              <div className="flex justify-between">
+                {features.map((feature, index) => {
+                  const isActive = selectedIndex === index
+                  return (
+                    <button
+                      key={feature.id}
+                      onClick={() => setSelectedIndex(index)}
+                      className={`flex flex-col gap-2 p-6 text-start transition-colors ${
+                        isActive ? 'text-blue-primary' : 'text-gray-500'
+                      }`}
+                    >
+                      <div className="flex flex-row gap-2 text-xl btn1">
+                        <Icon
+                          id="barcode-read"
+                          width={22}
+                          height={22}
+                          className={`${
+                            isActive ? 'text-blue-primary' : 'text-gray-300'
+                          }`}
+                        />
+                        {feature.title}
+                      </div>
+                      <p className="whitespace-pre-line leading-relaxed body2">
+                        {feature.desc}
+                      </p>
+                    </button>
+                  )
+                })}
+              </div>
 
-            {/* 스크린샷 mockup */}
-            <div className="mt-16 flex flex-col gap-6">
-              <div className="flex-1">
-                <div className="h-full w-full rounded-lg bg-[#C2DCFF]">
-                  <Image
-                    src={features[selectedIndex].image || ''}
-                    alt="톡스캔 메인화면"
-                    className="h-full w-full object-cover"
-                  />
+              {/* 스크린샷 mockup */}
+              <div className="mt-16 flex flex-col">
+                <div className="flex-1">
+                  <div className="h-full w-full rounded-t-lg bg-[#C2DCFF]">
+                    <Image
+                      src={features[selectedIndex].image || ''}
+                      alt="톡스캔 메인화면"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -286,9 +290,9 @@ const LandingPage = () => {
           </div>
 
           {/* 카드 3개 영역 */}
-          <div className="jsutify-between flex gap-3">
+          <div className="flex gap-3">
             {/* 카드 1 */}
-            <div className="rounded-xl bg-[#F2F7FF] shadow-sm">
+            <div className="h-[25rem] w-[23rem] flex-1 flex-col overflow-hidden rounded-xl bg-[#F2F7FF] shadow-sm">
               <div className="p-6">
                 <h3 className="mb-2 btn1">너무 무거워요!</h3>
                 <p className="mb-4 text-gray-700 body2">
@@ -296,18 +300,18 @@ const LandingPage = () => {
                   무거워요!
                 </p>
               </div>
-              <div className="relative h-40 w-full">
+              <div className="relative mt-[30%] flex h-40 items-end justify-center">
                 <Image
                   src={HeavyBag}
                   alt="무거운 가방"
-                  fill
-                  className="object-contain"
+                  width={100}
+                  height={100}
                 />
               </div>
             </div>
 
             {/* 카드 2 */}
-            <div className="rounded-xl bg-[#F2F7FF] shadow-sm">
+            <div className="h-[25rem] w-[23rem] flex-1 flex-col overflow-hidden rounded-xl bg-[#F2F7FF] shadow-sm">
               <div className="p-6">
                 <h3 className="mb-2 btn1">너무 오래걸려요!</h3>
                 <p className="mb-4 text-sm text-gray-700 body2">
@@ -315,18 +319,18 @@ const LandingPage = () => {
                   걸려서 1시간이나 써버렸어요!
                 </p>
               </div>
-              <div className="relative flex h-40 w-full items-end justify-end">
+              <div className="relative mt-[70%] flex h-40 items-end justify-center">
                 <Image
                   src={LongTime}
                   alt="오래 걸리는 작업"
-                  fill
-                  className="object-contain"
+                  width={380}
+                  height={200}
                 />
               </div>
             </div>
 
             {/* 카드 3 */}
-            <div className="rounded-xl bg-[#F2F7FF] shadow-sm">
+            <div className="h-[25rem] w-[23rem] flex-1 flex-col overflow-hidden rounded-xl bg-[#F2F7FF] shadow-sm">
               <div className="p-6">
                 <h3 className="mb-2 btn1">북스캔, 고민중이에요!</h3>
                 <p className="mb-4 text-gray-700 body2">
@@ -334,12 +338,12 @@ const LandingPage = () => {
                   가격도, 품질도 만족스러운 곳... 정말 없을까요?
                 </p>
               </div>
-              <div className="relative h-40 w-full">
+              <div className="relative mt-[30%] flex h-40 items-end justify-center">
                 <Image
                   src={MemojiThinking}
                   alt="고민하는 사람"
-                  fill
-                  className="object-contain"
+                  width={250}
+                  height={200}
                 />
               </div>
             </div>
