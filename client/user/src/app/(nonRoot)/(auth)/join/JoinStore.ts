@@ -5,7 +5,6 @@ import { sendAuthCode, verifyAuthCode } from '@tookscan/api'
 import { useModal, useToast } from '@tookscan/hooks'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-
 export const useJoinStore = () => {
   const [step, setStep] = useState<number>(1)
   const { openModal, closeModal } = useModal()
