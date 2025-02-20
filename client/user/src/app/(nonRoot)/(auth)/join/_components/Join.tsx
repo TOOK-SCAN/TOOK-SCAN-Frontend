@@ -23,6 +23,8 @@ const Join = () => {
     setSmsConsent,
     isValidating,
     setIsValidating,
+    idValidationMessage,
+    setIdValidationMessage,
     openModal,
     closeModal,
   } = useJoinStore()
@@ -40,6 +42,8 @@ const Join = () => {
     setEmailConsent,
     smsConsent,
     setSmsConsent,
+    idValidationMessage,
+    setIdValidationMessage,
     isValidating,
     setIsValidating,
     openModal,
@@ -62,9 +66,6 @@ const Join = () => {
     }, 1000)
     return () => clearInterval(timer)
   }, [verificationState.timeLeft, setVerificationState])
-
-  // const idValidationMessage = ''
-  const idValidationMessage = stepState.id ? '' : '아이디를 입력해주세요.'
 
   return (
     <div className="mb-12 flex w-full flex-col items-center">
