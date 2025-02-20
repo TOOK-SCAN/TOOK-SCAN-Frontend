@@ -8,7 +8,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'disabled' | 'error'
   size?: 'default' | 'lg' | 'md' | 'sm'
-  showIcon?: boolean // 아이콘 표시 여부
+  icon?: string // 아이콘 표시 여부
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -18,7 +18,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant = 'primary',
       size = 'default',
       disabled,
-      showIcon = false,
+      icon,
       onClick,
       children,
       ...props
@@ -61,9 +61,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {/* 아이콘 렌더링 */}
-        {showIcon && (
+        {icon && (
           <Icon
-            id="plus"
+            id={icon}
             className={clsx(
               'mr-2',
               disabled

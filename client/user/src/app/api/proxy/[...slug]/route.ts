@@ -130,11 +130,14 @@ async function proxyRequest(
         )
         return NextResponse.redirect(new URL('/login', request.url))
       }
+    } else if (error) {
+      backendResponse = error
+      // return NextResponse.json(error, { status: error.status }) // TODO : 에러 처리
+      return NextResponse.json(error)
     }
-    return NextResponse.json({ error: '네트워크 오류 발생' }, { status: 502 })
-  }
 
-  // Access Token이 만료되었거나 권한이 없을 경우 (401 또는 403) refreshToken으로 재발급 시도
+    return NextResponse.json({ error: '네트워크 오류 발생' }, { status: 200 })
+  }
 
   // 응답이 JSON인지 확인 후 변환 (예외 처리 포함)
   let data

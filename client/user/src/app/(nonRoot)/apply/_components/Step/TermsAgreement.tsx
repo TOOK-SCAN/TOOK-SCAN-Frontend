@@ -4,7 +4,7 @@ import type { Term } from '@/types'
 import { TermsType } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { Accordion, TitleLabel } from '@tookscan/components'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 const TermsAgreement = () => {
   const { terms, setTerms } = useApplyContext()
@@ -14,8 +14,9 @@ const TermsAgreement = () => {
     queryFn: () => fetchTerms(TermsType.SCAN),
   })
 
-  const visibleTerms: Term[] =
-    termsData?.filter((term: Term) => term.isVisible) || []
+  const visibleTerms: Term[] = useMemo(() => {
+    return termsData?.filter((term: Term) => term.isVisible) || []
+  }, [termsData])
 
   useEffect(() => {
     if (visibleTerms.length > 0) {
@@ -31,6 +32,7 @@ const TermsAgreement = () => {
         }
 
         return hasChanged ? newTerms : prev
+
       })
     }
   }, [visibleTerms, setTerms])

@@ -1,4 +1,4 @@
-import type { OrderRequest, OrderResponse } from '@/types'
+import type { GetOrderListRes, OrderRequest, OrderResponse } from '@/types'
 import { httpInstance } from '@tookscan/config'
 
 // 회원/비회원 주문 API 호출 함수
@@ -18,4 +18,23 @@ export const postOrder = async (
   } catch (error) {
     throw error
   }
+}
+
+export const getOrderList = async (
+  page: number,
+  size: number,
+  search: string | null = '',
+  sort: 'createdAt' = 'createdAt',
+  direction: 'desc' | 'asc' = 'desc'
+): Promise<GetOrderListRes> => {
+  const response = await httpInstance.get('users/orders/overviews', {
+    searchParams: {
+      page,
+      size,
+      search: search ?? '',
+      sort,
+      direction,
+    },
+  })
+  return response.json()
 }

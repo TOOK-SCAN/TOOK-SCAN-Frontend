@@ -13,7 +13,7 @@ import {
   calculateTotalPrice,
   hasNonDropBooks,
 } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
-import type { OrderRequest, OrderResponse } from '@/types/api/apply/order'
+import type { OrderRequest, OrderResponse } from '@/types/api/order'
 
 import { Button } from '@tookscan/components'
 import { useAuth, useModal } from '@tookscan/hooks'
