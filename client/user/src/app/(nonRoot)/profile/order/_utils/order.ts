@@ -23,7 +23,7 @@ export const steps = [
   {
     label: '신청 완료',
     value: 'APPLY_COMPLETED',
-    cta: '주소 작성',
+    cta: '송신 주소 조회',
     ctaIcon: null,
   },
   {
