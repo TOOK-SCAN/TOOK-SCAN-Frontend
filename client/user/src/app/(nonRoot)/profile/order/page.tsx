@@ -1,6 +1,7 @@
 'use client'
 
 import { getOrderList } from '@/api'
+import type { Order } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { OrderCard } from './_components/OrderCard'
@@ -52,7 +53,7 @@ const OrderHistory = () => {
 
       {/* 주문 카드들 */}
       <div className="space-y-4">
-        {orders.map((order) => (
+        {orders.map((order: Order) => (
           <OrderCard key={order.id} data={order} />
         ))}
       </div>
