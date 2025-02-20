@@ -2,7 +2,7 @@
 
 import { PaymentLabel } from '@/app/(nonRoot)/profile/order/_components/PaymentLabel'
 import type { Order } from '@/types'
-import { Button } from '@tookscan/components'
+import { Button, Icon } from '@tookscan/components'
 import { useModal } from '@tookscan/hooks'
 import React from 'react'
 import { orderInfo, steps } from '../_utils/order'
@@ -41,6 +41,7 @@ export const OrderCard = ({ data }: { data: Order }) => {
       step.value.trim().toUpperCase() ===
       data.order_status?.trim().toUpperCase()
   )
+
   return (
     <>
       <div className="mx-auto mt-[12px] w-full max-w-[500px] rounded-[2rem] bg-white p-[24px] shadow md:p-[32px]">
@@ -123,12 +124,22 @@ export const OrderCard = ({ data }: { data: Order }) => {
             >
               주문 상세
             </Button>
-            <Button
-              variant={getVariant() as 'primary' | 'tertiary' | 'disabled'}
-              size="md"
-              className="flex-1"
-            >
-              {stepForButton ? stepForButton.cta : data.order_status}
+            <Button variant={getVariant()} size="md" className="flex-1">
+              {stepForButton ? (
+                <>
+                  {stepForButton.ctaIcon && (
+                    <Icon
+                      id={stepForButton.ctaIcon}
+                      className="mr-2"
+                      width={16}
+                      height={16}
+                    />
+                  )}
+                  {stepForButton.cta}
+                </>
+              ) : (
+                data.order_status
+              )}
             </Button>
           </div>
         </div>
