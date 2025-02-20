@@ -4,6 +4,7 @@ import type {
   UserDetailFetchRes,
   UserDetailRes,
   UserSummariesResponse,
+  testEmailRes,
 } from '@/types'
 import { httpInstance } from '@tookscan/config'
 
@@ -39,3 +40,6 @@ export const updatePW = async (
   })
   return response.json()
 }
+
+export const testEmail = async (email: string): Promise<testEmailRes> =>
+  httpInstance.post('test-email', { json: { email } }).json()

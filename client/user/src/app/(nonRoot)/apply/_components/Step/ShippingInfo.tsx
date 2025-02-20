@@ -1,4 +1,4 @@
-import { getUserSummaries } from '@/api'
+import { getUserSummaries, testEmail } from '@/api'
 import { Section } from '@/app/(nonRoot)/apply/_components/index'
 import { useApplyContext } from '@/app/(nonRoot)/apply/_contexts/ApplyContext'
 import { hasNonDropBooks } from '@/app/(nonRoot)/apply/_utils/calculateBookPrice'
@@ -320,6 +320,7 @@ const ShippingInfo = React.memo(() => {
               }}
               placeholder="인증번호"
               disabled={isVerified}
+              suffix={isVerified ? '인증 완료' : formattedTime}
             />
 
             <Button
@@ -331,9 +332,6 @@ const ShippingInfo = React.memo(() => {
               인증하기
             </Button>
           </div>
-          {!isVerified && (
-            <span className="text-sm text-error">{formattedTime}</span>
-          )}
         </Section>
       )}
       <Section>
@@ -353,8 +351,21 @@ const ShippingInfo = React.memo(() => {
           <Button
             size="md"
             className="whitespace-nowrap px-6 py-3"
-            onClick={() => {
-              showToast('테스트 메일을 전송 했습니다.', 'success', 'mail-heart')
+            onClick={async () => {
+              try {
+                await testEmail(shippingInfo.email)
+                showToast(
+                  '테스트 메일을 전송 했습니다.',
+                  'success',
+                  'mail-heart'
+                )
+              } catch (error) {
+                showToast(
+                  '테스트 메일 전송에 실패했습니다.',
+                  'error',
+                  'mail-heart'
+                )
+              }
             }}
           >
             테스트 메일 발송

@@ -56,3 +56,5 @@ export interface UserDetailFetchRequest {
 export type UserDetailFetchRes = Common<null>
 
 export type PWFetchRes = Common<null>
+
+export type testEmailRes = Common<null>

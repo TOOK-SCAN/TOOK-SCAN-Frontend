@@ -16,6 +16,6 @@ export interface SignUpOAuthRequest {
   marketing_allowed: boolean
 }
 
-export type SignUpResponse = Common<null>
+export type SignUpRes = Common<null>
 
-export type SignUpIDCheckResponse = Common<{ is_valid: boolean }>
+export type SignUpIDCheckRes = Common<{ is_valid: boolean }>

@@ -4,12 +4,14 @@ import { fetchTerms } from '@/api'
 import type { Term } from '@/types'
 import { TermsType } from '@/types'
 import { useQuery } from '@tanstack/react-query'
+import { Confirm } from '@tookscan/components'
 import { Button } from '@tookscan/components/ui/Button'
 import { CheckButton } from '@tookscan/components/ui/CheckButton'
 import { InputField } from '@tookscan/components/ui/InputField'
 import clsx from 'clsx'
 import React, { useState } from 'react'
 import StepIndicator from '../_components/StepIndicator'
+import { useJoinStore } from '../JoinStore'
 
 interface StepOneUIProps {
   stepState: { name: string; phone: string }
@@ -31,7 +33,6 @@ interface StepOneUIProps {
     ) => void
     handleVerifyAuthCode: () => Promise<void>
     handleAgreementChange: (termId: number, value?: boolean) => void
-    openModal: (title: string, content: string) => void
   }
   setStep: React.Dispatch<React.SetStateAction<number>>
 }
@@ -43,6 +44,8 @@ const StepOneUI = ({
   handlers,
   setStep,
 }: StepOneUIProps) => {
+  const { openModal, closeModal } = useJoinStore()
+
   const [showVerification, setShowVerification] = useState(false)
   const [adAgreement, setAdAgreement] = useState(false)
   const [emailConsent, setEmailConsent] = useState(false)
@@ -129,9 +132,15 @@ const StepOneUI = ({
   }
 
   const handleOpenPrivacyPolicy = () => {
-    handlers.openModal(
-      '개인정보 수집 및 이용 동의',
-      '고객 서비스 이용에 관한 안내 및 이용자 식별'
+    openModal(
+      <Confirm title="개인정보 수집 및 이용 동의">
+        <p className="body2">고객 서비스 이용에 관한 안내 및 이용자 식별</p>
+        <div className="mt-4 flex justify-end gap-3">
+          <Button variant="secondary" size="md" onClick={closeModal}>
+            닫기
+          </Button>
+        </div>
+      </Confirm>
     )
   }
 
@@ -190,11 +199,16 @@ const StepOneUI = ({
             >
               <InputField
                 type="simple"
-                placeholder="인증번호 입력"
+                placeholder="인증번호"
                 value={verificationState.verificationCode}
                 onChange={handlers.handleVerificationCodeChange}
                 disabled={verificationState.isVerified}
                 isSuccess={verificationState.isVerified}
+                suffix={
+                  verificationState.isVerified
+                    ? '인증 완료'
+                    : formatTime(verificationState.timeLeft)
+                }
               />
             </div>
             <Button
@@ -211,15 +225,6 @@ const StepOneUI = ({
             </Button>
           </div>
         )}
-        <span className="whitespace-nowrap px-4 text-xs">
-          {verificationState.isVerified ? (
-            <span className="text-green-500">인증되었습니다</span>
-          ) : (
-            <span className="text-red-500">
-              {formatTime(verificationState.timeLeft)}
-            </span>
-          )}
-        </span>
       </div>
       {/*약관동의*/}
       <div className="mt-4 flex items-center">
@@ -251,7 +256,22 @@ const StepOneUI = ({
               </span>
             </div>
             <button
-              onClick={() => handlers.openModal(term.title, term.content)}
+              onClick={() =>
+                openModal(
+                  <Confirm title={term.title}>
+                    <p className="body2">{term.content}</p>
+                    <div className="mt-4 flex justify-end gap-3">
+                      <Button
+                        variant="secondary"
+                        size="md"
+                        onClick={closeModal}
+                      >
+                        닫기
+                      </Button>
+                    </div>
+                  </Confirm>
+                )
+              }
               className="text-gray-600"
             >
               &gt;

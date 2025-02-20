@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { useJoinHandlers, useJoinStore } from '../JoinStore'
 import StepOneUI from '../Step/StepOne'
 import StepTwoUI from '../Step/StepTwo'
-import Modal from './Modal'
 
 const Join = () => {
   const {
@@ -22,10 +21,10 @@ const Join = () => {
     setEmailConsent,
     smsConsent,
     setSmsConsent,
-    modal,
-    setModal,
     isValidating,
     setIsValidating,
+    openModal,
+    closeModal,
   } = useJoinStore()
 
   const handlers = useJoinHandlers({
@@ -41,10 +40,10 @@ const Join = () => {
     setEmailConsent,
     smsConsent,
     setSmsConsent,
-    modal,
-    setModal,
     isValidating,
     setIsValidating,
+    openModal,
+    closeModal,
   })
 
   // 인증 타이머 효과
@@ -70,8 +69,8 @@ const Join = () => {
   return (
     <div className="mb-12 flex w-full flex-col items-center">
       <div className="mx-auto mt-10 w-full max-w-[25rem] px-4 text-left">
-        <div className="btn1 font-bold text-blue-primary">회원가입</div>
-        <div className="title2 mt-2 font-bold leading-tight text-black-800">
+        <div className="font-bold text-blue-primary btn1">회원가입</div>
+        <div className="mt-2 font-bold leading-tight text-black-800 title2">
           툭스캔과 함께해요!
         </div>
       </div>
@@ -93,15 +92,6 @@ const Join = () => {
           />
         )}
       </div>
-      {modal.isOpen && (
-        <Modal
-          isOpen={modal.isOpen}
-          onClose={() => setModal({ ...modal, isOpen: false })}
-        >
-          <h2 className="text-lg font-bold">{modal.content.title}</h2>
-          <p className="mt-4 text-sm">{modal.content.content}</p>
-        </Modal>
-      )}
     </div>
   )
 }

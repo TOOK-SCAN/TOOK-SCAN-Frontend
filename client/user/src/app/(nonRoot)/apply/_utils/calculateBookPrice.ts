@@ -1,5 +1,6 @@
 import type { Books } from '@/types/book'
 const PRICE_PER_PAGE = 10
+const BASE_PRICE = 1000
 
 interface CalculateTotalPriceProps {
   books: Books[]
@@ -16,7 +17,7 @@ export const calculateTotalPrice = ({ books }: CalculateTotalPriceProps) => {
     const pageCost = (book.pages || 0) * PRICE_PER_PAGE
     const restoreCost = book.restoreOption === 'SPRING' ? 4000 : 0
 
-    return total + pageCost + restoreCost
+    return total + pageCost + restoreCost + BASE_PRICE
   }, 0)
 
   return totalBookCost + shippingCost
@@ -26,5 +27,5 @@ export const calculatePrice = (book: Books) => {
   const pageCost = (book.pages || 0) * PRICE_PER_PAGE
   const restoreCost = book.restoreOption === 'SPRING' ? 4000 : 0
 
-  return pageCost + restoreCost
+  return pageCost + restoreCost + BASE_PRICE
 }

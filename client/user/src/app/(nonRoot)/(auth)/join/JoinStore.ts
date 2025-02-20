@@ -2,11 +2,12 @@
 
 import { signUpDefault, signUpIDCheck } from '@/api'
 import { sendAuthCode, verifyAuthCode } from '@tookscan/api'
+import { useModal } from '@tookscan/hooks'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-
 export const useJoinStore = () => {
   const [step, setStep] = useState<number>(1)
+  const { openModal, closeModal } = useModal()
 
   // 회원가입 상태
   const [stepState, setStepState] = useState({
@@ -34,11 +35,6 @@ export const useJoinStore = () => {
   const [emailConsent, setEmailConsent] = useState(false)
   const [smsConsent, setSmsConsent] = useState(false)
 
-  const [modal, setModal] = useState({
-    isOpen: false,
-    content: { title: '', content: '' },
-  })
-
   const [idValidationMessage, setIdValidationMessage] = useState<string>('')
   const [isValidating, setIsValidating] = useState<boolean>(false)
 
@@ -57,12 +53,12 @@ export const useJoinStore = () => {
     setEmailConsent,
     smsConsent,
     setSmsConsent,
-    modal,
-    setModal,
     idValidationMessage,
     setIdValidationMessage,
     isValidating,
     setIsValidating,
+    openModal,
+    closeModal,
   }
 }
 
@@ -114,22 +110,12 @@ export const useJoinHandlers = (store: {
   setEmailConsent: React.Dispatch<React.SetStateAction<boolean>>
   smsConsent: boolean
   setSmsConsent: React.Dispatch<React.SetStateAction<boolean>>
-
-  modal: { isOpen: boolean; content: { title: string; content: string } }
-  setModal: React.Dispatch<
-    React.SetStateAction<{
-      isOpen: boolean
-      content: { title: string; content: string }
-    }>
-  >
   isValidating: boolean
   setIsValidating: React.Dispatch<React.SetStateAction<boolean>>
+  openModal: (title: string, content: string) => void
+  closeModal: () => void
 }) => {
   const router = useRouter()
-
-  const openModal = (title: string, content: string) => {
-    store.setModal({ isOpen: true, content: { title, content } })
-  }
   const handleAllAgreementChange = (value?: boolean) => {
     const newValue =
       value ?? !(store.adAgreement && store.emailConsent && store.smsConsent)
@@ -237,18 +223,22 @@ export const useJoinHandlers = (store: {
           isSendingAuthCode: false,
           verificationMessage: errorMessage,
         }))
-        openModal('인증 실패', errorMessage)
+        store.openModal('인증 실패', errorMessage)
       }
     },
     // 인증 확인
     handleVerifyAuthCode: async () => {
       if (store.verificationState.isVerifyingAuth) return
       store.setVerificationState((prev) => ({ ...prev, isVerifyingAuth: true }))
+
       try {
         await verifyAuthCode(
           store.stepState.phone,
           store.verificationState.verificationCode
         )
+
+        store.openModal('인증 성공', '휴대폰 인증이 완료되었습니다.')
+
         store.setVerificationState((prev) => ({
           ...prev,
           isVerified: true,
@@ -256,6 +246,11 @@ export const useJoinHandlers = (store: {
           verificationMessage: '인증되었습니다.',
         }))
       } catch (error) {
+        store.openModal(
+          '인증 실패',
+          '인증번호가 올바르지 않습니다. 다시 입력해 주세요.'
+        )
+
         store.setVerificationState((prev) => ({
           ...prev,
           verificationMessage: '인증번호가 올바르지 않습니다.',
@@ -267,6 +262,8 @@ export const useJoinHandlers = (store: {
         }))
       }
     },
+    openModal: store.openModal,
+    closeModal: store.closeModal,
 
     // 약관
     handleAgreementChange: (termId: number, value?: boolean) => {
@@ -281,10 +278,7 @@ export const useJoinHandlers = (store: {
       store.setIsValidating(true)
 
       if (!store.stepState.id.trim()) {
-        store.setModal({
-          isOpen: true,
-          content: { title: '에러', content: '아이디를 입력하세요.' },
-        })
+        store.openModal('에러', '아이디를 입력하세요.')
         store.setIsValidating(false)
         return false
       }
@@ -297,27 +291,15 @@ export const useJoinHandlers = (store: {
         store.setIsValidating(false)
 
         if (response.data?.is_valid) {
-          store.setModal({
-            isOpen: true,
-            content: { title: '확인', content: '사용 가능한 아이디입니다.' },
-          })
+          store.openModal('확인', '사용 가능한 아이디입니다.')
           return true
         } else {
-          store.setModal({
-            isOpen: true,
-            content: { title: '에러', content: '이미 사용 중인 아이디입니다.' },
-          })
+          store.openModal('에러', '이미 사용 중인 아이디입니다.')
           return false
         }
       } catch (error) {
         console.error('아이디 중복 확인 에러:', error)
-        store.setModal({
-          isOpen: true,
-          content: {
-            title: '에러',
-            content: '아이디 중복 확인에 실패했습니다.',
-          },
-        })
+        store.openModal('에러', '아이디 중복 확인에 실패했습니다.')
         store.setIsValidating(false)
         return false
       }
@@ -329,14 +311,14 @@ export const useJoinHandlers = (store: {
       const passwordRegex =
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/
       if (!passwordRegex.test(store.stepState.password)) {
-        openModal(
+        store.openModal(
           '비밀번호 오류',
           '비밀번호는 8자 이상, 20자 이하이며, 영문, 숫자, 특수문자를 포함해야 합니다.'
         )
         return
       }
       if (store.stepState.password !== store.stepState.confirmPassword) {
-        openModal('비밀번호 오류', '비밀번호와 확인이 일치하지 않습니다.')
+        store.openModal('비밀번호 오류', '비밀번호와 확인이 일치하지 않습니다.')
         return
       }
       try {
@@ -344,8 +326,8 @@ export const useJoinHandlers = (store: {
           name: store.stepState.name,
           serial_id: store.stepState.id,
           password: store.stepState.password,
-          phone_number: store.stepState.phone,
           marketing_allowed: store.adAgreement,
+          phone_number: store.stepState.phone,
           is_receive_email: store.emailConsent,
           is_receive_sms: store.smsConsent,
         })
@@ -360,9 +342,8 @@ export const useJoinHandlers = (store: {
           }
           errorMessage = err.error?.message || err.message || errorMessage
         }
-        openModal('회원가입 실패', errorMessage)
+        store.openModal('회원가입 실패', errorMessage)
       }
     },
-    openModal,
   }
 }

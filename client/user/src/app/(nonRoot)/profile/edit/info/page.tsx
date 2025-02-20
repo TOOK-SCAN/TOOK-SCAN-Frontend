@@ -1,5 +1,5 @@
 'use client'
-import { getUserDetail, updateUserDetail } from '@/api'
+import { getUserDetail, testEmail, updateUserDetail } from '@/api'
 import { Section } from '@/app/(nonRoot)/apply/_components'
 import { sendAuthCode, verifyAuthCode } from '@tookscan/api'
 import {
@@ -266,9 +266,22 @@ const EditInfoPage = () => {
           <Button
             size="md"
             className="whitespace-nowrap py-3"
-            onClick={() =>
-              showToast('테스트 메일을 전송 했습니다.', 'success', 'mail-heart')
-            }
+            onClick={async () => {
+              try {
+                await testEmail(formInfo.email)
+                showToast(
+                  '테스트 메일을 전송 했습니다.',
+                  'success',
+                  'mail-heart'
+                )
+              } catch (error) {
+                showToast(
+                  '테스트 메일 전송에 실패했습니다.',
+                  'error',
+                  'mail-heart'
+                )
+              }
+            }}
           >
             테스트 메일 발송
           </Button>
