@@ -2,13 +2,14 @@
 
 import { PaymentLabel } from '@/app/(nonRoot)/profile/order/_components/PaymentLabel'
 import type { Order } from '@/types'
-import { Button, Icon } from '@tookscan/components'
+import { Button, Confirm, Icon } from '@tookscan/components'
 import { useModal } from '@tookscan/hooks'
+import { devConsole } from '@tookscan/utils'
 import React from 'react'
 import { orderInfo, steps } from '../_utils/order'
 
 export const OrderCard = ({ data }: { data: Order }) => {
-  const { openModal } = useModal()
+  const { openModal, closeModal } = useModal()
   const currentStatus = data.order_status
     ? data.order_status.trim().toUpperCase()
     : ''
@@ -41,6 +42,37 @@ export const OrderCard = ({ data }: { data: Order }) => {
       step.value.trim().toUpperCase() ===
       data.order_status?.trim().toUpperCase()
   )
+
+  const handleCtaClick = () => {
+    const status = data.order_status
+    if (status === 'APPLY_COMPLETED') {
+      openModal(
+        <Confirm title="송신 주소 조회">
+          <div className="text-center">
+            <h2 className="font-semibold">루원시티 대성베르힐 더 센트로</h2>
+            <Button
+              variant="primary"
+              size="md"
+              className="mt-4 w-full"
+              onClick={() => closeModal()}
+            >
+              확인
+            </Button>
+          </div>
+        </Confirm>
+      )
+    } else if (status === 'COMPANY_ARRIVED') {
+      openModal(<></>)
+    } else if (status === 'PAYMENT_COMPLETED') {
+      openModal(<></>)
+    } else if (status === 'SCAN_IN_PROGRESS') {
+      // 동작 없음
+    } else if (status === 'ALL_COMPLETED') {
+      openModal(<></>)
+    } else {
+      devConsole.log('status not matched')
+    }
+  }
 
   return (
     <>
@@ -124,7 +156,12 @@ export const OrderCard = ({ data }: { data: Order }) => {
             >
               주문 상세
             </Button>
-            <Button variant={getVariant()} size="md" className="flex-1">
+            <Button
+              variant={getVariant()}
+              size="md"
+              className="flex-1"
+              onClick={handleCtaClick}
+            >
               {stepForButton ? (
                 <>
                   {stepForButton.ctaIcon && (
