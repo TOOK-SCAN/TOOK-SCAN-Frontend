@@ -1,12 +1,12 @@
 'use client'
+import MobileMock from '@/app/(landing)/_assets/image/MobileMock.svg'
+import Step1Mock from '@/app/(landing)/_assets/Step1Mock.svg'
+import Step2Mock from '@/app/(landing)/_assets/Step2Mock.svg'
+import Step3Mock from '@/app/(landing)/_assets/Step3Mock.svg'
+import Step4Mock from '@/app/(landing)/_assets/Step4Mock.svg'
+import TookBg from '@/app/(landing)/_assets/tookbg.svg'
 import Image from 'next/image'
 import { useEffect, useRef } from 'react'
-import MobileMock from '../_assets/image/HTUMobileMock.svg'
-import Step1Mock from '../_assets/image/Step1Mock.svg'
-import Step2Mock from '../_assets/image/Step2Mock.svg'
-import Step3Mock from '../_assets/image/Step3Mock.svg'
-import Step4Mock from '../_assets/image/Step4Mock.svg'
-import TookBg from '../_assets/image/tookbg.svg'
 
 const features = [
   {
