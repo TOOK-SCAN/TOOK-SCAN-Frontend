@@ -2,9 +2,9 @@
 import MobileMock from '@/app/(landing)/_assets/image/MobileMock.svg'
 import Step1Mock from '@/app/(landing)/_assets/image/Step1Mock.svg'
 import Step2Mock from '@/app/(landing)/_assets/image/Step2Mock.svg'
-import Step3Mock from '@/app/(landing)/_assets/image/Step3Mock.svg'
-import Step4Mock from '@/app/(landing)/_assets/image/Step4Mock.svg'
-import TookBg from '@/app/(landing)/_assets/image/tookbg.svg'
+import Step3Mock from '@/app/(landing)/_assets/image/step3Mock.svg'
+import Step4Mock from '@/app/(landing)/_assets/image/step4Mock.svg'
+import TookBg from '@/app/(landing)/_assets/image/TookBg.svg'
 import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 
