@@ -102,7 +102,10 @@ export const ClientHeader = () => {
           <div className={clsx('flex gap-4', textSize)}>
             {!isLogin ? (
               <>
-                <Link href="/login" className="text-black hover:underline">
+                <Link
+                  href="/login"
+                  className="flex items-center text-black hover:underline"
+                >
                   로그인
                 </Link>
                 <span className="hidden text-black md:flex">|</span>
@@ -118,6 +121,14 @@ export const ClientHeader = () => {
                 >
                   회원가입
                 </Link>
+                <button className="md:hidden" onClick={() => setMenuOpen(true)}>
+                  <Icon
+                    id="menu"
+                    width={28}
+                    height={28}
+                    className="text-black"
+                  />
+                </button>
               </>
             ) : (
               <>
@@ -136,16 +147,6 @@ export const ClientHeader = () => {
             )}
           </div>
 
-          {/* ------------------------
-              4) 모바일 햄버거 아이콘 (md:hidden)
-          ------------------------ */}
-          <button className="md:hidden" onClick={() => setMenuOpen(true)}>
-            <Icon id="menu" width={28} height={28} className="text-black" />
-          </button>
-
-          {/* ------------------------
-              5) 오버레이 & 사이드 메뉴 (모바일 전용)
-          ------------------------ */}
           {menuOpen && (
             <div className="fixed inset-0 z-40 md:hidden">
               <div

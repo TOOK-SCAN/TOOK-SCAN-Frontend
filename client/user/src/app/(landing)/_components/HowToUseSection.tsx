@@ -1,10 +1,10 @@
 'use client'
-import MobileMock from '@/app/(landing)/_assets/image/MobileMock.svg'
-import Step1Mock from '@/app/(landing)/_assets/image/Step1Mock.svg'
-import Step2Mock from '@/app/(landing)/_assets/image/Step2Mock.svg'
-import Step3Mock from '@/app/(landing)/_assets/image/step3Mock.svg'
-import Step4Mock from '@/app/(landing)/_assets/image/step4Mock.svg'
-import TookBg from '@/app/(landing)/_assets/image/tookbg.svg'
+import TookBg from '@/app/(landing)/_assets/image/home/tookbg.svg'
+import MobileMock from '@/app/(landing)/_assets/image/howToUse/MobileMock.svg'
+import Step1Mock from '@/app/(landing)/_assets/image/howToUse/Step1Mock.svg'
+import Step2Mock from '@/app/(landing)/_assets/image/howToUse/Step2Mock.svg'
+import Step3Mock from '@/app/(landing)/_assets/image/howToUse/step3Mock.svg'
+import Step4Mock from '@/app/(landing)/_assets/image/howToUse/step4Mock.svg'
 import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 
@@ -31,7 +31,7 @@ const features = [
   },
 ]
 
-const HowToUse = () => {
+const HowToUseSection = () => {
   const sliderRef = useRef(null)
   useEffect(() => {
     const slider = sliderRef.current as unknown as HTMLElement
@@ -231,4 +231,4 @@ const HowToUse = () => {
   )
 }
 
-export default HowToUse
+export default HowToUseSection

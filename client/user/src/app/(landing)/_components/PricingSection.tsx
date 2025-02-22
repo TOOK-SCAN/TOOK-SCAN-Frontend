@@ -1,10 +1,10 @@
 'use client'
 import Image from 'next/image'
-import PriceDocument from '../_assets/image/priceDocument.svg'
-import ScannerImg from '../_assets/image/ScannerImg.svg'
-import TookBg from '../_assets/image/tookbg.svg'
+import PriceDocument from '../_assets/image/pricing/priceDocument.svg'
+import ScannerImg from '../_assets/image/pricing/ScannerImg.svg'
+import TookBg from '../_assets/image/home/tookbg.svg'
 
-const Pricing = () => {
+const PricingSection = () => {
   return (
     <div>
       <section
@@ -131,4 +131,4 @@ const Pricing = () => {
   )
 }
 
-export default Pricing
+export default PricingSection
