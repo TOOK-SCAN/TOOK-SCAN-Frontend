@@ -108,7 +108,7 @@ const Section4 = () => {
             {/* 스크린샷 mockup */}
             <div className="mt-16 flex flex-col">
               <div className="flex-1">
-                <div className="h-full w-full rounded-t-lg bg-[#C2DCFF]">
+                <div className="h-full w-full max-w-[60rem] rounded-t-lg bg-[#C2DCFF]">
                   <Image
                     src={features[selectedIndex].image || ''}
                     alt="톡스캔 메인화면"
@@ -124,7 +124,7 @@ const Section4 = () => {
         <div
           className="w-full overflow-hidden md:hidden"
           ref={sliderRef}
-          style={{ scrollBehavior: 'auto' }}
+          style={{ scrollBehavior: 'smooth' }}
         >
           <div className="flex w-max">
             {features.map((feature) => (

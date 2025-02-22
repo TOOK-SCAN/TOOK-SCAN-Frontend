@@ -306,10 +306,10 @@ const HomeSection = () => {
       </section>
       <section
         id="section6"
-        className="bg-white p-[3rem] lg:px-[9rem] lg:py-[5rem]"
+        className="flex justify-center bg-white px-[1rem] md:px-[9rem] md:py-[5rem]"
       >
-        <div className="mx-auto max-w-screen-xl px-4">
-          <div className="mb-8">
+        <div className="w-full max-w-screen-xl">
+          <div className="mb-8 w-full">
             <span className="text-[1.25rem] font-semibold text-blue-500">
               서비스 소개
             </span>
@@ -322,7 +322,7 @@ const HomeSection = () => {
           </div>
 
           {/* 슬라이드 카드 영역 */}
-          <div className="overflow-hidden py-10">
+          <div className="flex w-full items-center justify-center overflow-hidden py-10">
             <div
               ref={sliderRef}
               className="hide-scrollbar flex w-full gap-6 overflow-x-scroll"
@@ -331,7 +331,7 @@ const HomeSection = () => {
               {[...features2, ...features2].map((feature, index) => (
                 <div
                   key={index}
-                  className="relative flex h-[20rem] w-[30rem] flex-shrink-0 overflow-hidden rounded-2xl bg-[linear-gradient(180deg,#5592FC_0%,#5894FC_50%,#81AEFD_100%)] p-6 shadow-md"
+                  className="relative flex h-[20rem] w-full max-w-[20rem] flex-shrink-0 overflow-hidden rounded-2xl bg-[linear-gradient(180deg,#5592FC_0%,#5894FC_50%,#81AEFD_100%)] p-6 shadow-md md:max-w-[30rem]"
                 >
                   <div className="flex flex-row">
                     <div className="z-10 flex flex-col justify-end">
@@ -358,7 +358,7 @@ const HomeSection = () => {
                       </div>
                     </div>
                     {/* 이미지 */}
-                    <div className="absolute right-[-1.5rem] top-1/2 z-0 h-[18rem] w-[18rem] -translate-y-1/2">
+                    <div className="absolute right-[-1.8rem] top-1/2 z-0 h-[13rem] w-[13rem] -translate-y-1/2 md:h-[18rem] md:w-[18rem]">
                       <Image
                         src={feature.img || ''}
                         alt={feature.alt || 'default alt text'}
@@ -375,29 +375,31 @@ const HomeSection = () => {
       </section>
       <section
         id="section7"
-        className="bg-white px-[3rem] pt-[3rem] lg:px-[9rem] lg:pt-[5rem]"
+        className="min-h-[40rem] w-full bg-white px-[1rem] pt-[9rem] md:px-[9rem]"
       >
-        <div className="flex w-full justify-between gap-8 md:flex-row md:gap-12">
+        <div className="flex w-full flex-col items-start justify-start md:flex-row md:gap-12">
           {/* 왼쪽 텍스트 영역 */}
-          <div className="mb-8">
-            <span className="text-[1.25rem] font-semibold text-blue-500">
-              서비스 소개
-            </span>
-            <h2 className="mt-2 title1">
-              언제 어디서나 <br /> 편리하게!
-            </h2>
-            <p className="mt-2 text-gray-600 body1">
-              태블릿·PC·모바일에서 간편하게
-              <br />
-              비대면 셀프 스캔 신청하고,
-              <br /> 제작된 파일을 다양한 환경에서 활용해요.
-            </p>
+          <div className="flex flex-col">
+            <div className="mb-8 flex w-full flex-col justify-start">
+              <span className="text-[1.25rem] font-semibold text-blue-500">
+                서비스 소개
+              </span>
+              <h2 className="mt-2 title1">
+                언제 어디서나 <br /> 편리하게!
+              </h2>
+              <p className="mt-2 text-gray-600 body1">
+                태블릿·PC·모바일에서 간편하게
+                <br />
+                비대면 셀프 스캔 신청하고,
+                <br /> 제작된 파일을 다양한 환경에서 활용해요.
+              </p>
+            </div>
           </div>
 
-          {/* 오른쪽 mockup 이미지 영역 */}
-          <div className="relative h-[400px] w-full md:h-[500px] md:w-1/2">
+          {/* 모바일 */}
+          <div className="relative flex h-full w-full justify-end">
             {/* 데스크탑(오른쪽 위) */}
-            <div className="absolute bottom-0 right-0 z-0 h-[500px] w-[500px] md:w-[700px] lg:h-[600px]">
+            <div className="top-15 right-0 z-0 h-[500px] w-[500px] md:absolute">
               <Image
                 src={MobileGroup}
                 alt="데스크탑 화면"
