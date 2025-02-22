@@ -49,7 +49,7 @@ const PricingSection = () => {
               최상의 품질을 자랑하는 툭스캔, <br />
               스캐너 스펙을 확인해보세요!
             </h2>
-            <div className="flex flex-row items-end justify-between">
+            <div className="flex flex-col md:flex-row items-end justify-between">
               <div className="relative">
                 <Image
                   src={ScannerImg}
