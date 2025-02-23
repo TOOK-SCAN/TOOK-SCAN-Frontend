@@ -34,22 +34,55 @@ const Section4 = () => {
     const slider = sliderRef.current as HTMLElement | null
     if (!slider) return
     let animationFrame: number
+    let isPaused = false
 
     if (window.innerWidth < 768) {
-      // 모바일에서만 실행
       const scroll = () => {
         if (slider) {
-          slider.scrollLeft += 1
-          if (slider.scrollLeft >= slider.scrollWidth / 2) {
-            slider.scrollLeft = 0 // 무한 루프
+          // 사용자가 스크롤을 일시정지할 수 있도록 함
+          if (!isPaused) {
+            slider.scrollLeft += 1
+            if (slider.scrollLeft >= slider.scrollWidth / 2) {
+              slider.scrollLeft = 0
+            }
           }
+          animationFrame = requestAnimationFrame(scroll)
         }
-        animationFrame = requestAnimationFrame(scroll)
       }
       animationFrame = requestAnimationFrame(scroll)
+
+      // 사용자 상호작용 시 자동 스크롤 일시정지
+      slider.addEventListener('mouseenter', () => {
+        isPaused = true
+      })
+      slider.addEventListener('mouseleave', () => {
+        isPaused = false
+      })
+      slider.addEventListener('touchstart', () => {
+        isPaused = true
+      })
+      slider.addEventListener('touchend', () => {
+        isPaused = false
+      })
     }
 
-    return () => cancelAnimationFrame(animationFrame)
+    return () => {
+      cancelAnimationFrame(animationFrame)
+      if (slider) {
+        slider.removeEventListener('mouseenter', () => {
+          isPaused = true
+        })
+        slider.removeEventListener('mouseleave', () => {
+          isPaused = false
+        })
+        slider.removeEventListener('touchstart', () => {
+          isPaused = true
+        })
+        slider.removeEventListener('touchend', () => {
+          isPaused = false
+        })
+      }
+    }
   }, [])
 
   return (
@@ -128,7 +161,7 @@ const Section4 = () => {
         >
           <div className="flex w-max">
             {features.map((feature) => (
-              <div key={feature.id} className="w-[90vh] flex-shrink-0 p-4">
+              <div key={feature.id} className="w-[90vw] flex-shrink-0 p-4">
                 <div className="h-[25rem] overflow-hidden rounded-lg bg-white p-4 shadow-md">
                   <h3 className="mt-4 flex flex-row items-center text-lg font-bold text-blue-primary">
                     <Icon

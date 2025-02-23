@@ -149,10 +149,12 @@ export const ClientHeader = () => {
 
           {menuOpen && (
             <div className="fixed inset-0 z-40 md:hidden">
+              {/* 배경 (클릭 시 메뉴 닫힘) */}
               <div
                 className="h-screen w-full bg-black/80 backdrop-blur-sm"
                 onClick={() => setMenuOpen(false)}
               >
+                {/* 닫기 버튼 */}
                 <button
                   onClick={() => setMenuOpen(false)}
                   className="z-50 mb-8 flex w-full items-center justify-end p-4"
@@ -164,6 +166,44 @@ export const ClientHeader = () => {
                     className="text-white"
                   />
                 </button>
+
+                {/* 메뉴 리스트 */}
+                <div className="flex flex-col items-center gap-6 text-white">
+                  <Link
+                    href="/login"
+                    className="w-full py-4 text-center hover:underline"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    로그인
+                  </Link>
+                  <div className="w-4/5 border-t border-white/30"></div>
+
+                  <Link
+                    href="/pricing"
+                    className="w-full py-4 text-center hover:underline"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    가격안내
+                  </Link>
+                  <div className="w-4/5 border-t border-white/30"></div>
+
+                  <Link
+                    href="/apply"
+                    className="w-full py-4 text-center hover:underline"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    스캔하기
+                  </Link>
+                  <div className="w-4/5 border-t border-white/30"></div>
+
+                  <Link
+                    href="/profile/order"
+                    className="w-full py-4 text-center hover:underline"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    주문조회
+                  </Link>
+                </div>
               </div>
             </div>
           )}
