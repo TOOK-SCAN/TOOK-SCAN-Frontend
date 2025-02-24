@@ -1,35 +1,9 @@
 'use client'
 import TookBg from '@/app/(landing)/_assets/image/home/tookbg.svg'
 import MobileMock from '@/app/(landing)/_assets/image/howToUse/MobileMock.svg'
-import Step1Mock from '@/app/(landing)/_assets/image/howToUse/Step1Mock.svg'
-import Step2Mock from '@/app/(landing)/_assets/image/howToUse/Step2Mock.svg'
-import Step3Mock from '@/app/(landing)/_assets/image/howToUse/step3Mock.svg'
-import Step4Mock from '@/app/(landing)/_assets/image/howToUse/step4Mock.svg'
+import { effect } from '@/app/(landing)/_utils/effect'
 import Image from 'next/image'
 import { useEffect, useRef } from 'react'
-
-const features = [
-  {
-    title: '1. 신청하기',
-    desc: '신청서를 작성하고 툭스캔으로 책을 보내주세요',
-    img: Step1Mock,
-  },
-  {
-    title: '2. 결제하기',
-    desc: '책이 도착하면 결제를 요청드려요! \n 이후 발송된 스캔하기 버튼을 눌러 셀프 스캔을 시작해주세요',
-    img: Step2Mock,
-  },
-  {
-    title: '3. PDF파일 수령',
-    desc: '셀프스캔이 완료되었어요 \n 제작된 PDF 파일을 이메일로 확인하세요!',
-    img: Step3Mock,
-  },
-  {
-    title: '4. 책 복원해서 돌려받기',
-    desc: '선택하신 방법을 따라 \n 책을 복원해서 돌려드려요',
-    img: Step4Mock,
-  },
-]
 
 const HowToUseSection = () => {
   const sliderRef = useRef(null)
@@ -74,13 +48,12 @@ const HowToUseSection = () => {
       </section>
       <section
         id="section2"
-        className="flex w-full items-center justify-center bg-[#262932] px-[1rem] md:px-[9rem] md:py-[6.25rem]"
+        className="flex w-full items-center justify-center bg-[#262932] px-[1rem] py-[5rem] md:px-[9rem] md:py-[6.25rem]"
       >
         <div className="mx-auto flex max-w-screen-xl flex-col gap-8 md:flex-row md:items-center">
           {/* 왼쪽: 모바일 화면 mockup */}
           <div className="flex justify-center md:w-1/2">
             <div className="relative h-[480px] w-[240px] sm:h-[550px] sm:w-[275px]">
-              {/* 사진이름은 MobileMock와 구분하기 위해 HTUMobileMock으로 이름 지어놨습니다(How To Use) */}
               <Image
                 src={MobileMock}
                 alt="모바일 화면"
@@ -125,15 +98,15 @@ const HowToUseSection = () => {
           {/*
       모바일 전용: 카드 4개만(단일 배열) 세로로 보여줌
       - md:hidden: 데스크톱에서는 숨기고 모바일(기본)에서만 표시
+      - 'h-[37rem] w-[37rem]'처럼 데스크톱이랑 동일한 크기 지정
     */}
           <div className="block py-10 md:hidden">
             <div className="flex flex-col gap-6">
-              {features.map((feature, index) => (
+              {effect.map((feature, index) => (
                 <div
                   key={index}
-                  className="relative flex h-auto w-full flex-shrink-0 overflow-hidden rounded-2xl bg-[#F2F7FF] p-6 shadow-md"
+                  className="relative flex h-[37rem] w-[37rem] flex-shrink-0 overflow-hidden rounded-2xl bg-[#F2F7FF] p-6 shadow-md"
                 >
-                  {/* 카드 내용 (제목, 설명, 이미지) 그대로 */}
                   <div className="flex flex-col">
                     <h3 className="whitespace-pre-line font-semibold text-black h1">
                       {feature.title}
@@ -141,7 +114,7 @@ const HowToUseSection = () => {
                     <p className="mb-4 whitespace-pre-line text-black body2">
                       {feature.desc}
                     </p>
-                    <div className="relative h-[25rem] w-full md:w-[25rem]">
+                    <div className="relative h-[25rem] w-[25rem]">
                       <Image
                         src={feature.img || ''}
                         alt={feature.title}
@@ -165,12 +138,11 @@ const HowToUseSection = () => {
               className="hide-scrollbar flex w-full flex-col gap-6 md:flex-row md:overflow-x-scroll"
               style={{ scrollBehavior: 'smooth' }}
             >
-              {[...features, ...features].map((feature, index) => (
+              {[...effect, ...effect].map((feature, index) => (
                 <div
                   key={index}
-                  className="relative flex h-auto w-full flex-shrink-0 overflow-hidden rounded-2xl bg-[#F2F7FF] p-6 shadow-md md:h-[37rem] md:w-[37rem]"
+                  className="relative flex h-[37rem] w-[37rem] flex-shrink-0 overflow-hidden rounded-2xl bg-[#F2F7FF] p-6 shadow-md"
                 >
-                  {/* 카드 내용 (제목, 설명, 이미지) 그대로 */}
                   <div className="flex flex-col">
                     <h3 className="whitespace-pre-line font-semibold text-black h1">
                       {feature.title}
@@ -178,7 +150,7 @@ const HowToUseSection = () => {
                     <p className="mb-4 whitespace-pre-line text-black body2">
                       {feature.desc}
                     </p>
-                    <div className="relative h-[25rem] w-full md:w-[25rem]">
+                    <div className="relative h-[25rem] w-[25rem]">
                       <Image
                         src={feature.img || ''}
                         alt={feature.title}

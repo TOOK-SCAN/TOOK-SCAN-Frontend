@@ -15,7 +15,7 @@ export const ClientHeader = () => {
   const isLanding = ['/', '/howToUse', '/pricing'].includes(pathname)
   const isMobile = false
   const textSize = isMobile ? 'text-[12px]' : 'text-[14px]'
-  const heightSize = isMobile ? 'h-4' : 'h-[5.625rem]'
+  const heightSize = isMobile ? 'h-4' : 'h-[5rem]'
   const [menuOpen, setMenuOpen] = useState(false)
 
   const { username, isLogin, refetchAuth } = useAuth()
@@ -73,10 +73,10 @@ export const ClientHeader = () => {
           ------------------------ */}
           <Link href="/" className="focus:outline-none">
             <Icon
-              id="logo"
+              id="blueLogo"
               className="text-blue-primary"
-              width={isMobile ? 52 : 80}
-              height={isMobile ? 24 : 36}
+              width={80}
+              height={33}
             />
           </Link>
 

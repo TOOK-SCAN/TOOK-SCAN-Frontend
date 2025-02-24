@@ -1,8 +1,10 @@
 'use client'
 import Image from 'next/image'
+import TookBg from '../_assets/image/home/tookbg.svg'
 import PriceDocument from '../_assets/image/pricing/priceDocument.svg'
 import ScannerImg from '../_assets/image/pricing/ScannerImg.svg'
-import TookBg from '../_assets/image/home/tookbg.svg'
+import { TableData } from '../_utils/table'
+import { FeatureBox } from './FeatureBox'
 
 const PricingSection = () => {
   return (
@@ -37,9 +39,9 @@ const PricingSection = () => {
       </section>
       <section
         id="section3"
-        className="bg-white p-[3rem] text-black lg:px-[9rem] lg:py-[5rem]"
+        className="w-full bg-white px-[1rem] py-[5rem] text-black md:px-[9rem]"
       >
-        <div className="mx-auto max-w-screen-xl px-4">
+        <div className="w-full items-center justify-center">
           {/* 상단 소개 영역 */}
           <div className="mb-8">
             <span className="text-[1.25rem] font-semibold text-blue-500">
@@ -49,7 +51,7 @@ const PricingSection = () => {
               최상의 품질을 자랑하는 툭스캔, <br />
               스캐너 스펙을 확인해보세요!
             </h2>
-            <div className="flex flex-col md:flex-row items-end justify-between">
+            <div className="mt-[5rem] flex w-full flex-col items-center justify-center gap-[5rem] md:flex-row">
               <div className="relative">
                 <Image
                   src={ScannerImg}
@@ -61,67 +63,14 @@ const PricingSection = () => {
               </div>
 
               {/* 오른쪽: 6개의 div 박스 */}
-              <div className="flex w-full max-w-[35rem] flex-col justify-center gap-2 p-[2rem]">
-                {/* 박스 1 */}
-                <div className="flex items-center justify-between rounded-lg bg-blue-secondary px-4 py-3">
-                  <span className="text-[1.5rem] font-medium text-gray-600">
-                    DPI
-                  </span>
-                  <span className="text-[1rem] font-semibold text-blue-primary">
-                    최대 600 DPI
-                  </span>
-                </div>
-
-                {/* 박스 2 */}
-                <div className="flex items-center justify-between rounded-lg bg-blue-secondary px-4 py-3">
-                  <span className="text-[1.5rem] font-medium text-gray-600">
-                    품질
-                  </span>
-                  <span className="text-[1rem] font-semibold text-blue-primary">
-                    고해상도 컬러 스캔
-                  </span>
-                </div>
-
-                {/* 박스 3 */}
-
-                <div className="flex items-center justify-between rounded-lg bg-blue-secondary px-4 py-3">
-                  <span className="text-[1.5rem] font-medium text-gray-600">
-                    색감
-                  </span>
-                  <span className="text-[1rem] font-semibold text-blue-primary">
-                    24비트 컬러
-                  </span>
-                </div>
-
-                {/* 박스 4 */}
-                <div className="flex items-center justify-between rounded-lg bg-blue-secondary px-4 py-3">
-                  <span className="text-[1.5rem] font-medium text-gray-600">
-                    선명도
-                  </span>
-                  <span className="text-[1rem] font-semibold text-blue-primary">
-                    자동 이미지 보정 / 선명한 텍스트 출력
-                  </span>
-                </div>
-
-                {/* 박스 5 */}
-                <div className="flex items-center justify-between rounded-lg bg-blue-secondary px-4 py-3">
-                  <span className="text-[1.5rem] font-medium text-gray-600">
-                    선명도
-                  </span>
-                  <span className="text-[1rem] font-semibold text-blue-primary">
-                    자동 이미지 보정 및 선명한 텍스트 출력 지원
-                  </span>
-                </div>
-
-                {/* 박스 6 */}
-                <div className="flex items-center justify-between rounded-lg bg-blue-secondary px-4 py-3">
-                  <span className="text-[1.5rem] font-medium text-gray-600">
-                    기울기보정
-                  </span>
-                  <span className="text-[1rem] font-semibold text-blue-primary">
-                    자동 기울기 보정 및 잘못된 정렬 수정
-                  </span>
-                </div>
+              <div className="flex w-full flex-col items-center justify-center gap-2">
+                {TableData.map((feature, index) => (
+                  <FeatureBox
+                    key={index}
+                    title={feature.title}
+                    description={feature.description}
+                  />
+                ))}
               </div>
             </div>
           </div>

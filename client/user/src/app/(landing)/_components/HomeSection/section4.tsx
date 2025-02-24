@@ -88,9 +88,9 @@ const Section4 = () => {
   return (
     <section
       id="section4"
-      className="flex w-full items-center justify-center bg-[#262932] px-[1rem] pt-[5rem] md:px-[9rem]"
+      className="flex w-full items-center justify-center bg-[#262932] px-[1rem] md:px-[9rem]"
     >
-      <div className="flex w-full flex-col pt-[12rem]">
+      <div className="flex w-full flex-col">
         {/* 히어로 영역 */}
         <div className="mb-16 pt-[9rem] text-start md:p-0">
           <div className="text-black-400 h1">톡스캔을 이용하면,</div>
