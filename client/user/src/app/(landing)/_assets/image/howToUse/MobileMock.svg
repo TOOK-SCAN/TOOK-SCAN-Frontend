@@ -14,7 +14,7 @@
 <g filter="url(#filter4_dd_3450_38927)">
 <rect x="25.6836" y="15.7227" width="154.065" height="318.687" rx="21.9541" fill="white"/>
 </g>
-<rect x="32.2186" y="21.1053" width="140.975" height="307.915" rx="18.1988" stroke="#F8F8F8" stroke-width="0.57774"/>
+<rect x="32.2186" y="21.1053" width="140.975" height="307.915" rx="18.1988" stroke="#F8F8F8" strokeWidth="0.57774"/>
 <rect x="31.9297" y="20.8164" width="141.553" height="308.493" rx="18.4877" fill="url(#pattern0_3450_38927)"/>
 <defs>
 <filter id="filter0_dd_3450_38927" x="2.96114" y="0.481906" width="198.484" height="366.121" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">

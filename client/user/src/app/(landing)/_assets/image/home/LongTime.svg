@@ -3,16 +3,16 @@
 <path d="M399.367 237.861C399.367 354.317 304.961 448.723 188.506 448.723C72.0504 448.723 -22.3555 354.317 -22.3555 237.861C-22.3555 121.406 72.0504 27 188.506 27C304.961 27 399.367 121.406 399.367 237.861Z" fill="url(#paint0_linear_3450_38434)"/>
 <path d="M398.867 237.861C398.867 354.041 304.685 448.223 188.506 448.223C72.3265 448.223 -21.8555 354.041 -21.8555 237.861C-21.8555 121.682 72.3265 27.5 188.506 27.5C304.685 27.5 398.867 121.682 398.867 237.861Z" stroke="#D7E4F9"/>
 </g>
-<line x1="185.011" y1="109.82" x2="185.043" y2="79.6554" stroke="#84818C" stroke-width="1.22809"/>
+<line x1="185.011" y1="109.82" x2="185.043" y2="79.6554" stroke="#84818C" strokeWidth="1.22809"/>
 <line x1="331.074" y1="265.5" x2="351.074" y2="265.5" stroke="#84818C"/>
 <line x1="23.5312" y1="265.5" x2="43.5312" y2="265.5" stroke="#84818C"/>
-<line x1="185.801" y1="264" x2="185.801" y2="149.467" stroke="#676C75" stroke-width="4" stroke-linecap="round"/>
-<line x1="183" y1="266.129" x2="100.2" y2="266.129" stroke="#676C75" stroke-width="4" stroke-linecap="round"/>
-<circle cx="185.003" cy="265.997" r="11.3333" fill="#5592FC" stroke="white" stroke-width="4"/>
+<line x1="185.801" y1="264" x2="185.801" y2="149.467" stroke="#676C75" strokeWidth="4" stroke-linecap="round"/>
+<line x1="183" y1="266.129" x2="100.2" y2="266.129" stroke="#676C75" strokeWidth="4" stroke-linecap="round"/>
+<circle cx="185.003" cy="265.997" r="11.3333" fill="#5592FC" stroke="white" strokeWidth="4"/>
 <g filter="url(#filter1_f_3450_38434)">
 <rect width="190.789" height="192.756" transform="translate(61 113)" fill="url(#pattern0_3450_38434)" fill-opacity="0.3"/>
 </g>
-<line x1="181.901" y1="264.591" x2="262.987" y2="132.309" stroke="#5592FC" stroke-width="2"/>
+<line x1="181.901" y1="264.591" x2="262.987" y2="132.309" stroke="#5592FC" strokeWidth="2"/>
 <rect width="206" height="206" transform="translate(74 140)" fill="url(#pattern1_3450_38434)"/>
 <defs>
 <filter id="filter0_ddii_3450_38434" x="-48.3555" y="0" width="475.723" height="476.723" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">

@@ -7,10 +7,10 @@
 <rect x="212.77" y="62" width="366.46" height="472" fill="url(#pattern1_3805_37180)" shape-rendering="crispEdges"/>
 </g>
 <g filter="url(#filter2_dddd_3805_37180)">
-<g clip-path="url(#clip0_3805_37180)">
+<g clipPath="url(#clip0_3805_37180)">
 <rect x="383.75" y="-82.125" width="710.25" height="665.25" fill="url(#pattern2_3805_37180)"/>
 </g>
-<rect x="472" y="90.625" width="173" height="173" rx="86.5" stroke="#9EC8FF" stroke-width="2"/>
+<rect x="472" y="90.625" width="173" height="173" rx="86.5" stroke="#9EC8FF" strokeWidth="2"/>
 </g>
 <g filter="url(#filter3_d_3805_37180)">
 <rect x="592" y="101" width="149.222" height="51" rx="7.55556" fill="white" shape-rendering="crispEdges"/>

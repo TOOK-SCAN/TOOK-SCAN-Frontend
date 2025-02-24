@@ -26,7 +26,7 @@ const features = [
   },
 ]
 
-const Section4 = () => {
+const Merit = () => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const sliderRef = useRef(null)
 
@@ -190,4 +190,4 @@ const Section4 = () => {
   )
 }
 
-export default Section4
+export default Merit

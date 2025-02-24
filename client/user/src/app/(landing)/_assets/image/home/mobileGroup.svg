@@ -14,7 +14,7 @@
 <g filter="url(#filter4_dd_3450_38926)">
 <rect x="24.9121" y="353.043" width="154.065" height="318.687" rx="21.9541" fill="white"/>
 </g>
-<rect x="31.4471" y="358.426" width="140.975" height="307.915" rx="18.1988" stroke="#F8F8F8" stroke-width="0.57774"/>
+<rect x="31.4471" y="358.426" width="140.975" height="307.915" rx="18.1988" stroke="#F8F8F8" strokeWidith="0.57774"/>
 <rect x="31.1582" y="358.137" width="141.553" height="308.493" rx="18.4877" fill="url(#pattern0_3450_38926)"/>
 <g filter="url(#filter5_dd_3450_38926)">
 <rect x="140.193" y="12" width="46.1804" height="24.38" rx="5" fill="white"/>
@@ -31,14 +31,14 @@
 <g filter="url(#filter9_dd_3450_38926)">
 <rect x="106.105" y="16.8477" width="440.855" height="315.244" rx="14.6886" fill="white"/>
 </g>
-<rect x="113.567" y="23.335" width="425.941" height="302.275" rx="10.3279" stroke="#F8F8F8" stroke-width="0.45902"/>
+<rect x="113.567" y="23.335" width="425.941" height="302.275" rx="10.3279" stroke="#F8F8F8" strokeWidth="0.45902"/>
 <rect x="113.338" y="23.1055" width="426.4" height="302.734" rx="10.5575" fill="url(#pattern1_3450_38926)"/>
 <g filter="url(#filter10_dd_3450_38926)">
 <g filter="url(#filter11_dd_3450_38926)">
 <path d="M413.412 742.979C413.412 731.871 422.416 722.867 433.524 722.867H557.547C568.654 722.867 577.659 731.871 577.659 742.979V893.378H413.412V742.979Z" fill="url(#paint0_linear_3450_38926)" shape-rendering="crispEdges"/>
 </g>
 <rect x="193.727" y="348.188" width="603.613" height="431.628" rx="20.1115" fill="white"/>
-<rect x="203.939" y="357.06" width="583.192" height="413.871" rx="14.1409" stroke="#F8F8F8" stroke-width="0.628483"/>
+<rect x="203.939" y="357.06" width="583.192" height="413.871" rx="14.1409" stroke="#F8F8F8" strokeWidth="0.628483"/>
 <path d="M203.625 370.679C203.625 362.984 209.863 356.746 217.558 356.746H773.512C781.207 356.746 787.445 362.984 787.445 370.679V695.242C787.445 697.166 785.886 698.725 783.962 698.725H207.108C205.185 698.725 203.625 697.166 203.625 695.242V370.679Z" fill="url(#pattern2_3450_38926)"/>
 </g>
 <defs>
