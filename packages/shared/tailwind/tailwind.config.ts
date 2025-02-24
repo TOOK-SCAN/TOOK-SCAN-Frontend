@@ -17,17 +17,6 @@ const sharedConfig: Config = {
     },
   },
   plugins: [
-    plugin(function ({ addBase }) {
-      addBase({
-        '@import':
-          "url('https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css')",
-        'html, body': {
-          '@apply font-sans': '',
-          '-webkit-font-smoothing': 'antialiased',
-          '-moz-osx-font-smoothing': 'grayscale',
-        },
-      })
-    }),
     plugin(function ({ addUtilities }) {
       const newUtilities = {
         '.title1': {

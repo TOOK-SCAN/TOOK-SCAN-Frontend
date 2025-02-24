@@ -5,15 +5,15 @@ import Link from 'next/link'
 
 export const Footer = () => {
   return (
-    <footer className="w-full  bg-white px-6 py-8 lg:px-[96px] lg:py-[32px]">
+    <footer className="w-full bg-white px-6 py-8 lg:px-[96px] lg:py-[32px]">
       {/* 로고와 슬로건 */}
       <div className="flex flex-col items-start">
         {/* 로고 */}
         <div className="h-[60px] w-[60px]">
           <Icon
-            id="logo"
-            width={60}
-            height={60}
+            id="blueLogo"
+            width={150}
+            height={62}
             className="text-blue-primary"
           />
         </div>

@@ -15,7 +15,7 @@ export const ClientHeader = () => {
   const isLanding = ['/', '/howToUse', '/pricing'].includes(pathname)
   const isMobile = false
   const textSize = isMobile ? 'text-[12px]' : 'text-[14px]'
-  const heightSize = isMobile ? 'h-4' : 'h-[5.625rem]'
+  const heightSize = isMobile ? 'h-4' : 'h-[5rem]'
   const [menuOpen, setMenuOpen] = useState(false)
 
   const { username, isLogin, refetchAuth } = useAuth()
@@ -73,10 +73,10 @@ export const ClientHeader = () => {
           ------------------------ */}
           <Link href="/" className="focus:outline-none">
             <Icon
-              id="logo"
+              id="blueLogo"
               className="text-blue-primary"
-              width={isMobile ? 52 : 80}
-              height={isMobile ? 24 : 36}
+              width={80}
+              height={33}
             />
           </Link>
 
@@ -102,7 +102,10 @@ export const ClientHeader = () => {
           <div className={clsx('flex gap-4', textSize)}>
             {!isLogin ? (
               <>
-                <Link href="/login" className="text-black hover:underline">
+                <Link
+                  href="/login"
+                  className="flex items-center text-black hover:underline"
+                >
                   로그인
                 </Link>
                 <span className="hidden text-black md:flex">|</span>
@@ -118,6 +121,14 @@ export const ClientHeader = () => {
                 >
                   회원가입
                 </Link>
+                <button className="md:hidden" onClick={() => setMenuOpen(true)}>
+                  <Icon
+                    id="menu"
+                    width={28}
+                    height={28}
+                    className="text-black"
+                  />
+                </button>
               </>
             ) : (
               <>
@@ -136,22 +147,14 @@ export const ClientHeader = () => {
             )}
           </div>
 
-          {/* ------------------------
-              4) 모바일 햄버거 아이콘 (md:hidden)
-          ------------------------ */}
-          <button className="md:hidden" onClick={() => setMenuOpen(true)}>
-            <Icon id="menu" width={28} height={28} className="text-black" />
-          </button>
-
-          {/* ------------------------
-              5) 오버레이 & 사이드 메뉴 (모바일 전용)
-          ------------------------ */}
           {menuOpen && (
             <div className="fixed inset-0 z-40 md:hidden">
+              {/* 배경 (클릭 시 메뉴 닫힘) */}
               <div
                 className="h-screen w-full bg-black/80 backdrop-blur-sm"
                 onClick={() => setMenuOpen(false)}
               >
+                {/* 닫기 버튼 */}
                 <button
                   onClick={() => setMenuOpen(false)}
                   className="z-50 mb-8 flex w-full items-center justify-end p-4"
@@ -163,6 +166,44 @@ export const ClientHeader = () => {
                     className="text-white"
                   />
                 </button>
+
+                {/* 메뉴 리스트 */}
+                <div className="flex flex-col items-center gap-6 text-white">
+                  <Link
+                    href="/login"
+                    className="w-full py-4 text-center hover:underline"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    로그인
+                  </Link>
+                  <div className="w-4/5 border-t border-white/30"></div>
+
+                  <Link
+                    href="/pricing"
+                    className="w-full py-4 text-center hover:underline"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    가격안내
+                  </Link>
+                  <div className="w-4/5 border-t border-white/30"></div>
+
+                  <Link
+                    href="/apply"
+                    className="w-full py-4 text-center hover:underline"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    스캔하기
+                  </Link>
+                  <div className="w-4/5 border-t border-white/30"></div>
+
+                  <Link
+                    href="/profile/order"
+                    className="w-full py-4 text-center hover:underline"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    주문조회
+                  </Link>
+                </div>
               </div>
             </div>
           )}

@@ -1,5 +1,6 @@
 /* Pretendard CDN */
 @import url('https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css'); 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
